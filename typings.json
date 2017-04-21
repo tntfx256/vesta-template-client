@@ -1,0 +1,22 @@
+{
+  "name": "vesta-template",
+  "dependencies": {
+    "body-parser": "registry:dt/body-parser#1.16.0+20170321201455",
+    "express": "registry:dt/express#4.0.0+20170118060322",
+    "express-serve-static-core": "registry:dt/express-serve-static-core#4.0.0+20170324160323",
+    "fs-extra": "registry:dt/fs-extra#2.0.0+20170306033830",
+    "node-uuid": "registry:dt/node-uuid#0.0.0+20160510232759",
+    "react": "registry:dt/react#15.0.0+20170311000913",
+    "react-native": "registry:dt/react-native#0.42.0+20170314015828",
+    "react-router": "registry:dt/react-router#3.0.0+20170311000202",
+    "serve-static": "registry:dt/serve-static#1.7.1+20161128184045"
+  },
+  "globalDependencies": {
+    "cordova": "registry:dt/cordova#0.0.0+20160819210047",
+    "cordova-plugin-keyboard/index": "registry:dt/cordova-plugin-keyboard/index#0.1.2+20160819210047",
+    "cordova-plugin-statusbar": "registry:dt/cordova-plugin-statusbar#0.0.0+20160819210047",
+    "electron": "registry:dt/electron#1.4.8+20170316233216",
+    "node": "registry:dt/node#7.0.0+20170310052549",
+    "react-router-dom": "registry:dt/react-router-dom#4.0.0+20170323201651"
+  }
+}

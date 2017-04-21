@@ -1,0 +1,3 @@
+[submodule "src/cmn"]
+	path = src/client/app/cmn
+	url = http://github.com/VestaRayanAfzar/commonCodeTemplate.git
