@@ -1,7 +1,15 @@
 {
   "name": "vesta-template-client",
   "version": "0.2.0",
-  "description": "",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/VestaRayanAfzar/vesta-template-client.git",
+  "author": "hbtb <bishehsary@gmail.com>",
+  "contributors": [
+    {
+      "name": "Mohammd Javad Khalilian",
+      "email": "khalilian.javad@gmail.com"
+    }
+  ],
   "main": "./vesta/client/electron/main.js",
   "scripts": {
     "test": "jest",
@@ -10,22 +18,6 @@
     "dev:android": "gulp dev:android",
     "dev:ios": "gulp dev:ios"
   },
-  "jest": {
-    "testEnvironment": "node",
-    "transform": {
-      ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/test/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ]
-  },
-  "keywords": [],
-  "author": "",
-  "license": "Apache-2",
   "dependencies": {
     "cordova": "^6.5.0",
     "electron": "^1.6.2",
@@ -83,5 +75,18 @@
     "ts-jest": "^19.0.10",
     "tslib": "^1.6.0",
     "typescript": "^2.2.2"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "transform": {
+      ".(ts|tsx)": "./node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/test/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json"
+    ]
   }
 }
