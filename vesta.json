@@ -5,10 +5,9 @@
     "platform": 2
   },
   "config": {
-    "name": "vesta-template",
+    "name": "vesta-template-client",
     "pkgManager": "yarn",
     "client": {},
-    "server": {},
     "repository": {}
   }
 }

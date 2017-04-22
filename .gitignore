@@ -1,10 +1,8 @@
 .idea
-/.rpt2_cache
 /node_modules
 npm-debug*
 /src/client/app/config/setting.var.ts
 tsd-debug*
-/typings
 /vesta/client/cordova/platforms/*
 !/vesta/client/cordova/platforms/platforms.json
 /vesta/client/cordova/plugins/*

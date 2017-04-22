@@ -11,16 +11,15 @@ Object.keys(targets).forEach(target => {
         setting.target = target;
     });
 });
+
 /** sets setting.production to true for deploy tasks */
 gulp.task('production', () => {
     setting.production = true;
 });
 
-/** Loading frontend tasks foreach target */
-let [tasks, watches] = loadTasks(['asset', 'sass', 'client']);
+let [tasks, watches] = loadTasks(['asset', 'sass', 'client', 'server']);
 createTasks();
 
-/** Loading tasks from each modules*/
 function loadTasks(modules) {
     let tasks = [],
         watches = [];
@@ -37,7 +36,6 @@ function loadTasks(modules) {
     return [tasks, watches];
 }
 
-/** Creates tasks for noneVirtual targets */
 function createTasks() {
     Object.keys(targets).forEach(target => {
         let targetSpec = targets[target];

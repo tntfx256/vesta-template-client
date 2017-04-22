@@ -2,7 +2,7 @@
 
 CLONE_PATH=$1
 DEPLOY_PATH=$2
-NGINX_PATH=/etc/nginx/conf.d/cpanel.conf
+NGINX_PATH=/etc/nginx/conf.d/vesta-template-client.conf
 
 WD=`pwd`
 counter=0
@@ -17,15 +17,13 @@ print_status(){
 cd "$CLONE_PATH"
 git checkout master
 
-mv resources/gitignore/src/app/config/setting.var.ts src/app/config/setting.var.ts
+mv resources/gitignore/client.setting.var.ts src/client/app/config/setting.var.ts
 
 print_status "Installing Node Packages"
-npm install --no-progress
+yarn install
 
 print_status "Running Deploy Tasks"
-gulp deploy:web
-gulp deploy:server
-gulp deploy:cpanel
+npm run deploy:web
 
 print_status "Configuring NGINX"
 cd ${WD}
@@ -33,11 +31,11 @@ mv ${CLONE_PATH}/resources/docker/nginx.conf ${NGINX_PATH}
 cd ${CLONE_PATH}
 
 print_status "Installing Node Packages for Web Server"
-cp package.json build/app/server/package.json
-cd build/app/server
-npm install --production --no-progress
+cp package.json vesta/server/package.json
+cd vesta/server
+yarn install --production
 
-cd "$WD"
+cd ${WD}
 if [ -d "$DEPLOY_PATH" ]; then
   print_status "Stopping Previously Running Containers"
   cd "$DEPLOY_PATH"

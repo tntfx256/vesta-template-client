@@ -5,14 +5,14 @@ import * as fs from "fs";
 import {IStaticServerSetting} from "./app";
 
 export class ServerApp {
-    private app:express.Express;
-    private server:http.Server;
+    private app: express.Express;
+    private server: http.Server;
 
-    constructor(private setting:IStaticServerSetting) {
+    constructor(private setting: IStaticServerSetting) {
         this.app = express();
         this.server = http.createServer(this.app);
-        this.server.on('error', err=>console.error('Static server error: ', err));
-        this.server.on('listening', arg=>console.log('Static server starts listening on ', this.server.address()));
+        this.server.on('error', err => console.error('Static server error: ', err));
+        this.server.on('listening', arg => console.log('Static server starts listening on ', this.server.address()));
     }
 
     private configExpressServer() {
@@ -29,7 +29,7 @@ export class ServerApp {
 
     public init() {
         this.configExpressServer();
-        this.app.use('/offline.manifest', (req, res, next)=> {
+        this.app.use('/offline.manifest', (req, res, next) => {
             res.contentType('text/cache-manifest');
             res.sendFile(`${this.setting.dir.html}/offline.manifest`);
         });
@@ -45,14 +45,14 @@ export class ServerApp {
         });
 
         if (this.setting.env === 'development') {
-            this.app.use((err:any, req, res, next) => {
+            this.app.use((err: any, req, res, next) => {
                 res.status(err.status || 500);
                 console.log('development error', err);
                 res.json({message: err.message, error: err});
             });
         }
 
-        this.app.use((err:any, req, res, next) => {
+        this.app.use((err: any, req, res, next) => {
             res.status(err.status || 500);
             res.send({
                 message: err.message,

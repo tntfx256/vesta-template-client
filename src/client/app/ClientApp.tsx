@@ -1,21 +1,22 @@
 import React, {ComponentClass} from "react";
 import ReactDOM from "react-dom";
 import ReactRouterDOM from "react-router-dom";
-import {Root} from "../components/Root";
-import {IClientAppSetting} from "../config/setting";
-import {Home} from "../components/root/Home";
-import {About} from "../components/root/About";
-import {NotFound} from "../components/root/NotFound";
-import {Login} from "../components/root/Login";
-import {Signup} from "../components/root/Signup";
-import {AuthService} from "../service/AuthService";
-import {Forbidden} from "../components/root/Forbidden";
+import {AuthService} from "./service/AuthService";
+import {AclPolicy} from "./cmn/enum/Acl";
+import {NotFound} from "./components/root/NotFound";
+import {About} from "./components/root/About";
+import {Signup} from "./components/root/Signup";
+import {Login} from "./components/root/Login";
+import {Home} from "./components/root/Home";
+import {Root} from "./components/Root";
+import {IClientAppSetting} from "./config/setting";
+import {Forbidden} from "./components/root/Forbidden";
 
 interface ExtComponentClass extends ComponentClass<any> {
     registerPermission: (id: number) => void;
 }
 
-export abstract class AbstractClient {
+export class ClientApp {
 
     static Setting;
     private idCounter = 1;
@@ -23,7 +24,28 @@ export abstract class AbstractClient {
     constructor(private setting: IClientAppSetting) {
     }
 
-    public abstract init();
+    public init() {
+        this.registerServiceWorker();
+        //<web>
+        AuthService.getInstance().setDefaultPolicy(AclPolicy.Allow);
+        //</web>
+        //<cordova>
+        Keyboard.hideFormAccessoryBar(true);
+        Keyboard.disableScrollingInShrinkView(true);
+        Keyboard.shrinkView(true);
+        StatusBar.styleDefault();
+        //</cordova>
+    }
+
+    private registerServiceWorker() {
+        // if ('serviceWorker' in navigator) {
+        //     navigator.serviceWorker.register('js/sw.js')
+        //         .then(registration=> {
+        //             console.log('serviceWorker registered', registration);
+        //         })
+        //         .catch(err=>console.error(err));
+        // }
+    }
 
     protected willTransitionTo(Component: ExtComponentClass) {
         let id = this.idCounter++;
@@ -52,5 +74,4 @@ export abstract class AbstractClient {
             document.getElementById("root")
         );
     }
-
 }

@@ -1,5 +1,3 @@
-import {NotificationService} from "./NotificationService";
-
 export class NotificationService {
 
     static instance: NotificationService;

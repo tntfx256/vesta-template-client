@@ -37,7 +37,6 @@ module.exports = function (setting) {
 
         switch (setting.target) {
             case 'web':
-            case 'cpanel':
                 runWebServer(root);
                 break;
             case 'android':
@@ -83,7 +82,12 @@ module.exports = function (setting) {
         // configuring plugins
         rollupConfig.plugins = [
             (setting.production && rollupProgress()),
-            rollupTypescript(),
+            rollupTypescript({
+                check: false,
+                clean: true,
+                cacheRoot: `${dir.build}/tmp/rpt2_cache`,
+                abortOnError: false
+            }),
             rollupReplace({
                 'process.env.NODE_ENV': setting.production ? '"production"' : '"development"'
             }),

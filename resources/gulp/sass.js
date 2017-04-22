@@ -6,7 +6,6 @@ let autoPrefixer = require('autoprefixer');
 let csswring = require('csswring');
 let mqpacker = require('css-mqpacker');
 let reporter = require('postcss-reporter');
-let stylelint = require('stylelint');
 let doiuse = require('doiuse');
 let fs = require('fs');
 let eliminator = require('./plugins/eliminator');
@@ -59,7 +58,6 @@ module.exports = function (setting) {
 
         let preprocessors = [
             autoPrefixer({browsers: browsersToSupport}),
-            stylelint(),
             doiuse({browsers: browsersToSupport}),
             reporter()
         ];

@@ -28,42 +28,23 @@ module.exports = function (config, target) {
 
     function buildFor(file, target, cb) {
         let code = file.contents.toString();
-        code = eliminateNotThis(code, target);
+        if (config.is(target, 'cordova')) code = eliminateBetween(code, '//<!cordova>', '//</cordova>');
+        code = eliminateBetween(code, `//<!${target}>`, `//</${target}>`);
         let eliminations = config.targets[target].elimination;
         eliminations && eliminations.forEach(target => {
-            code = eliminateOthers(code, target);
+            code = eliminateBetween(code, `//<${target}>`, `//</${target}>`);
         });
         file.contents = Buffer.from(code);
         cb(null, file);
     }
 
-    function eliminateOthers(code, target) {
-        // let regex = new RegExp(`<${target}>[\\s\\S]+<\/${target}>`, 'g');
-        // if(code.indexOf('qweasd')) {
-        //     code = code.replace(regex, () => {
-        //         console.log(arguments[0]);
-        //     });
-        // }
+    function eliminateBetween(code, startCode, endCode) {
         let startIndex = -1;
         do {
-            startIndex = code.indexOf(`//<${target}>`);
+            startIndex = code.indexOf(startCode);
             if (startIndex >= 0) {
-                let endCode = `//</${target}>`;
-                let endIndex = code.indexOf(endCode) + endCode.length;
-                code = code.substr(0, startIndex) + code.substr(endIndex);
-            }
-        } while (startIndex >= 0);
-        return code;
-    }
-
-    function eliminateNotThis(code, target) {
-        let startIndex = -1;
-        do {
-            startIndex = code.indexOf(`//<!${target}>`);
-            if (startIndex >= 0) {
-                let endCode = `//</${target}>`;
-                let endIndex = code.indexOf(endCode) + endCode.length;
-                code = code.substr(0, startIndex) + code.substr(endIndex);
+                let endIndex = code.indexOf(endCode, startIndex + startCode.length) + endCode.length;
+                code = code.substring(0, startIndex) + code.substring(endIndex);
             }
         } while (startIndex >= 0);
         return code;

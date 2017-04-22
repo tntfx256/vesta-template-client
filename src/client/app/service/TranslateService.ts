@@ -4,7 +4,6 @@ import {Dictionary as persian} from "../cmn/locale/fa-IR/Dictionary";
 
 export class TranslateService {
     private dictionary: Dictionary;
-    public static $inject = ['i18nService'];
     private static instance: TranslateService;
 
     constructor(i18nService: I18nService) {
