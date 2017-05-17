@@ -1,7 +1,7 @@
 {
-  "name": "vesta-template-cpanel",
-  "version": "0.0.1",
-  "description": "Vesta boilerplate for control panel",
+  "name": "vesta-template-client",
+  "version": "0.2.1",
+  "description": "Vesta boilerplate for client side application",
   "license": "Apache-2.0",
   "author": "hbtb <bishehsary@gmail.com>",
   "contributors": [
