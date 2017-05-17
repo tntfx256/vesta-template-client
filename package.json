@@ -1,14 +1,11 @@
 {
-  "name": "vesta-template-client",
-  "version": "0.2.1",
-  "description": "Vesta boilerplate for client side applications",
+  "name": "vesta-template-cpanel",
+  "version": "0.0.1",
+  "description": "Vesta boilerplate for control panel",
   "license": "Apache-2.0",
   "author": "hbtb <bishehsary@gmail.com>",
   "contributors": [
-    {
-      "name": "Mohammd Javad Khalilian",
-      "email": "khalilian.javad@gmail.com"
-    }
+    "javadkh2 <khalilian.javad@gmail.com>"
   ],
   "main": "./vesta/client/electron/main.js",
   "scripts": {
