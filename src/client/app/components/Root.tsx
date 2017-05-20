@@ -4,7 +4,7 @@ import {ApiService} from "../service/ApiService";
 import {AuthService} from "../service/AuthService";
 import {Dispatcher} from "../service/Dispatcher";
 import {IUser, User} from "../cmn/models/User";
-import {IQueryResult} from "vesta-lib";
+import {IQueryResult} from "@vesta/core-es5";
 
 export interface RootProps {
 }

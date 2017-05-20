@@ -86,6 +86,26 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
+"@vesta/cordova@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@vesta/cordova/-/cordova-0.1.0.tgz#c2b90ecdc39ebd10ef8f6624cb0541469d762cba"
+
+"@vesta/core-es5@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@vesta/core-es5/-/core-es5-0.2.3.tgz#5c340170c6b2131aded1b5ce5b7dc39dea6475f3"
+
+"@vesta/culture-ir-es5@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@vesta/culture-ir-es5/-/culture-ir-es5-0.1.2.tgz#325fb9939dd961472618a251ca54b7224b0b5cd6"
+  dependencies:
+    "@vesta/core-es5" "^0.2.3"
+
+"@vesta/culture-us-es5@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@vesta/culture-us-es5/-/culture-us-es5-0.1.3.tgz#97a2e46e846f63fef8a0c41a535c8948a13fed52"
+  dependencies:
+    "@vesta/core-es5" "^0.2.3"
+
 JSONStream@^0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-0.8.4.tgz#91657dfe6ff857483066132b4618b62e8f4887bd"
@@ -197,13 +217,13 @@ ansi-escapes@^1.1.0, ansi-escapes@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-1.4.0.tgz#d3a8a83b319aa67793662b13e761c7911422306e"
 
-ansi-regex@*, ansi-regex@^2.0.0:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
-
 ansi-regex@^0.2.0, ansi-regex@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-0.2.1.tgz#0d8e946967a3d8143f93e24e298525fc1b2235f9"
+
+ansi-regex@^2.0.0:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/ansi-regex/-/ansi-regex-2.1.1.tgz#c3b33ab5ee360d86e0e628f0468ae7ef27d654df"
 
 ansi-styles@^1.1.0:
   version "1.1.0"
@@ -3048,9 +3068,9 @@ glob@^5.0.13, glob@^5.0.15, glob@^5.0.3:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@~7.0.6:
-  version "7.0.6"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.0.6.tgz#211bafaf49e525b8cd93260d14ab136152b3f57a"
+glob@^7.0.0, glob@^7.1.0, glob@^7.1.1, glob@~7.1.1:
+  version "7.1.1"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.1.tgz#805211df04faaf1c63a3600306cdf5ade50b2ec8"
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
@@ -3059,9 +3079,9 @@ glob@^7.0.0, glob@^7.0.3, glob@^7.0.5, glob@~7.0.6:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.1.0, glob@^7.1.1, glob@~7.1.1:
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-7.1.1.tgz#805211df04faaf1c63a3600306cdf5ade50b2ec8"
+glob@^7.0.3, glob@^7.0.5, glob@~7.0.6:
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/glob/-/glob-7.0.6.tgz#211bafaf49e525b8cd93260d14ab136152b3f57a"
   dependencies:
     fs.realpath "^1.0.0"
     inflight "^1.0.4"
@@ -3697,7 +3717,7 @@ immutable@3.8.1, immutable@^3.7.6:
   version "3.8.1"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.1.tgz#200807f11ab0f72710ea485542de088075f68cd2"
 
-imurmurhash@*, imurmurhash@^0.1.4:
+imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
 
@@ -5085,13 +5105,13 @@ mkdirp@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.3.0.tgz#1bbf5ab1ba827af23575143490426455f481fe1e"
 
-mkdirp@0.5, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
+mkdirp@0.5, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@~0.5.0, mkdirp@~0.5.1:
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
 
-mkdirp@0.5.0, mkdirp@^0.5.0:
+mkdirp@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.0.tgz#1d73076a6df986cd9344e15e71fcc05a4c9abf12"
   dependencies:
@@ -6616,15 +6636,15 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-rimraf@2, rimraf@^2.2.2, rimraf@^2.2.6, rimraf@^2.2.8, rimraf@^2.4.4, rimraf@^2.5.1, rimraf@^2.5.2, rimraf@^2.6.1:
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
+rimraf@2, rimraf@^2.2.6, rimraf@^2.2.8, rimraf@^2.4.4, rimraf@^2.5.2, rimraf@~2.5.4:
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
   dependencies:
     glob "^7.0.5"
 
-rimraf@~2.5.4:
-  version "2.5.4"
-  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.5.4.tgz#96800093cbf1a0c86bd95b4625467535c29dfa04"
+rimraf@^2.2.2, rimraf@^2.5.1, rimraf@^2.6.1:
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.1.tgz#c2338ec643df7a1b7fe5c54fa86f57428a55f33d"
   dependencies:
     glob "^7.0.5"
 
@@ -7845,40 +7865,6 @@ verror@1.3.6:
   resolved "https://registry.yarnpkg.com/verror/-/verror-1.3.6.tgz#cff5df12946d297d2baaefaa2689e25be01c005c"
   dependencies:
     extsprintf "1.0.2"
-
-vesta-cordova@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/vesta-cordova/-/vesta-cordova-0.1.0.tgz#762440691de168831340f3c2258f1f53cc6a5483"
-
-vesta-datetime-gregorian@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/vesta-datetime-gregorian/-/vesta-datetime-gregorian-0.3.5.tgz#2e9cd99626e7f0252598efed7b2e0fe0cfd880f8"
-  dependencies:
-    vesta-lib "^0.1.3"
-    vesta-locale-en-us "^0.2.6"
-
-vesta-datetime-persian@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/vesta-datetime-persian/-/vesta-datetime-persian-0.3.0.tgz#cb72dda05a31989e59e7aa1b85009609ab58a56f"
-  dependencies:
-    vesta-lib "^0.1.3"
-    vesta-locale-fa-ir "^0.2.6"
-
-vesta-lib@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/vesta-lib/-/vesta-lib-0.1.3.tgz#36db2f4b83255833d967b4652eb7b19d21df9715"
-
-vesta-locale-en-us@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/vesta-locale-en-us/-/vesta-locale-en-us-0.2.6.tgz#d11fc4db7ed2e3504b19e3a48b3b722d753eedcc"
-  dependencies:
-    vesta-lib "^0.1.3"
-
-vesta-locale-fa-ir@^0.2.6:
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/vesta-locale-fa-ir/-/vesta-locale-fa-ir-0.2.6.tgz#8e0d4c53fdc236cc4449073265169f198036b559"
-  dependencies:
-    vesta-lib "^0.1.3"
 
 vhost@~3.0.1:
   version "3.0.2"

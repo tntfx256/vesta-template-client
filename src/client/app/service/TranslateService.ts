@@ -1,6 +1,6 @@
-import {Dictionary, IVocabs} from "vesta-lib/Dictionary";
 import {I18nService} from "./I18nService";
 import {Dictionary as persian} from "../cmn/locale/fa-IR/Dictionary";
+import {Dictionary, IVocabs} from "@vesta/core-es5";
 
 export class TranslateService {
     private dictionary: Dictionary;

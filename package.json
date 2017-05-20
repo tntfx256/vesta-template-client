@@ -22,6 +22,10 @@
     "email": "bishehsary@gmail.com"
   },
   "dependencies": {
+    "@vesta/cordova": "^0.1.0",
+    "@vesta/core-es5": "^0.2.3",
+    "@vesta/culture-ir-es5": "^0.1.2",
+    "@vesta/culture-us-es5": "^0.1.3",
     "cordova": "^6.5.0",
     "electron": "^1.6.2",
     "express": "^4.15.2",
@@ -32,12 +36,6 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router-dom": "^4.0.0",
-    "vesta-cordova": "^0.1.0",
-    "vesta-datetime-gregorian": "^0.3.5",
-    "vesta-datetime-persian": "^0.3.0",
-    "vesta-lib": "^0.1.3",
-    "vesta-locale-en-us": "^0.2.6",
-    "vesta-locale-fa-ir": "^0.2.6",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {

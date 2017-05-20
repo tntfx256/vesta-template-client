@@ -1,4 +1,4 @@
-import {Err} from "vesta-lib/Err";
+import {Err} from "@vesta/core-es5";
 import {AuthService} from "./AuthService";
 import {ConfigService} from "./ConfigService";
 declare let param: (any) => string;

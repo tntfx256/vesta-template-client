@@ -1,30 +1,24 @@
 import {IClientAppSetting} from "../config/setting";
-import {ILocale} from "vesta-lib/ILocale";
-import {I18N} from "vesta-lib/I18N";
-import {Dictionary} from "vesta-lib/Dictionary";
-import {faIR} from "vesta-locale-fa-ir/fa-IR";
-import {enUS} from "vesta-locale-en-us/en-US";
 import {ApiService} from "./ApiService";
-import {DateTimeFactory} from "vesta-datetime/DateTimeFactory";
-import {PersianDate} from "vesta-datetime-persian/PersianDate";
-import {GregorianDate} from "vesta-datetime-gregorian/GregorianDate";
+import {ILocale, Dictionary, I18N, DateTimeFactory} from "@vesta/core-es5";
+import {IR, PersianDate} from "@vesta/culture-ir";
+import {US, GregorianDate} from "@vesta/culture-us";
 
 export class I18nService {
     private i18nLocale: ILocale;
     private dictionary: Dictionary;
-    public static $inject = ['Setting', 'apiService'];
 
     constructor(private Setting: IClientAppSetting, private apiService: ApiService) {
         this.initLocales();
     }
 
     private initLocales() {
-        I18N.registerLocale(faIR);
-        I18N.registerLocale(enUS);
-        I18N.registerDictionary(faIR.code);
-        I18N.registerDictionary(enUS.code);
-        DateTimeFactory.register(faIR.code, PersianDate);
-        DateTimeFactory.register(enUS.code, GregorianDate);
+        I18N.registerLocale(IR);
+        I18N.registerLocale(US);
+        I18N.registerDictionary(IR.code);
+        I18N.registerDictionary(US.code);
+        DateTimeFactory.register(IR.code, PersianDate);
+        DateTimeFactory.register(US.code, GregorianDate);
         //
         this.i18nLocale = I18N.getLocale(this.Setting.locale);
         this.dictionary = I18N.getDictionary(this.Setting.locale);
