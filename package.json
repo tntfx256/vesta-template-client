@@ -22,6 +22,7 @@
     "email": "bishehsary@gmail.com"
   },
   "dependencies": {
+    "@types/spdy": "^3.4.1",
     "@vesta/cordova": "^0.1.0",
     "@vesta/core-es5": "^0.2.3",
     "@vesta/culture-ir-es5": "^0.1.2",
@@ -36,6 +37,7 @@
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
     "react-router-dom": "^4.0.0",
+    "spdy": "^3.4.7",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
