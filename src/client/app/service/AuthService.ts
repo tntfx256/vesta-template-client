@@ -151,9 +151,7 @@ export class AuthService {
     }
 
     public static getInstance(): AuthService {
-        if (!AuthService.instance) {
-            return new AuthService;
-        }
+        if (!AuthService.instance) AuthService.instance = new AuthService();
         return AuthService.instance;
     }
 }

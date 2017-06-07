@@ -7,17 +7,15 @@ export interface IFileKeyValue {
     [key: string]: File | Blob | Array<File | Blob>;
 }
 
-export class ApiService {
+export class ApiService{
     private static instance: ApiService;
     private endPoint: string = '';
     private enableCache: boolean;
     private isDev = ConfigService.getInstance().get<string>('env') != 'production';
 
     public static getInstance(): ApiService {
-        if (!ApiService.instance) {
-            return new ApiService(AuthService.getInstance());
-        }
-        return ApiService.instance;
+        if(!ApiService.instance) ApiService.instance = new ApiService(AuthService.getInstance());
+        return ApiService.getInstance();
     }
 
     constructor(private authService: AuthService) {

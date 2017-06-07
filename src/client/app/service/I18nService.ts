@@ -1,15 +1,22 @@
-import {IClientAppSetting} from "../config/setting";
+import {IClientAppSetting, setting} from "../config/setting";
 import {ApiService} from "./ApiService";
-import {ILocale, Dictionary, I18N, DateTimeFactory} from "@vesta/core-es5";
+import {DateTimeFactory, Dictionary, I18N, ILocale} from "@vesta/core-es5";
 import {IR, PersianDate} from "@vesta/culture-ir";
-import {US, GregorianDate} from "@vesta/culture-us";
+import {GregorianDate, US} from "@vesta/culture-us";
 
 export class I18nService {
     private i18nLocale: ILocale;
     private dictionary: Dictionary;
+    private static instance;
 
     constructor(private Setting: IClientAppSetting, private apiService: ApiService) {
+        I18nService.instance = this;
         this.initLocales();
+    }
+
+    public static getInstance(): I18nService {
+        if (!I18nService.instance) I18nService.instance = new I18nService(setting, ApiService.getInstance());
+        return I18nService.instance;
     }
 
     private initLocales() {

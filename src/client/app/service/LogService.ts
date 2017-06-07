@@ -36,6 +36,7 @@ export class LogService {
     }
 
     public static getInstance(): LogService {
+        if (!LogService.instance) LogService.instance = new LogService();
         return LogService.instance;
     }
 }

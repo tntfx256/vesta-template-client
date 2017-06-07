@@ -1,4 +1,4 @@
-import {IClientAppSetting} from "../config/setting";
+import {IClientAppSetting, setting} from "../config/setting";
 
 export class ConfigService {
     private static instance: ConfigService;
@@ -8,7 +8,7 @@ export class ConfigService {
     }
 
     static init(setting: IClientAppSetting) {
-        new ConfigService(setting);
+        this.instance = new ConfigService(setting);
     }
 
     public get<T>(key: string, defaultValue: T = null): T {
@@ -16,6 +16,7 @@ export class ConfigService {
     }
 
     static getInstance(): ConfigService {
+        if (!ConfigService.instance) ConfigService.instance = new ConfigService(setting);
         return ConfigService.instance;
     }
 }

@@ -24,6 +24,7 @@ export class TranslateService {
     }
 
     public static getInstance(): TranslateService {
+        if (!TranslateService.instance) TranslateService.instance = new TranslateService(I18nService.getInstance());
         return TranslateService.instance;
     }
 }

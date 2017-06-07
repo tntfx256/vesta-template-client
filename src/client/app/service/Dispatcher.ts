@@ -44,9 +44,7 @@ export class Dispatcher {
     }
 
     public static getInstance(name: string = 'main') {
-        if (!Dispatcher.instances[name]) {
-            Dispatcher.instances[name] = new Dispatcher(name);
-        }
+        if (!Dispatcher.instances[name]) Dispatcher.instances[name] = new Dispatcher(name);
         return Dispatcher.instances[name];
     }
 }
