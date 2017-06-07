@@ -1,11 +1,14 @@
 import React from "react";
-import {PageComponent} from "../PageComponent";
+import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
 import {AuthService} from "../../service/AuthService";
 
-export interface SignupProps {
+export interface ISignupParams {
 }
 
-export interface SignupState {
+export interface SignupProps extends PageComponentProps<ISignupParams> {
+}
+
+export interface SignupState extends PageComponentState {
 }
 
 export class Signup extends PageComponent<SignupProps, SignupState> {

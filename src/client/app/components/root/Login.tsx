@@ -1,8 +1,11 @@
 import React from "react";
 import {AuthService} from "../../service/AuthService";
-import {PageComponent} from "../PageComponent";
+import {PageComponent, PageComponentProps} from "../PageComponent";
 
-export interface LoginProps {
+export interface ILoginParams {
+}
+
+export interface LoginProps extends PageComponentProps<ILoginParams> {
 }
 
 export interface LoginState {

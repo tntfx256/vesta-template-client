@@ -1,11 +1,14 @@
 import React from "react";
-import {PageComponent} from "../PageComponent";
+import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
 import {AuthService} from "../../service/AuthService";
 
-export interface HomeProps {
+export interface IHomeParams {
 }
 
-export interface HomeState {
+export interface HomeProps extends PageComponentProps<IHomeParams> {
+}
+
+export interface HomeState extends PageComponentState {
 }
 
 export class Home extends PageComponent<HomeProps, HomeState> {
