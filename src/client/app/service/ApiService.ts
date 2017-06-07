@@ -15,7 +15,7 @@ export class ApiService{
 
     public static getInstance(): ApiService {
         if(!ApiService.instance) ApiService.instance = new ApiService(AuthService.getInstance());
-        return ApiService.getInstance();
+        return ApiService.instance;
     }
 
     constructor(private authService: AuthService) {
