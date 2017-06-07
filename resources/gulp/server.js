@@ -12,7 +12,7 @@ let bundler = require('./plugins/bundler');
 module.exports = function (setting) {
     let dir = setting.dir;
 
-    gulp.task('server:build', () => {
+    gulp.task('dev:server', () => {
         let tsFiles = [`${dir.srcServer}/**/*.ts`];
         let genSourceMap = !setting.production;
         let stream = gulp.src(tsFiles);
@@ -29,11 +29,11 @@ module.exports = function (setting) {
     });
 
     gulp.task('server:watch', function () {
-        return gulp.watch([`${dir.srcServer}/**/*`], ['server:build']);
+        return gulp.watch([`${dir.srcServer}/**/*`], ['dev:server']);
     });
 
     return {
-        tasks: ['server:build'],
+        tasks: ['dev:server'],
         watch: ['server:watch']
     };
 };

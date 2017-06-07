@@ -35,10 +35,6 @@ export class Root extends React.Component<RootProps, RootState> {
             });
     }
 
-    static willTransitionTo(transition) {
-        console.log(transition);
-    }
-
     render() {
         let {Link} = ReactRouterDOM;
         return (
