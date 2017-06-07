@@ -1,8 +1,8 @@
 import {IClientAppSetting, setting} from "../config/setting";
 import {ApiService} from "./ApiService";
 import {DateTimeFactory, Dictionary, I18N, ILocale} from "@vesta/core-es5";
-import {IR, PersianDate} from "@vesta/culture-ir";
-import {GregorianDate, US} from "@vesta/culture-us";
+import {IR, PersianDate} from "@vesta/culture-ir-es5";
+import {GregorianDate, US} from "@vesta/culture-us-es5";
 
 export class I18nService {
     private i18nLocale: ILocale;
