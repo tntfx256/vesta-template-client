@@ -1,9 +1,13 @@
 import React from "react";
 import {ApiService} from "../service/ApiService";
 import {AuthService} from "../service/AuthService";
-import {RouteComponentProps} from "react-router";
+import {match} from "react-router";
+import {History, Location} from "history";
 
-export interface PageComponentProps<T> extends RouteComponentProps<T> {
+export interface PageComponentProps<T> {
+    match: match<T>;
+    location: Location;
+    history: History;
 }
 export interface PageComponentState {
 }
