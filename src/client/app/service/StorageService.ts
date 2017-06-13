@@ -29,7 +29,9 @@ export class StorageService {
     }
 
     public static getInstance(): StorageService {
-        if (!StorageService.instance) StorageService.instance = new StorageService();
+        if (!StorageService.instance) {
+            StorageService.instance = new StorageService();
+        }
         return StorageService.instance;
     }
 }

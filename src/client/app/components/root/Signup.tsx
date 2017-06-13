@@ -2,10 +2,10 @@ import React from "react";
 import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
 import {AuthService} from "../../service/AuthService";
 
-export interface ISignupParams {
+export interface SignupParams {
 }
 
-export interface SignupProps extends PageComponentProps<ISignupParams> {
+export interface SignupProps extends PageComponentProps<SignupParams> {
 }
 
 export interface SignupState extends PageComponentState {
@@ -20,6 +20,6 @@ export class Signup extends PageComponent<SignupProps, SignupState> {
     }
 
     static registerPermission(id) {
-        AuthService.getInstance().registerPermissions(id);
+        AuthService.getInstance().registerPermissions(id, {account: ['signup']});
     }
 }

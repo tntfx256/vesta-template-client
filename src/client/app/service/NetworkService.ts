@@ -9,8 +9,10 @@ export class NetworkService {
         return navigator.onLine;
     }
 
-    public static getInstance():NetworkService {
-        if (!NetworkService.instance) NetworkService.instance = new NetworkService();
+    public static getInstance(): NetworkService {
+        if (!NetworkService.instance) {
+            NetworkService.instance = new NetworkService();
+        }
         return NetworkService.instance;
     }
 

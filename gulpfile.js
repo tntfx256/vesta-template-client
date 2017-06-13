@@ -17,8 +17,8 @@ gulp.task('production', () => {
     setting.production = true;
 });
 
-let [tasks, watches] = loadTasks(['asset', 'sass', 'client', 'server']);
-createTasks();
+createTasks(...loadTasks(['server']), true);
+createTasks(...loadTasks(['asset', 'sass', 'client']), false);
 
 function loadTasks(modules) {
     let tasks = [],
@@ -36,12 +36,17 @@ function loadTasks(modules) {
     return [tasks, watches];
 }
 
-function createTasks() {
-    Object.keys(targets).forEach(target => {
-        let targetSpec = targets[target];
-        if (targetSpec.elimination) {
-            gulp.task(`dev:${target}`, [target].concat(tasks.concat(watches)));
-            gulp.task(`deploy:${target}`, ['production', target].concat(tasks));
-        }
-    });
+function createTasks(tasks, watches, isServerTasks) {
+    if (isServerTasks) {
+        gulp.task(`dev:server`, tasks.concat(watches));
+        gulp.task(`deploy:server`, ['production'].concat(tasks));
+    } else {
+        Object.keys(targets).forEach(target => {
+            let targetSpec = targets[target];
+            if (targetSpec.elimination) {
+                gulp.task(`dev:${target}`, [target].concat(tasks.concat(watches)));
+                gulp.task(`deploy:${target}`, ['production', target].concat(tasks));
+            }
+        });
+    }
 }

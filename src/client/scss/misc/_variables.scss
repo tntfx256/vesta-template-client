@@ -1,10 +1,10 @@
 $layoutSmallMin: 320px;
 $layoutSmallMax: 425px;
-$layoutMediumMin: $layoutSmallMax + 1;
-$layoutMediumMax: 768;
-$layoutLargeMin: $layoutMediumMax + 1;
+$layoutMediumMin: $layoutSmallMax;
+$layoutMediumMax: 768px;
+$layoutLargeMin: $layoutMediumMax;
 $layoutLargeMax: 1024px;
-$layoutXLargeMin: $layoutLargeMax + 1;
+$layoutXLargeMin: $layoutLargeMax;
 // font
 $fontSizeXSmall: fontSize(.65);
 $fontSizeSmall: fontSize(.85);

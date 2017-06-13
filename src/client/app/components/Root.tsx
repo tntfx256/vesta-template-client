@@ -1,52 +1,61 @@
-import React from "react";
-import ReactRouterDOM from "react-router-dom";
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
 import {ApiService} from "../service/ApiService";
 import {AuthService} from "../service/AuthService";
 import {Dispatcher} from "../service/Dispatcher";
-import {IUser, User} from "../cmn/models/User";
+import {IUser} from "../cmn/models/User";
 import {IQueryResult} from "@vesta/core-es5";
+import {ToastMessage} from "./general/ToastMessage";
+import {MenuItem} from "../ClientApp";
 
 export interface RootProps {
+    menuItems: Array<MenuItem>;
 }
 
 interface RootState {
     user?: IUser;
 }
 
-export class Root extends React.Component<RootProps, RootState> {
-    private apiService = ApiService.getInstance();
-    private authService = AuthService.getInstance();
+export class Root extends Component<RootProps, RootState> {
+    private api = ApiService.getInstance();
+    private auth = AuthService.getInstance();
 
     constructor(props: RootProps) {
         super(props);
-        this.state = {user: new User()};
+        this.state = {user: null};
     }
 
-    componentWillMount() {
-        Dispatcher.getInstance().register(AuthService.Events.Update, (payload) => {
+    public componentWillMount() {
+        Dispatcher.getInstance().register<{ user: IUser }>(AuthService.Events.Update, (payload) => {
             this.setState({user: payload.user});
         });
-        this.apiService.get<any, IQueryResult<IUser>>('me')
+        this.api.get<IQueryResult<IUser>>('account')
             .then(response => {
-                this.authService.login(response.items[0]);
+                if (response) {
+                    this.auth.login(response.items[0]);
+                }
             })
             .catch(err => {
                 console.error(err);
             });
     }
 
-    render() {
-        let {Link} = ReactRouterDOM;
+    private getMenuItems() {
+        return this.props.menuItems.map((item, index) => (
+            <Link key={index + 1} to={`/${item.link}`}>{item.title}</Link>));
+    }
+
+    public render() {
+        let links = this.getMenuItems();
         return (
             <div id="main-wrapper">
+                <ToastMessage/>
                 <header id="main-header">
-                    <Link to="/">Home</Link>
-                    <Link to="/about">About</Link>
+                    {links}
                 </header>
                 <main id="main-content">
                     <div id="content-wrapper">
                         {this.props.children}
-                        <footer id="main-footer">FOOTER</footer>
                     </div>
                 </main>
             </div>

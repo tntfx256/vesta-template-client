@@ -2,10 +2,10 @@ import React from "react";
 import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
 import {AuthService} from "../../service/AuthService";
 
-export interface IAboutParams {
+export interface AboutParams {
 }
 
-export interface AboutProps extends PageComponentProps<IAboutParams> {
+export interface AboutProps extends PageComponentProps<AboutParams> {
 }
 
 export interface AboutState extends PageComponentState {

@@ -2,10 +2,10 @@ import React from "react";
 import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
 import {AuthService} from "../../service/AuthService";
 
-export interface IHomeParams {
+export interface HomeParams {
 }
 
-export interface HomeProps extends PageComponentProps<IHomeParams> {
+export interface HomeProps extends PageComponentProps<HomeParams> {
 }
 
 export interface HomeState extends PageComponentState {
@@ -20,6 +20,6 @@ export class Home extends PageComponent<HomeProps, HomeState> {
     }
 
     static registerPermission(id) {
-        AuthService.getInstance().registerPermissions(id);
+        AuthService.getInstance().registerPermissions(id, {index: ['index']});
     }
 }

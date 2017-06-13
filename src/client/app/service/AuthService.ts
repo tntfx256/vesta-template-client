@@ -29,7 +29,6 @@ export class AuthService {
     public stateResourceMap: IStateResourceMap = {};
 
     constructor() {
-        AuthService.instance = this;
         try {
             this.user = JSON.parse(this.storage.getItem(this.userKeyName));
             this.updatePermissions();
@@ -151,7 +150,9 @@ export class AuthService {
     }
 
     public static getInstance(): AuthService {
-        if (!AuthService.instance) AuthService.instance = new AuthService();
+        if (!AuthService.instance) {
+            AuthService.instance = new AuthService();
+        }
         return AuthService.instance;
     }
 }
