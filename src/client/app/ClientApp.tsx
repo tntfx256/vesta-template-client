@@ -32,9 +32,7 @@ export class ClientApp {
 
     public init() {
         this.registerServiceWorker();
-        //<web>
-        AuthService.getInstance().setDefaultPolicy(AclPolicy.Allow);
-        //</web>
+        this.auth.setDefaultPolicy(AclPolicy.Deny);
         //<cordova>
         Keyboard.hideFormAccessoryBar(true);
         Keyboard.disableScrollingInShrinkView(true);
@@ -42,6 +40,11 @@ export class ClientApp {
         StatusBar.styleDefault();
         //</cordova>
         this.updateMenuItems();
+        // auth event registration
+        Dispatcher.getInstance().register<{ user: IUser }>(AuthService.Events.Update, (payload) => {
+            this.updateMenuItems();
+            this.run();
+        });
     }
 
     private registerServiceWorker() {
@@ -52,13 +55,6 @@ export class ClientApp {
         //         })
         //         .catch(err=>console.error(err));
         // }
-    }
-
-    public componentWillMount() {
-        Dispatcher.getInstance().register<{ user: IUser }>(AuthService.Events.Update, (payload) => {
-            this.updateMenuItems();
-            this.run();
-        });
     }
 
     private updateMenuItems() {

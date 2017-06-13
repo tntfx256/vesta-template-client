@@ -29,7 +29,9 @@ export class Login extends PageComponent<LoginProps, LoginState> {
         let formData = new FormData(e.target);
         this.api.post<IQueryResult<IUser>>('account/login', formData)
             .then(response => {
-                if (response) this.auth.login(response.items[0]);
+                if (response) {
+                    this.auth.login(response.items[0]);
+                }
                 this.setState({isLoggedIn: true});
             })
             .catch(error => {
