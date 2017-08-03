@@ -18,32 +18,31 @@ module.exports = function (setting) {
             .pipe(eliminator(setting, setting.target))
             .pipe(gulp.dest(tmpClient))
     });
-    (function () {
+    
+    gulp.task('client:build', ['client:preBuild'], () => {
         let webpackConfig = getWebpackConfig();
         const compiler = webpack(webpackConfig);
-
-        gulp.task('client:build', ['client:preBuild'], () => {
-            return new Promise((resolve, reject) => {
-                compiler.run((err, stats) => {
-                    if (err) {
-                        console.error(err);
-                        // if (err.details) {
-                        //     console.error(err.details);
-                        // }
-                        return reject(false);
-                    }
-                    const info = stats.toJson();
-                    if (stats.hasErrors()) {
-                        process.stderr.write(info.errors.join('\n\n'));
-                    }
-                    // if (stats.hasWarnings()) {
-                    //     console.warn(info.warnings)
+        return new Promise((resolve, reject) => {
+            compiler.run((err, stats) => {
+                if (err) {
+                    console.error(err);
+                    // if (err.details) {
+                    //     console.error(err.details);
                     // }
-                    resolve(true);
+                    return reject(false);
+                }
+                const info = stats.toJson();
+                if (stats.hasErrors()) {
+                    process.stderr.write(info.errors.join('\n\n'));
+                }
+                // if (stats.hasWarnings()) {
+                //     console.warn(info.warnings)
+                // }
+                resolve(true);
+            });
+        })
     });
-            })
-        });
-    })();
+    
     gulp.task('client:run', function () {
         if (setting.production) return;
         let target = setting.buildPath(setting.target);
@@ -63,6 +62,7 @@ module.exports = function (setting) {
                 process.stderr.write(`${setting.target} Develop server is not supported`);
         }
     });
+    
     gulp.task(`client:watch`, () => {
         gulp.watch([`${dir.srcClient}/**/*.ts*`, `${dir.src}/cmn/**/*`], [`client:build`]);
     });
