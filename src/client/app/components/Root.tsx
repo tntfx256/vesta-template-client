@@ -3,29 +3,25 @@ import {Link} from "react-router-dom";
 import {ApiService} from "../service/ApiService";
 import {AuthService} from "../service/AuthService";
 import {Dispatcher} from "../service/Dispatcher";
-import {IUser} from "../cmn/models/User";
-import {IQueryResult} from "@vesta/core-es5";
+import {IQueryResult} from "../medium";
+import {Menu} from "./general/Menu";
 import {ToastMessage} from "./general/ToastMessage";
-import {MenuItem} from "../ClientApp";
+import {RouteItem} from "../config/route";
+import {IUser} from "../cmn/models/User";
 
 export interface RootProps {
-    menuItems: Array<MenuItem>;
+    routeItems: Array<RouteItem>;
 }
 
 interface RootState {
-    user?: IUser;
+    user: IUser;
 }
 
 export class Root extends Component<RootProps, RootState> {
     private api = ApiService.getInstance();
     private auth = AuthService.getInstance();
 
-    constructor(props: RootProps) {
-        super(props);
-        this.state = {user: null};
-    }
-
-    public componentWillMount() {
+    public componentDidMount() {
         Dispatcher.getInstance().register<{ user: IUser }>(AuthService.Events.Update, (payload) => {
             this.setState({user: payload.user});
         });
@@ -40,18 +36,12 @@ export class Root extends Component<RootProps, RootState> {
             });
     }
 
-    private getMenuItems() {
-        return this.props.menuItems.map((item, index) => (
-            <Link key={index + 1} to={`/${item.link}`}>{item.title}</Link>));
-    }
-
     public render() {
-        let links = this.getMenuItems();
         return (
             <div id="main-wrapper">
                 <ToastMessage/>
                 <header id="main-header">
-                    {links}
+                    <Menu name="app-menu" items={this.props.routeItems}/>
                 </header>
                 <main id="main-content">
                     <div id="content-wrapper">

@@ -1,7 +1,7 @@
 .idea
 /node_modules
 npm-debug.log
-/src/client/app/config/setting.var.ts
+/src/client/app/config/config.var.ts
 /vesta/client/cordova/platforms/*
 !/vesta/client/cordova/platforms/platforms.json
 /vesta/client/cordova/plugins/*

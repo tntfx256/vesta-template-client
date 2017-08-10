@@ -1,4 +1,5 @@
 import {Dispatcher} from "./Dispatcher";
+import {ConfigService} from "./ConfigService";
 
 export const enum MessageType{Info = 1, Success, Warning, Error}
 
@@ -10,8 +11,10 @@ export interface IToastData {
 export class NotificationService {
 
     static instance: NotificationService;
+    private isProduction = true;
 
-    constructor(private dispacher: Dispatcher) {
+    constructor(private dispatcher: Dispatcher) {
+        this.isProduction = ConfigService.getConfig().env === 'production';
     }
 
     public success(message: string) {
@@ -27,7 +30,10 @@ export class NotificationService {
     }
 
     public toast(message: string, type: MessageType = MessageType.Info) {
-        this.dispacher.dispatch<IToastData>('toast', {message, type});
+        this.dispatcher.dispatch<IToastData>('toast', {message, type});
+        if (!this.isProduction) {
+            console[type] ? console[type](message) : console.log(message);
+        }
     }
 
     public static getInstance(dispatcher: Dispatcher = Dispatcher.getInstance('main')): NotificationService {

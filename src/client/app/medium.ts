@@ -1,3 +1,5 @@
+export {HashRouter as DynamicRouter} from "react-router-dom";
+
 export {
     IComparison,
     ITraverseCallback,
@@ -35,7 +37,6 @@ export {
     IDeleteResult,
     IQueryRequest,
     ILocale,
-    IRequestResult,
     IModelFields,
     IModelValues,
     IModel,
@@ -45,8 +46,10 @@ export {
     IValidationModel,
     IValidationModelSet,
     IValidationError,
-    IValidationErrors,
     Validator,
     Schema,
     Platform
 } from "@vesta/core-es5";
+
+export {PersianDate, IR} from "@vesta/culture-ir-es5";
+export {GregorianDate, US} from "@vesta/culture-us-es5";

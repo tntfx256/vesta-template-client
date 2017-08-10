@@ -1,34 +1,20 @@
-import React, {ComponentClass} from "react";
+import React from "react";
 import {render} from "react-dom";
 import {Route, Switch} from "react-router";
-import {HashRouter as Router, Link} from "react-router-dom";
+import {DynamicRouter} from "./medium";
 import {AuthService} from "./service/AuthService";
 import {AclPolicy} from "./cmn/enum/Acl";
-import {NotFound} from "./components/root/NotFound";
-import {Login} from "./components/root/Login";
-import {Home} from "./components/root/Home";
-import {Root} from "./components/Root";
-import {IClientAppSetting} from "./config/setting";
-import {Forbidden} from "./components/root/Forbidden";
 import {Dispatcher} from "./service/Dispatcher";
+import {NotFound} from "./components/root/NotFound";
+import {Root} from "./components/Root";
 import {IUser} from "./cmn/models/User";
-import {About} from "./components/root/About";
+import {TransitionService} from "./service/TransitionService";
+import {getRoutes, RouteItem} from "./config/route";
 
-
-export interface MenuItem {
-    link: string;
-    title: string;
-    component: ComponentClass<any>;
-    exact?: boolean;
-}
 
 export class ClientApp {
+    private tz = TransitionService.getInstance();
     private auth = AuthService.getInstance();
-    private menuItems: Array<MenuItem> = [];
-    private idCounter = 1;
-
-    constructor(private setting: IClientAppSetting) {
-    }
 
     public init() {
         this.registerServiceWorker();
@@ -39,12 +25,8 @@ export class ClientApp {
         Keyboard.shrinkView(true);
         StatusBar.styleDefault();
         //</cordova>
-        this.updateMenuItems();
         // auth event registration
-        Dispatcher.getInstance().register<{ user: IUser }>(AuthService.Events.Update, (payload) => {
-            this.updateMenuItems();
-            this.run();
-        });
+        Dispatcher.getInstance().register<{ user: IUser }>(AuthService.Events.Update, this.run.bind(this));
     }
 
     private registerServiceWorker() {
@@ -57,46 +39,25 @@ export class ClientApp {
         // }
     }
 
-    private updateMenuItems() {
-        this.menuItems = this.auth.isGuest() ?
-            [
-                {link: '', title: 'Home', component: Home, exact: true},
-                {link: 'login', title: 'Login', component: Login}
-            ] :
-            [
-                {link: '', title: 'Dashboard', component: Home, exact: true},
-                {link: 'about', title: 'About', component: About},
-                {link: 'logout', title: 'Logout', component: Home}
-            ];
-    }
-
-    protected willTransitionTo(componentClass: ComponentClass<any>) {
-        let id = this.idCounter++;
-        componentClass['registerPermission'](id);
-        return (props) => {
-            return AuthService.getInstance().hasAccessToState(id) ? React.createElement(componentClass, props) :
-                React.createElement(Forbidden, props);
-        }
-    }
-
-    private getRoutes() {
-        return this.menuItems.map((item, index) => (
-            <Route path={`/${item.link}`} key={index + 1} exact={item.exact}
-                   render={this.willTransitionTo(item.component)}/>
-        ));
+    private getRoutes(routeItems: Array<RouteItem>) {
+        return routeItems.map((item, index) => {
+            return <Route path={`/${item.link}`} key={index} exact={item.exact}
+                          render={this.tz.willTransitionTo(item.component, item.permissions)}/>;
+        });
     }
 
     public run() {
-        let routes = this.getRoutes();
+        const routeItems = getRoutes(!this.auth.isGuest());
+        let routes = this.getRoutes(routeItems);
         render(
-            <Router>
-                <Root menuItems={this.menuItems}>
+            <DynamicRouter>
+                <Root routeItems={routeItems}>
                     <Switch>
                         {routes}
                         <Route component={NotFound}/>
                     </Switch>
                 </Root>
-            </Router>,
+            </DynamicRouter>,
             document.getElementById("root")
         );
     }

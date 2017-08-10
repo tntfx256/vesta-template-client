@@ -1,8 +1,8 @@
-import * as express from "express";
-import * as morgan from "morgan";
-import * as http from "http";
-import * as spdy from "spdy";
-import * as fs from "fs";
+import express from "express";
+import morgan from "morgan";
+import http from "http";
+import spdy from "spdy";
+import {createReadStream, readFileSync} from "fs";
 import {IServerSetting} from "./Setting";
 const helmet = require("helmet");
 
@@ -14,8 +14,8 @@ export class ServerApp {
         this.app = express();
         if (setting.http2) {
             const options = {
-                key: fs.readFileSync(setting.ssl.key),
-                cert: fs.readFileSync(setting.ssl.cert)
+                key: readFileSync(setting.ssl.key),
+                cert: readFileSync(setting.ssl.cert)
             };
             this.server = spdy.createServer(options, <any>this.app);
         } else {
@@ -76,7 +76,7 @@ export class ServerApp {
     public push(res, ...files: Array<string>) {
         for (let i = 0, il = files.length; i < il; i++) {
             let file = files[i];
-            fs.createReadStream(`${this.setting.dir.html}${file}`)
+            createReadStream(`${this.setting.dir.html}${file}`)
                 .on('error', err => console.log('file error:', err))
                 .pipe(res.push(file, {request: {accept: '*/*'}}))
                 .on('error', err => console.log('push error:', err));

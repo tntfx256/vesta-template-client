@@ -38,6 +38,7 @@ export class AuthService {
     }
 
     public logout(): void {
+        this.storage.removeItem(this.userKeyName);
         this.login(<IUser>{});
     }
 
@@ -87,7 +88,7 @@ export class AuthService {
     /**
      Check if user has access to all actions of all resources
      */
-    public hasAccessToState(state: string | number): boolean {
+    public hasAccessToState(state: number): boolean {
         if (!state) return true;
         let requiredPermissions = this.stateResourceMap[state];
         if (!requiredPermissions) return this.defaultPolicy == AclPolicy.Allow;
@@ -141,7 +142,7 @@ export class AuthService {
     /**
      Same states will overwrite each others
      */
-    public registerPermissions(state: string, permissions?: IPermissionCollection) {
+    public registerPermissions(state: number, permissions?: IPermissionCollection) {
         this.stateResourceMap[state] = permissions || {};
     }
 

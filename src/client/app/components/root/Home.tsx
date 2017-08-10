@@ -1,6 +1,5 @@
 import React from "react";
 import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
-import {AuthService} from "../../service/AuthService";
 
 export interface HomeParams {
 }
@@ -17,9 +16,5 @@ export class Home extends PageComponent<HomeProps, HomeState> {
         return (
             <div className="page"><h1>Home Component</h1></div>
         );
-    }
-
-    static registerPermission(id) {
-        AuthService.getInstance().registerPermissions(id, {index: ['index']});
     }
 }

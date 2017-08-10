@@ -1,6 +1,7 @@
 import {I18nService} from "./I18nService";
 import {Dictionary as persian} from "../cmn/locale/fa-IR/Dictionary";
-import {Dictionary, IVocabs} from "@vesta/core-es5";
+import {Dictionary, IVocabs} from "../medium";
+import {ConfigService} from "./ConfigService";
 
 export class TranslateService {
     private dictionary: Dictionary;
@@ -23,9 +24,9 @@ export class TranslateService {
         return tr;
     }
 
-    public static getInstance(): TranslateService {
+    public static getInstance(i18n: I18nService = I18nService.getInstance(ConfigService.getConfig().locale)): TranslateService {
         if (!TranslateService.instance) {
-            TranslateService.instance = new TranslateService(I18nService.getInstance());
+            TranslateService.instance = new TranslateService(i18n);
         }
         return TranslateService.instance;
     }

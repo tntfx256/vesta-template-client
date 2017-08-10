@@ -1,9 +1,10 @@
 import {AuthService} from "./AuthService";
-import {ConfigService} from "./ConfigService";
+import {ConfigService, IClientAppConfig} from "./ConfigService";
+import {IModelValues} from "../medium";
 
 declare let param: (data: any) => string;
 
-type PostData = string | ArrayBuffer | Blob | Document | FormData;
+type PostData = string | ArrayBuffer | Blob | Document | FormData | IModelValues;
 
 export interface IFileKeyValue {
     [key: string]: File | Blob | Array<File | Blob>;
@@ -21,9 +22,9 @@ export class ApiService {
     private tokenHeaderKeyName = 'X-Auth-Token';
 
     constructor(private authService: AuthService) {
-        let cfg: ConfigService = ConfigService.getInstance();
-        this.endPoint = cfg.get<string>('api');
-        this.enableCache = !!cfg.get<{ api: string }>('cache').api;
+        let cfg: IClientAppConfig = ConfigService.getConfig();
+        this.endPoint = cfg.api;
+        this.enableCache = !!cfg.cache.api;
     }
 
     private onBeforeSend(xhr: XMLHttpRequest) {
@@ -40,23 +41,27 @@ export class ApiService {
                 }
     }
 
-    private xhr<T>(method: string, edge: string, data: PostData): ApiServiceRequest<T> {
+    private xhr<T>(method: string, edge: string, data: PostData, headers: any): ApiServiceRequest<T> {
         let xhr = new XMLHttpRequest();
         let promise: ApiServiceRequest<T> = new Promise<T>((resolve, reject) => {
             xhr.open(method, `${this.endPoint}/${edge}`, true);
             this.onBeforeSend(xhr);
+            if (headers) {
+                for (let headerKeys = Object.keys(headers), i = headerKeys.length; i--;) {
+                    let header = headerKeys[i];
+                    xhr.setRequestHeader(header, headers[header]);
+                }
+            }
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === XMLHttpRequest.DONE) {
                     if (xhr.status === 200) {
                         this.onAfterReceive(xhr);
+                    }
                         try {
                             let data = JSON.parse(xhr.responseText);
-                            data && data.error ? reject(new Error(data.error.message || data.error)) : resolve(<T>data);
+                        data && data.error ? reject(data.error) : resolve(<T>data);
                         } catch (e) {
-                            reject(xhr.responseText);
-        }
-                    } else {
-                        reject(new Error(xhr.statusText));
+                        reject(new Error(`${xhr.responseText} [${e.message}]`));
     }
         }
             };
@@ -70,11 +75,23 @@ export class ApiService {
     }
 
     public get<T>(edge: string): ApiServiceRequest<T> {
-        return this.xhr<T>('GET', edge, null);
+        return this.xhr<T>('GET', edge, null, null);
     }
 
     public post<T>(edge: string, data: PostData): ApiServiceRequest<T> {
-        return this.xhr<T>('POST', edge, data);
+        let headers = {};
+        if (typeof data === 'string') {
+            headers['Content-Type'] = 'application/json';
+        }
+        return this.xhr<T>('POST', edge, data, headers);
+    }
+
+    public put<T>(edge: string, data: PostData): ApiServiceRequest<T> {
+        let headers = {};
+        if (typeof data === 'string') {
+            headers['Content-Type'] = 'application/json';
+        }
+        return this.xhr<T>('PUT', edge, data, headers);
     }
 
     public static toFormData(data: Object): FormData {

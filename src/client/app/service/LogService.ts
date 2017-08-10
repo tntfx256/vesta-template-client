@@ -8,7 +8,7 @@ export class LogService {
 
     constructor() {
         LogService.instance = this;
-        this.isProduction = ConfigService.getInstance().get<string>('env') === 'production';
+        this.isProduction = ConfigService.getConfig().env === 'production';
     }
 
     private echo(logType: string, location: string, log: any) {

@@ -1,23 +1,33 @@
-import {IClientAppSetting, setting} from "../config/setting";
+export interface IVariantClientAppConfig {
+    env: string;
+    api: string;
+    asset: string;
+    cache: {
+        api: number;
+    };
+    viewport: {
+        Small: number;
+        Medium: number;
+        Large: number;
+    }
+}
+
+export interface IClientAppConfig extends IVariantClientAppConfig {
+    name: string;
+    version: { app: string, api: string };
+    locale: string;
+}
+
 
 export class ConfigService {
     private static instance: ConfigService;
+    private static config: IClientAppConfig;
 
-    constructor(private setting: IClientAppSetting) {
+    static init(config: IClientAppConfig) {
+        ConfigService.config = config;
     }
 
-    static init(setting: IClientAppSetting) {
-        ConfigService.instance = new ConfigService(setting);
-    }
-
-    public get<T>(key: string, defaultValue: T = null): T {
-        return key in this.setting ? this.setting[key] : defaultValue;
-    }
-
-    public static getInstance(): ConfigService {
-        if (!ConfigService.instance) {
-            ConfigService.instance = new ConfigService(setting);
-        }
-        return ConfigService.instance;
+    public static getConfig(): IClientAppConfig {
+        return ConfigService.config;
     }
 }

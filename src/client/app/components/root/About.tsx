@@ -18,8 +18,4 @@ export class About extends PageComponent<AboutProps, AboutState> {
             <div className="page"><h1>About Component</h1></div>
         );
     }
-
-    static registerPermission(id) {
-        AuthService.getInstance().registerPermissions(id);
-    }
 }
