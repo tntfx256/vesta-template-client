@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {AuthService} from "../../service/AuthService";
 import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
 import {IQueryResult} from "../../medium";
