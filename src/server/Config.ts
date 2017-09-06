@@ -1,4 +1,4 @@
-export interface IServerSetting {
+export interface IServerConfig {
     dir: {
         html: string;
     };
@@ -11,7 +11,7 @@ export interface IServerSetting {
     env: string;
 }
 
-export const Setting: IServerSetting = {
+export const Config: IServerConfig = {
     dir: {
         html: '/app/www'
     },

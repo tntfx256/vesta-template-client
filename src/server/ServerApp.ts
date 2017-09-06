@@ -3,14 +3,14 @@ import morgan from "morgan";
 import http from "http";
 import spdy from "spdy";
 import {createReadStream, readFileSync} from "fs";
-import {IServerSetting} from "./Setting";
+import {IServerConfig} from "./Config";
 const helmet = require("helmet");
 
 export class ServerApp {
     private app: express.Express;
     private server: http.Server | spdy.Server;
 
-    constructor(private setting: IServerSetting) {
+    constructor(private setting: IServerConfig) {
         this.app = express();
         if (setting.http2) {
             const options = {
