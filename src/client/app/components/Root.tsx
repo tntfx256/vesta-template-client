@@ -9,6 +9,8 @@ import {Menu} from "./general/Menu";
 import {ToastMessage} from "./general/ToastMessage";
 import {RouteItem} from "../config/route";
 import {IUser} from "../cmn/models/User";
+import {SideNav} from "./general/SideNav";
+import {SideNavContent} from "./general/SideNavContent";
 
 export interface RootProps {
     routeItems: Array<RouteItem>;
@@ -42,6 +44,7 @@ export class Root extends Component<RootProps, RootState> {
             <div id="main-wrapper">
                 <ToastMessage/>
                 <header id="main-header">
+                    <span onClick={() => Dispatcher.getInstance().dispatch('main-sidenav-toggle', {})}>sideNav</span>
                     <Menu name="app-menu" items={this.props.routeItems}/>
                 </header>
                 <main id="main-content">
@@ -49,6 +52,9 @@ export class Root extends Component<RootProps, RootState> {
                         {this.props.children}
                     </div>
                 </main>
+                <SideNav name="main-sidenav">
+                    <SideNavContent/>
+                </SideNav>
             </div>
         );
     }
