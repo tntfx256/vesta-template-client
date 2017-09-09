@@ -6,55 +6,46 @@ export interface SideNavProps {
 }
 
 export interface SideNavState {
+    open: boolean;
 }
 
-export class SideNav extends React.Component<SideNavProps, SideNavState> {
+export class Sidenav extends React.Component<SideNavProps, SideNavState> {
+    private dispatcher = Dispatcher.getInstance();
     public name = '';
 
-    constructor(props) {
+    constructor(props: SideNavProps) {
         super(props);
         this.state = {
-            status: false
+            open: false
         };
     }
 
     public close() {
-        this.setState({status: false});
+        this.setState({open: false});
     }
 
     public open() {
-        this.setState({status: true});
+        this.setState({open: true});
     }
 
     public toggle() {
-        this.setState({status: !this.state['status']});
+        this.setState({open: !this.state.open});
     }
 
     public componentWillMount() {
-        this.name = this.props.name;
-        let dispatcher = Dispatcher.getInstance();
-
-        dispatcher.register(this.name + '-toggle', () => {
-            this.toggle();
-        });
-        dispatcher.register(this.name + '-open', () => {
-            this.open();
-        });
-        dispatcher.register(this.name + '-close', () => {
-            this.close();
-        });
-
+        let name = this.props.name;
+        this.dispatcher.register(`${name}-toggle`, this.toggle.bind(this));
+        this.dispatcher.register(`${name}-open`, this.open.bind(this));
+        this.dispatcher.register(`${name}-close`, this.close.bind(this));
     }
 
     public render() {
+        let backDrop = this.state.open ? <div onClick={this.close.bind(this)} className="sidenav-backdrop">&nbsp;</div> : null;
+        let content = this.state.open ? <div className="sidenav sidenav-open">{this.props.children}</div> : null;
         return (
-            <div id={this.name + '-side-nav-component'}>
-                <div id="side-nav" className={this.state['status'] ? 'sidenav-open' : ''}>
-                    {this.props.children}
-                </div>
-                <div onClick={this.close.bind(this)} className={this.state['status'] ? 'show' : ''}
-                     id="side-nav-blocker">
-                </div>
+            <div className="sidenav-component">
+                {content}
+                {backDrop}
             </div>
         );
     }

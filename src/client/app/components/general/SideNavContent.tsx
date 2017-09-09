@@ -1,88 +1,35 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {AuthService} from "../../service/AuthService";
 import {Dispatcher} from "../../service/Dispatcher";
-import {ApiService} from "../../service/ApiService";
+import {Menu, MenuItem} from "./Menu";
+import {IUser} from "../../cmn/models/User";
 
 export interface SideNavContentProps {
+    name: string;
+    menuItems: Array<MenuItem>;
+    user: IUser;
 }
 
-export interface SideNavContentState {
-}
+export const SidenavContent = (props: SideNavContentProps) => {
+    const user = props.user || {};
 
-export class SideNavContent extends React.Component<SideNavContentProps, SideNavContentState> {
-    public auth = AuthService.getInstance();
-    public dispatcher: Dispatcher = Dispatcher.getInstance();
-    public state = {user: null};
+    return (
+        <div className="sidenav-content">
+            <header>
+                <div className="user-image-wrapper">
+                    <img src="img/vesta-logo.png"/>
+                </div>
+                <div className="name-wrapper">
+                    <h4>{user.username}</h4>
+                    <span>Vesta Control Panel Template</span>
+                </div>
+            </header>
+            <Menu name="nav-menu" items={props.menuItems} itemClick={closeSidenav}/>
+        </div>
+    );
 
-    private closeSideNav() {
-        this.dispatcher.dispatch('main-sidenav-close', null);
+    function closeSidenav() {
+        Dispatcher.getInstance().dispatch(`${props.name}-close`, null);
+        return true;
     }
-
-    public componentWillMount() {
-        this.dispatcher.register(AuthService.Events.Update, (user) => {
-            this.setState({user});
-        })
-    }
-
-    public logout() {
-        ApiService.getInstance().get('/account/logout')
-            .then(() => this.auth.logout())
-            .catch(() => {
-                this.auth.setToken('');
-                this.auth.logout()
-            }).then(() => this.closeSideNav());
-    }
-
-    public join(...strings) {
-        let res = '';
-        strings.forEach((item) => {
-            if (item) {
-                res += item.toLocaleString() + ' ';
-            }
-        });
-        return res.trim();
-    }
-
-    public render() {
-        let content;
-        if (this.auth.isGuest()) {
-            content = <div>
-                <header>
-                    <div className="user-image-wrapper">
-                        <img src="img/demo/guest.jpg"/>
-                    </div>
-                    <div className="name-wrapper">
-                        <h4>Guest User</h4>
-                        <span>Vesta Client Template</span>
-                    </div>
-                </header>
-                <nav>
-                    <Link to="login" onClick={this.closeSideNav.bind(this)}>login</Link>
-                    <Link to="setting">About</Link>
-                </nav>
-            </div>;
-        } else {
-            let user = this.auth.getUser();
-            content = <div>
-                <header>
-                    <div className="user-image-wrapper">
-                        <img src="img/demo/user.jpg"/>
-                    </div>
-                    <div className="name-wrapper">
-                        <h4>{this.join(user.firstName, user.lastName)}</h4>
-                        <span>{user.email}</span>
-                    </div>
-                </header>
-                <nav>
-                    <Link to="setting" onClick={this.closeSideNav.bind(this)}>settings</Link>
-                    <a onClick={this.logout.bind(this)}>logout</a>
-                </nav>
-            </div>;
-        }
-
-        return (
-            <div id="side-nav-content">{content}</div>
-        );
-    }
-}
+};

@@ -24,8 +24,10 @@
 @import "components/general/form/formMultichoice";
 @import "components/general/form/formWrapper";
 @import "components/general/menu";
-@import "components/general/sideNav";
-@import "components/general/sideNavContent";
+@import "components/general/sidenav";
+@import "components/general/sidenavContent";
+@import "components/general/navbar";
+@import "components/general/burger";
 // page components
 @import "components/root/login";
 @import "components/root/signup";
