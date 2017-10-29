@@ -1,11 +1,13 @@
 $modal-background-color: transparentize($color-dark, .3);
 
-.modal-component {
+.modal {
     position: fixed;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+    overflow-x: hidden;
+    overflow-y: scroll;
     background: $modal-background-color;
     display: flex;
     flex-direction: column;
@@ -16,5 +18,17 @@ $modal-background-color: transparentize($color-dark, .3);
     z-index: $z-index-dialog;
     > * {
         flex: 1;
+    }
+}
+
+html.modal-open {
+    overflow-y: hidden;
+    .page {
+        overflow-y: hidden;
+    }
+    .modal {
+        .page {
+            overflow-y: auto;
+        }
     }
 }

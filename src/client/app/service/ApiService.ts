@@ -1,12 +1,6 @@
 import {AuthService} from "./AuthService";
 import {ConfigService, IClientAppConfig} from "./ConfigService";
-import {IModelValues, IQueryRequest, IQueryResult} from "../medium";
-
-type PostData = string | ArrayBuffer | Blob | Document | FormData | IModelValues;
-
-export interface IFileKeyValue {
-    [key: string]: File | Blob | Array<File | Blob>;
-}
+import {IQueryRequest, IQueryResult} from "../cmn/core/ICRUDResult";
 
 export interface ApiServiceRequest<T> extends Promise<T> {
     xhr?: XMLHttpRequest;
@@ -20,8 +14,8 @@ export class ApiService {
     private tokenHeaderKeyName = 'X-Auth-Token';
 
     constructor(private authService: AuthService) {
-        let cfg: IClientAppConfig = ConfigService.getConfig();
-        this.endPoint = cfg.api;
+        const cfg: IClientAppConfig = ConfigService.getConfig();
+        this.endPoint = `${cfg.api}/api/${cfg.version.api}`;
         this.enableCache = !!cfg.cache.api;
     }
 
@@ -36,10 +30,10 @@ export class ApiService {
         let token = xhr.getResponseHeader(this.tokenHeaderKeyName);
         if (token) {
             this.authService.setToken(token);
-                }
+        }
     }
 
-    private xhr<T, U>(method: string, edge: string, data: U, headers: any): ApiServiceRequest<T> {
+    private xhr<T>(method: string, edge: string, data: any, headers: any): ApiServiceRequest<T> {
         let xhr = new XMLHttpRequest();
         let promise: ApiServiceRequest<T> = new Promise<T>((resolve, reject) => {
             xhr.open(method, `${this.endPoint}/${edge}`, true);
@@ -55,15 +49,15 @@ export class ApiService {
                     if (xhr.status === 200) {
                         this.onAfterReceive(xhr);
                     }
-                        try {
-                            let data = JSON.parse(xhr.responseText);
+                    try {
+                        let data = JSON.parse(xhr.responseText);
                         data && data.error ? reject(data.error) : resolve(<T>data);
-                        } catch (e) {
+                    } catch (e) {
                         reject(new Error(`${xhr.responseText} [${e.message}]`));
-    }
-        }
+                    }
+                }
             };
-            xhr.send(data ? JSON.stringify(data) : null);
+            xhr.send(data);
         });
         promise.xhr = xhr;
         promise.abort = () => {
@@ -74,24 +68,28 @@ export class ApiService {
 
     public get<T>(edge: string, data?: IQueryRequest<T>) {
         let queryString = data ? `?${this.param(data)}` : '';
-        return this.xhr<IQueryResult<T>, T>('GET', `${edge}${queryString}`, null, null);
+        return this.xhr<IQueryResult<T>>('GET', `${edge}${queryString}`, null, null);
     }
 
     public post<T>(edge: string, data: T) {
         let headers = {'Content-Type': 'application/json'};
-        return this.xhr<IQueryResult<T>, T>('POST', edge, data, headers);
-        }
+        return this.xhr<IQueryResult<T>>('POST', edge, JSON.stringify(data), headers);
+    }
 
     public put<T>(edge: string, data: T) {
         let headers = {'Content-Type': 'application/json'};
-        return this.xhr<IQueryResult<T>, T>('PUT', edge, data, headers);
+        return this.xhr<IQueryResult<T>>('PUT', edge, JSON.stringify(data), headers);
     }
 
     public del<T>(edge: string, id: number) {
-        return this.xhr<IQueryResult<T>, T>('DELETE', `${edge}/${id}`, null, null);
+        return this.xhr<IQueryResult<T>>('DELETE', `${edge}/${id}`, null, null);
     }
 
-    public static toFormData(data: Object): FormData {
+    public upload<T>(edge: string, id: number, files: T) {
+        return this.xhr<IQueryResult<T>>('POST', `${edge}/${id}`, this.toFormData(files), null);
+    }
+
+    public toFormData(data: Object): FormData {
         let fd = new FormData();
         for (let keys = Object.keys(data), i = keys.length; i--;) {
             fd.append(keys[i], data[keys[i]]);
@@ -102,7 +100,7 @@ export class ApiService {
     public static getInstance(authService: AuthService = AuthService.getInstance()): ApiService {
         if (!ApiService.instance) {
             ApiService.instance = new ApiService(authService);
-    }
+        }
         return ApiService.instance;
     }
 
@@ -135,14 +133,14 @@ export class ApiService {
                         }
                     }
                 } else if (obj && String(obj) === '[object Object]') {
-                    for (let keys = Object.keys(obj), i = keys.length; --i;) {
+                    for (let keys = Object.keys(obj), i = keys.length; i--;) {
                         buildParams(`${prefix}[${keys[i]}]`, obj[keys[i]]);
                     }
                 } else {
                     add(prefix, obj);
                 }
             } else {
-                for (let keys = Object.keys(obj), i = keys.length; --i;) {
+                for (let keys = Object.keys(obj), i = keys.length; i--;) {
                     buildParams(keys[i], obj[keys[i]]);
                 }
             }

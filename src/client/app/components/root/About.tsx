@@ -1,6 +1,9 @@
 import * as React from "react";
 import {Link} from "react-router-dom";
 import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
+import Navbar from "../general/Navbar";
+import {IContext} from "../../cmn/models/Context";
+import {StorageService} from "../../service/StorageService";
 
 export interface AboutParams {
 }
@@ -20,10 +23,8 @@ export class About extends PageComponent<AboutProps, AboutState> {
 
     public render() {
         return (
-            <div className="page">
-                <h1>About Component</h1>
-                <br/>
-                <Link to='/'>Home</Link>
+            <div className="page about-page has-navbar">
+                <Navbar title={this.tr('about')} showBurger={true}/>
             </div>
         );
     }

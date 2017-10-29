@@ -1,7 +1,7 @@
 import React from "react";
 import {render} from "react-dom";
 import {Route, Switch} from "react-router";
-import {DynamicRouter} from "./medium";
+import {DynamicRouter} from "./components/general/DynamicRouter";
 import {AuthService} from "./service/AuthService";
 import {AclPolicy} from "./cmn/enum/Acl";
 import {Dispatcher} from "./service/Dispatcher";
@@ -10,25 +10,29 @@ import {Root} from "./components/Root";
 import {IUser} from "./cmn/models/User";
 import {TransitionService} from "./service/TransitionService";
 import {getRoutes, RouteItem} from "./config/route";
-
+import {KeyboardPlugin} from "./plugin/KeyboardPlugin";
+import {SplashPlugin} from "./plugin/SplashPlugin";
+import {StatusbarPlugin} from "./plugin/StatusbarPlugin";
 
 export class ClientApp {
-    private tz = TransitionService.getInstance();
+    private tz = TransitionService.getInstance().willTransitionTo;
     private auth = AuthService.getInstance();
 
     public init() {
-        this.registerServiceWorker();
         this.auth.setDefaultPolicy(AclPolicy.Deny);
         //<cordova>
-        Keyboard.hideFormAccessoryBar(true);
-        Keyboard.disableScrollingInShrinkView(true);
-        Keyboard.shrinkView(true);
-        StatusBar.styleDefault();
+        new KeyboardPlugin().setDefaultProperties();
+        new StatusbarPlugin().styleDefault();
+        new SplashPlugin().hide();
+        //</cordova>
+        //<!cordova>
+        this.registerServiceWorker();
         //</cordova>
         // auth event registration
         Dispatcher.getInstance().register<{ user: IUser }>(AuthService.Events.Update, this.run.bind(this));
     }
 
+    //<!cordova>
     private registerServiceWorker() {
         // if ('serviceWorker' in navigator) {
         //     navigator.serviceWorker.register('js/sw.js')
@@ -39,16 +43,28 @@ export class ClientApp {
         // }
     }
 
-    private getRoutes(routeItems: Array<RouteItem>) {
-        return routeItems.map((item, index) => {
-            return <Route path={`/${item.link}`} key={index} exact={item.exact}
-                          render={this.tz.willTransitionTo(item.component, item.permissions)}/>;
-        });
+    //</cordova>
+
+    private renderRoutes(routeItems: Array<RouteItem>, prefix: string) {
+        let links = [];
+        const routeCount = routeItems.length;
+        for (let i = 0, il = routeCount; i < il; ++i) {
+            const item = routeItems[i];
+            if (!item.abstract) {
+                let basePath = prefix ? `/${prefix}` : '';
+                links.push(<Route path={`${basePath}/${item.link}`} key={i}
+                                  exact={item.exact} render={this.tz(item.component, item.permissions)}/>);
+            }
+            if (item.children) {
+                links = links.concat(this.renderRoutes(item.children, item.link));
+            }
+        }
+        return links;
     }
 
     public run() {
         const routeItems = getRoutes(!this.auth.isGuest());
-        let routes = this.getRoutes(routeItems);
+        let routes = this.renderRoutes(routeItems, '');
         render(
             <DynamicRouter>
                 <Root routeItems={routeItems}>

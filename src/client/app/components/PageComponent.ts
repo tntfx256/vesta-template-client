@@ -1,24 +1,31 @@
-import {Component, ReactNode} from "react";
-import {ApiService} from "../service/ApiService";
+import {Component} from "react";
+import {BaseComponentProps} from "./BaseComponent";
 import {match} from "react-router";
-import {History, Location} from "history";
+import {IQueryRequest} from "../cmn/core/ICRUDResult";
+import {ApiService} from "../service/ApiService";
 import {NotificationService} from "../service/NotificationService";
 import {TransitionService} from "../service/TransitionService";
 import {TranslateService} from "../service/TranslateService";
+import {ConfigService, IPaginationConfig} from "../service/ConfigService";
 
 export interface FetchById<T> {
     (id: number): Promise<T>;
 }
 
-export interface Filter {
-    (): void;
+export interface Search<T> {
+    (query: IQueryRequest<T>): Promise<Array<T>>;
 }
 
-export interface PageComponentProps<T> {
+export interface FetchAll<T> {
+    (query: IQueryRequest<T>): void;
+}
+
+export interface Save<T> {
+    (model: T): void;
+}
+
+export interface PageComponentProps<T> extends BaseComponentProps {
     match?: match<T>;
-    location?: Location;
-    history?: History;
-    children?: ReactNode;
 }
 
 export interface PageComponentState {
@@ -26,9 +33,10 @@ export interface PageComponentState {
 
 export abstract class PageComponent<P, S> extends Component<P, S> {
 
-    protected tr: TranslateService = TranslateService.getInstance();
-    protected tz: TransitionService = TransitionService.getInstance();
+    protected tr = TranslateService.getInstance().translate;
+    protected tz = TransitionService.getInstance().willTransitionTo;
     protected api: ApiService = ApiService.getInstance();
     protected notif: NotificationService = NotificationService.getInstance();
-
+    //
+    protected pagination: IPaginationConfig = ConfigService.getConfig().pagination;
 }

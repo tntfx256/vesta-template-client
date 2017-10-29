@@ -31,9 +31,9 @@ export class NotificationService {
 
     public toast(message: string, type: MessageType = MessageType.Info) {
         this.dispatcher.dispatch<IToastData>('toast', {message, type});
-        if (!this.isProduction) {
-            console.log(message);
-        }
+        //<development>
+        console.log(message);
+        //</development>
     }
 
     public static getInstance(dispatcher: Dispatcher = Dispatcher.getInstance('main')): NotificationService {

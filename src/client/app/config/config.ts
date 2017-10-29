@@ -12,5 +12,12 @@ export const Config: IClientAppConfig = {
     asset: VariantConfig.asset,
     env: VariantConfig.env,
     cache: VariantConfig.cache,
-    viewport: VariantConfig.viewport
+    viewport: VariantConfig.viewport,
+    pagination: {
+        itemsPerPage: 20
+    },
+    transition: {
+        enter: 150,
+        leave: 100
+    }
 };

@@ -11,6 +11,7 @@ export interface RouteItem {
     link: string;
     title: string;
     exact?: boolean;
+    abstract?: boolean;
     children?: Array<RouteItem>;
     component?: ComponentClass<any>;
     permissions?: IPermissionCollection;

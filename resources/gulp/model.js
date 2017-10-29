@@ -1,7 +1,5 @@
 let gulp = require('gulp');
 let ts = require('gulp-typescript');
-let fs = require('fs');
-
 
 module.exports = function (setting) {
     let dir = setting.dir;
@@ -17,12 +15,8 @@ module.exports = function (setting) {
         return tsResult.js.pipe(gulp.dest(`${buildPath}/model`));
     });
 
-    gulp.task('model:ts', ['model:compile'], () => {
-        fs.renameSync(`${buildPath}/model/medium.js`, `${buildPath}/medium.js`);
-    });
-
     return {
-        tasks: ['model:ts'],
+        tasks: ['model:compile'],
         watch: []
     };
 };

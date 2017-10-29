@@ -1,5 +1,4 @@
 let gulp = require('gulp');
-let uglify = require('gulp-uglify');
 let htmlMin = require('gulp-htmlmin');
 let replace = require('gulp-replace');
 // let imgOptimize = require('gulp-image-optimization');

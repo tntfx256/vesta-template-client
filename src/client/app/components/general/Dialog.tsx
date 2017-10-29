@@ -1,42 +1,37 @@
-import React, {EventHandler} from "react";
-import {PageComponentProps} from "../PageComponent";
+import React, {EventHandler, PureComponent} from "react";
+import {BaseComponentProps} from "../BaseComponent";
 import {Modal} from "./Modal";
 
-export interface DialogOptions {
-    showCloseBtn?: boolean;
+export interface DialogProps extends BaseComponentProps {
     title?: string;
     modal?: boolean;
-    show?: boolean;
-    close: EventHandler<any>;
+    show: boolean;
+    onClose?: EventHandler<any>;
 }
 
-export interface DialogParams {
-}
+export class Dialog extends PureComponent<DialogProps, null> {
 
-export interface DialogProps extends PageComponentProps<DialogParams> {
-    options: DialogOptions;
-}
-
-export const Dialog = (props: DialogProps) => {
-    const options = props.options;
-
-    const dialog = <div className="dialog-component">
-        {renderHeader()}
-        <div className="dialog-content">{props.children}</div>
-        {renderFooter()}
-    </div>;
-    return props.options.modal ? <Modal close={options.close}>{dialog}</Modal> : dialog;
-
-    function renderHeader() {
-        const titlebar = options.title ? <h1>{options.title}</h1> : null;
-        const closeBtn = options.showCloseBtn ? <button type="button" onClick={options.close}>X</button> : null;
-        return titlebar ? <div className="dialog-header">
+    private renderHeader() {
+        const {title, onClose} = this.props;
+        const titlebar = title ? <h1>{title}</h1> : null;
+        const closeBtn = onClose ? <button onClick={close}>X</button> : null;
+        return titlebar || closeBtn ? <div className="dialog-header">
             {titlebar}
             {closeBtn}
         </div> : null;
     }
 
-    function renderFooter() {
-        return null;
+    public render() {
+        const {modal, show} = this.props;
+        if (!show) return null;
+        const header = this.renderHeader();
+        const dialog = (
+            <div className="dialog-component">
+                {header}
+                <div className="dialog-content">{this.props.children}</div>
+            </div>
+        );
+
+        return modal ? <Modal show={true}>{dialog}</Modal> : dialog;
     }
-};
+}

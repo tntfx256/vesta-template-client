@@ -18,7 +18,7 @@ module.exports = function (setting) {
             .pipe(eliminator(setting, setting.target))
             .pipe(gulp.dest(tmpClient))
     });
-    
+
     gulp.task('client:build', ['client:preBuild'], () => {
         let webpackConfig = getWebpackConfig();
         const compiler = webpack(webpackConfig);
@@ -42,7 +42,7 @@ module.exports = function (setting) {
             });
         })
     });
-    
+
     gulp.task('client:run', function () {
         if (setting.production) return;
         let target = setting.buildPath(setting.target);
@@ -62,7 +62,7 @@ module.exports = function (setting) {
                 process.stderr.write(`${setting.target} Develop server is not supported`);
         }
     });
-    
+
     gulp.task(`client:watch`, () => {
         gulp.watch([`${dir.srcClient}/**/*.ts*`, `${dir.src}/cmn/**/*`], [`client:build`]);
     });
@@ -79,21 +79,28 @@ module.exports = function (setting) {
                 minChunks: function (module) {
                     // console.log(module.context);
                     return module.context && module.context.indexOf("node_modules") !== -1;
-        }
+                }
+            }),
+            new webpack.ProvidePlugin({
+                '__assign': ['tslib', '__assign'],
+                '__extends': ['tslib', '__extends'],
             })
         ];
         if (setting.production) {
             plugins = plugins.concat([
                 new webpack.DefinePlugin({
-                    'process.env.NODE_ENV': JSON.stringify('production')
-            }),
+                    'process.env': {NODE_ENV: '"production"'}
+                }),
                 new webpack.LoaderOptionsPlugin({
                     minimize: true,
                     debug: false
-            }),
-                new webpack.optimize.UglifyJsPlugin()
+                }),
+                new webpack.optimize.UglifyJsPlugin({
+                    sourceMap: false,
+                    warnings: false,
+                })
             ]);
-    }
+        }
         let target = setting.buildPath(setting.target);
         return {
             entry: {

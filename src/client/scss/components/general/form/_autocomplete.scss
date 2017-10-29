@@ -1,0 +1,18 @@
+$autocomplete-list-top-offset: 2 * ($form-group-margin + $form-group-padding) + $form-control-height + 2 * ($form-control-padding);
+
+.autocomplete-input {
+    border: 1px solid red;
+    position: relative;
+    .list-wrapper {
+        padding: 0;
+        border: 1px solid green;
+        //width: 80%;
+        position: absolute;
+        top: $autocomplete-list-top-offset;
+    }
+    .list-item {
+        border: 1px solid blue;
+        display: block;
+        cursor: pointer;
+    }
+}

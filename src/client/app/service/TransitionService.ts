@@ -9,9 +9,9 @@ export class TransitionService {
     constructor(private auth: AuthService) {
     }
 
-    public willTransitionTo(componentClass: ComponentClass<any>, permissions?: IPermissionCollection, extraProps?: Attributes & any, children?: Array<ReactNode>) {
+    public willTransitionTo = (componentClass: ComponentClass<any>, permissions?: IPermissionCollection, extraProps?: Attributes & any, children?: Array<ReactNode>) => {
         let id = this.idCounter++;
-            this.auth.registerPermissions(id, permissions);
+        this.auth.registerPermissions(id, permissions);
         extraProps = extraProps || {};
         return (props) => {
             return this.auth.hasAccessToState(id) ?

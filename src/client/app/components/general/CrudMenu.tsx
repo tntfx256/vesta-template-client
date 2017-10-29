@@ -1,28 +1,28 @@
-import React from "react";
+import React, {PureComponent} from "react";
 import {Link} from "react-router-dom";
-import {PageComponentProps} from "../PageComponent";
+import {BaseComponentProps} from "../BaseComponent";
+import {IAccess} from "../../service/AuthService";
 
-export interface CrudMenuParams {
-}
-
-export interface CrudMenuProps extends PageComponentProps<CrudMenuParams> {
+export interface CrudMenuProps extends BaseComponentProps {
     path: string;
-    id?: number;
+    access?: IAccess
 }
 
-export const CrudMenu = (props: CrudMenuProps) => {
-    let key = 1;
-    const links = [
-        <li key={key++}><Link to={`/${props.path}`}>List</Link></li>,
-        <li key={key++}><Link to={`/${props.path}/add`}>Add</Link></li>
-    ];
-    if (props.id) {
-        links.push(<li key={key++}><Link to={`/${props.path}/detail/${props.id}`}>Detail</Link></li>);
-        links.push(<li key={key++}><Link to={`/${props.path}/edit/${props.id}`}>Edit</Link></li>);
+export class CrudMenu extends PureComponent<CrudMenuProps, null> {
+
+    public render() {
+        let key = 1;
+        let {access, path} = this.props;
+        const links = [
+            <li key={key++}><Link to={`/${path}`}>List</Link></li>
+        ];
+        if (access && access.add) {
+            links.push(<li key={key}><Link to={`/${path}/add`}>Add</Link></li>);
+        }
+        return (
+            <div className="crudMenu-component">
+                <ul>{links}</ul>
+            </div>
+        )
     }
-    return (
-        <div className="crudMenu-component">
-            <ul>{links}</ul>
-        </div>
-    )
-};
+}

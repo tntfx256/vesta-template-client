@@ -1,6 +1,5 @@
 let gulp = require('gulp');
 let path = require('path');
-let fs = require('fs-extra');
 let config = require('./resources/gulp/config');
 
 let setting = Object.assign({target: 'web', production: false}, config);
