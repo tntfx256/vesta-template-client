@@ -12,5 +12,8 @@
   "include": [
     "src/client/app/**/*.ts",
     "src/client/app/**/*.tsx"
+  ],
+  "exclude": [
+    "resources/**/*"
   ]
 }

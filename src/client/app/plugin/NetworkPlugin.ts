@@ -4,16 +4,7 @@
 
 export class NetworkPlugin {
 
-    constructor() {
-        //<cordova>
-
-        //</cordova>
-        //<web>
-
-        //</web>
-    }
-
-    public getConnectionType(): string {
+    public static getConnectionType(): string {
         let type = '';
         //<cordova>
         type = navigator.connection && navigator.connection.type;
@@ -24,13 +15,13 @@ export class NetworkPlugin {
         return type;
     }
 
-    public isOnline(): boolean {
+    public static isOnline(): boolean {
         let isOnline = true;
         //<web>
         isOnline = navigator.onLine;
         //</web>
         //<cordova>
-        const connType = this.getConnectionType();
+        const connType = NetworkPlugin.getConnectionType();
         isOnline = connType != Connection.UNKNOWN && connType != Connection.NONE;
         //</cordova>
         return isOnline;

@@ -43,10 +43,11 @@ export class Register extends PageComponent<RegisterProps, RegisterState> {
         this.api.post<IUser>('account', user.getValues('name', 'mobile'))
             .then(response => {
                 this.setState({showLoader: false});
+                this.notif.success('msg_register_ok');
                 this.props.history.push('/login');
             })
             .catch(error => {
-                this.notif.error(this.tr(error.message));
+                this.notif.error(error.message);
             })
     }
 
@@ -81,7 +82,7 @@ export class Register extends PageComponent<RegisterProps, RegisterState> {
                     <FormTextInput name="name" label={this.tr('fld_name')} value={user.name}
                                    error={errors.name} onChange={this.onChange} placeholder={true}/>
                     <FormTextInput name="mobile" label={this.tr('fld_mobile')} value={user.mobile}
-                                   error={errors.mobile} onChange={this.onChange} type="phone" placeholder={true}/>
+                                   error={errors.mobile} onChange={this.onChange} type="tel" placeholder={true}/>
                     <div className="btn-group">
                         <button type="submit" className="btn btn-primary">{this.tr('register')}</button>
                         <br/>

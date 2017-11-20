@@ -28,7 +28,7 @@ export class FormNumericInput extends PureComponent<FormNumericInputProps, null>
         let {label, name, value, step, error, placeholder} = this.props;
         step = step || 1;
         return (
-            <div className="form-group numeric-input">
+            <div className={`form-group numeric-input${error ? ' has-error' : ''}`}>
                 {placeholder ? null : <label htmlFor={name}>{label}</label>}
                 <input className="form-control" name={name} id={name} type="number"
                        placeholder={placeholder ? label : ''}

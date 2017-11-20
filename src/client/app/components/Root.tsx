@@ -39,7 +39,7 @@ export class Root extends Component<RootProps, RootState> {
                 this.auth.login(response.items[0]);
             })
             .catch(err => {
-                LogService.error(err);
+                LogService.error(err, 'componentDidMount', 'Root');
             });
     }
 

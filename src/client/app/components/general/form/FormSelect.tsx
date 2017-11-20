@@ -18,10 +18,12 @@ export interface FormSelectProps extends BaseComponentProps {
 export class FormSelect extends PureComponent<FormSelectProps, null> {
 
     private onChange = (e) => {
-        let numericValue = +e.target.value;
-        const {name} = this.props;
-        if (isNaN(numericValue)) return this.props.onChange(name, numericValue);
-        this.props.onChange(name, numericValue);
+        let {name, onChange} = this.props;
+        let value = e.target.value;
+        let numericValue = +value;
+        if (isNaN(numericValue)) return onChange(name, value);
+        onChange(name, numericValue);
+
     }
 
     public render() {
@@ -33,7 +35,8 @@ export class FormSelect extends PureComponent<FormSelectProps, null> {
         return (
             <div className={`form-group select-input${error ? ' has-error' : ''}`}>
                 {placeholder ? null : <label htmlFor={name}>{label}</label>}
-                <select className="form-control" name={name} id={name} value={value} onChange={this.onChange}>
+                <select className="form-control" name={name} id={name} value={value || undefined}
+                        onChange={this.onChange}>
                     {optionsList}
                 </select>
                 <p className="form-error">{error || ''}</p>

@@ -25,6 +25,7 @@ $sidenav-top-padding: $header-height + $sidenav-padding;
     }
 
     .name-wrapper {
-        margin: getValueByDirection($sidenav-padding 0 0 $sidenav-padding, $sidenav-padding $sidenav-padding 0 0);
+        $name-padding: ceil($sidenav-padding / 2);
+        margin: getValueByDirection($name-padding 0 0 3*$name-padding, $name-padding 3*$name-padding 0 0);
     }
 }

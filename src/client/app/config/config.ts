@@ -7,7 +7,7 @@ export const Config: IClientAppConfig = {
         app: '0.1.0',
         api: 'v1'
     },
-    locale: 'en-US',
+    locale: 'fa-IR',
     api: VariantConfig.api,
     asset: VariantConfig.asset,
     env: VariantConfig.env,

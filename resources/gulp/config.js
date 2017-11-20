@@ -10,11 +10,11 @@ const dir = {
     docker: path.join(root, 'resources/docker'),
     src: path.join(root, 'src'),
     srcClient: path.join(root, 'src/client'),
-    srcServer: path.join(root, 'src/server'),
+    srcServer: path.join(root, 'src/server/app'),
     gulp: path.join(root, 'resources/gulp'),
     build: path.join(root, 'vesta'),
     buildClient: path.join(root, 'vesta/client'),
-    buildServer: path.join(root, 'vesta/server')
+    buildServer: path.join(root, 'vesta/server/app')
 };
 const debug = {type: 'debug', ports: {debug: 5857, inspect: 9228}, address: '0.0.0.0'};
 const port = {http: 8088, api: 3000};
@@ -54,15 +54,22 @@ module.exports = {
         if (group === 'cordova') return ['android', 'ios', 'cordova'].indexOf(target) >= 0;
         return false;
     },
-    findInFileAndReplace: (file, search, replace) => {
+    findInFileAndReplace: (file, search, replace, destinationDirectory) => {
         try {
-            if (!fse.existsSync(file)) return;
             let content = fse.readFileSync(file, {encoding: 'utf8'});
             content = content.replace(search, replace);
-            fse.writeFileSync(file, content);
+            let fileName = path.parse(file).base;
+            let destination = destinationDirectory ? `${destinationDirectory}/${fileName}` : file;
+            if (destinationDirectory) {
+                fse.mkdirsSync(destinationDirectory);
+            }
+            fse.writeFileSync(destination, content);
         } catch (e) {
-            console.error(e.message);
+            console.error(`[gulp::config::findInFileAndReplace] ${e.message}`);
         }
+    },
+    findInStreamAndReplace: (file, search, replace, destinationDirectory) => {
+
     }
 };
 

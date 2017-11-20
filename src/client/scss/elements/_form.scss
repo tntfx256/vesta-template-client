@@ -31,7 +31,7 @@ $form-error-padding: 5px;
     color: $color-error;
     text-align: end;
     font-size: $font-size-small;
-    top: floor($form-control-height / 2);
+    top: -1 * ceil($form-control-height / 3);
     #{$opposite-float}: 0;
 }
 
@@ -43,7 +43,7 @@ $form-error-padding: 5px;
     justify-content: space-around;
     align-items: flex-end;
     label {
-        margin-#{$opposite-float}: 3vw;
+        margin-#{$opposite-float}: 10px;
         white-space: nowrap;
         text-align: end;
         vertical-align: bottom;
@@ -69,4 +69,10 @@ $form-error-padding: 5px;
     border: 1px solid $border-color;
     border-radius: $form-control-border-radius;
     outline: 0;
+}
+
+body.shrink-view {
+    .stick-btm {
+        @include scale(0);
+    }
 }

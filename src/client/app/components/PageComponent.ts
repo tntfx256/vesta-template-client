@@ -13,7 +13,7 @@ export interface FetchById<T> {
 }
 
 export interface Search<T> {
-    (query: IQueryRequest<T>): Promise<Array<T>>;
+    (term: string): Promise<Array<T>>;
 }
 
 export interface FetchAll<T> {

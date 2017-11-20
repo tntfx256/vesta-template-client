@@ -49,7 +49,6 @@ export class Forget extends PageComponent<ForgetProps, ForgetState> {
             })
             .catch(error => {
                 this.setState({showLoader: false, validationErrors: error.violations});
-                this.notif.error(error.message);
             })
     }
 

@@ -50,7 +50,7 @@ export class FormDateTimeInput extends PureComponent<FormDateTimeInputProps, For
         let {name, onChange} = this.props;
         let timestamp = this.dateTime.validate(value);
         if (timestamp) {
-            onChange(name, value);
+            onChange(name, timestamp);
         }
         this.setState({value, showPicker: false});
     }
@@ -65,9 +65,9 @@ export class FormDateTimeInput extends PureComponent<FormDateTimeInputProps, For
         let {value, showPicker} = this.state;
 
         let picker = showPicker ?
-            <Modal show={true}>
+            <Modal show={true} name="modal-zoom">
                 <DatePicker value={value} onChange={this.onChange} onAbort={this.hidePicker} hasTime={hasTime}/>
-            </Modal> : null;
+            </Modal> : <Modal show={false} name="modal-zoom"/>;
 
         return (
             <div className={`form-group date-time-input${error ? ' has-error' : ''}`}>

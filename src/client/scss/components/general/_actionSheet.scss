@@ -2,7 +2,7 @@ $actionSheet-transition-enter-duration: $transition-duration-default;
 $actionSheet-transition-leave-duration: floor(2 * $sidenav-transition-enter-duration / 3);
 $actionSheet-transition-effect: $transition-effect-default;
 $actionSheet-bg-color: transparentize($color-light, .1);
-$actionSheet-offset: 5vw;
+$actionSheet-offset: 5%;
 $actionSheet-item-padding: 15px;
 
 .actionSheet-component {

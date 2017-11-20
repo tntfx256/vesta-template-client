@@ -19,6 +19,11 @@ $navbar-back-btn-size: $btn-height;
 
     &.navbar-transparent {
         background: transparent;
+        // make elements under navbar clickable
+        pointer-events: none;
+        .nav-btn {
+            pointer-events: auto;
+        }
     }
 
     .nav-title {

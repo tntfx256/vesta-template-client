@@ -15,13 +15,30 @@ export interface NavbarProps extends BaseComponentProps {
 
 class Navbar extends PureComponent<NavbarProps, null> {
 
+    //<android>
+    public componentDidMount() {
+        document.addEventListener("backbutton", this.goBack, false);
+    }
+
+    public componentWillUnmount() {
+        document.removeEventListener("backbutton", this.goBack);
+    }
+
+    //</android>
+
     private goBack = (e) => {
+        e && e.stopPropagation();
         const {backAction} = this.props;
         if (backAction) {
             return backAction(e);
         }
         const {history, backLink} = this.props;
         if (backLink) return history.replace(backLink);
+        //<cordova>
+        if (this.props.location.pathname == '/') {
+            return navigator['app'].exitApp();
+        }
+        //</cordova>
         if (history.length) return history.goBack();
         history.replace('/');
     }

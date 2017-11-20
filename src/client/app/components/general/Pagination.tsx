@@ -56,18 +56,18 @@ export default class Pagination extends PureComponent<PaginationProps, Paginatio
         let totalPages = this.totalPages(totalRecords, recordsPerPage);
         if (totalPages <= 1) return null;
         return (
-            <div className="pagination-component">
-                <button onClick={this.gotoPage} value={1} key={key++}
-                        disabled={currentPage == 1}>&gt;&gt;</button>
-                <button onClick={this.gotoPage} value={currentPage - 1} key={key++}
-                        disabled={currentPage == 1}>&gt;</button>
+            <div className="pagination btn-group">
+                <button className="btn" onClick={this.gotoPage} value={1} key={key++}
+                        disabled={currentPage == 1}>&lt;&lt;</button>
+                <button className="btn" onClick={this.gotoPage} value={currentPage - 1} key={key++}
+                        disabled={currentPage == 1}>&lt;</button>
                 <form onSubmit={this.onSubmit}>
-                    <input type="number" value={this.state.page} key={key++} onChange={this.onChange}/>
+                    <input className="btn" type="number" value={this.state.page} key={key++} onChange={this.onChange}/>
                 </form>
-                <button onClick={this.gotoPage} value={currentPage + 1} key={key++}
-                        disabled={currentPage == totalPages}>&lt;</button>
-                <button onClick={this.gotoPage} value={totalPages} key={key}
-                        disabled={currentPage == totalPages}>&lt;&lt;</button>
+                <button className="btn" onClick={this.gotoPage} value={currentPage + 1} key={key++}
+                        disabled={currentPage == totalPages}>&gt;</button>
+                <button className="btn" onClick={this.gotoPage} value={totalPages} key={key}
+                        disabled={currentPage == totalPages}>&gt;&gt;</button>
             </div>
         );
     }

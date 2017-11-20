@@ -13,6 +13,12 @@ export class KeyboardPlugin {
         } else
         //</development>
             this.kb = Keyboard;
+        this.kb.onshow = () => {
+            document.body.classList.add('shrink-view');
+        }
+        this.kb.onhide = () => {
+            document.body.classList.remove('shrink-view');
+        }
     }
 
     public setDefaultProperties() {

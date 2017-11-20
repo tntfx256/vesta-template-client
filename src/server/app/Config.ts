@@ -1,3 +1,5 @@
+const env: any = process.env;
+
 export interface IServerConfig {
     dir: {
         html: string;
@@ -20,6 +22,6 @@ export const Config: IServerConfig = {
         key: '/app/ssl/privkey.pem',
         cert: '/app/ssl/fullchain.pem'
     },
-    port: process.env.PORT || 80,
-    env: process.env.NODE_ENV
+    port: +env.PORT || 3000,
+    env: env.NODE_ENV
 };

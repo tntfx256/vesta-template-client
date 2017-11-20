@@ -2,11 +2,10 @@ import {Dictionary} from "../cmn/core/Dictionary";
 import {Culture} from "../cmn/core/Culture";
 
 export class TranslateService {
-    private dictionary: Dictionary;
+    private dictionary: Dictionary = Culture.getDictionary();
     private static instance: TranslateService;
 
-    constructor() {
-        this.dictionary = Culture.getDictionary();
+    private constructor() {
     }
 
     public translate = (key: string, ...placeholders: Array<any>): string => {

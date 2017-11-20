@@ -29,13 +29,8 @@ $btn-group-active-bg: lighten($color-primary, 15%);
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 0;
+    padding: 2px;
     display: flex;
-    > .btn {
-        flex: 1;
-        height: $header-height;
-        border-radius: 0 !important;
-    }
 }
 
 .btn {
@@ -60,10 +55,6 @@ $btn-group-active-bg: lighten($color-primary, 15%);
         //transition: all $transitionShortDuration;
         //box-shadow: 0 0 2px $dark inset;
     }
-    &:disabled {
-        cursor: not-allowed;
-        @include btn-style($silver, $grey);
-    }
     &.btn-default {
         @include btn-style($color-default, $color-primary);
     }
@@ -75,6 +66,10 @@ $btn-group-active-bg: lighten($color-primary, 15%);
     }
     &.btn-large {
         @include btn-size($btn-height-large, $font-size-medium);
+    }
+    &:disabled {
+        cursor: not-allowed;
+        @include btn-style($silver, $grey);
     }
     //@each $class in $color-classes {
     //    &.btn-#{$class} {
@@ -100,6 +95,7 @@ $btn-group-active-bg: lighten($color-primary, 15%);
         }
     }
 }
+
 .tab-header {
     padding: $btn-group-padding;
     width: 100%;
@@ -115,9 +111,13 @@ $btn-group-active-bg: lighten($color-primary, 15%);
         flex: 1;
         margin: auto 5px;
         height: $btn-height-large;
-        @include btn-style($white, $color-primary);
-        &.active {
-            @include btn-style($btn-group-active-bg, $color-semidark);
+    }
+    &.tab-header-default {
+        > .btn {
+            @include btn-style($white, $color-primary);
+            &.active {
+                @include btn-style($btn-group-active-bg, $color-semidark);
+            }
         }
     }
 }

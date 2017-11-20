@@ -12,11 +12,13 @@ export class ApiService {
     private endPoint: string = '';
     private enableCache: boolean;
     private tokenHeaderKeyName = 'X-Auth-Token';
+    private sourceApp;
 
     constructor(private authService: AuthService) {
         const cfg: IClientAppConfig = ConfigService.getConfig();
         this.endPoint = `${cfg.api}/api/${cfg.version.api}`;
         this.enableCache = !!cfg.cache.api;
+        this.sourceApp = ConfigService.get('sourceApp');
     }
 
     private onBeforeSend(xhr: XMLHttpRequest) {
@@ -67,26 +69,28 @@ export class ApiService {
     }
 
     public get<T>(edge: string, data?: IQueryRequest<T>) {
-        let queryString = data ? `?${this.param(data)}` : '';
+        let queryString = data ? `?${this.param(data)}&s=${this.sourceApp}` : `?s=${this.sourceApp}`;
         return this.xhr<IQueryResult<T>>('GET', `${edge}${queryString}`, null, null);
     }
 
     public post<T>(edge: string, data: T) {
         let headers = {'Content-Type': 'application/json'};
+        data['s'] = this.sourceApp;
         return this.xhr<IQueryResult<T>>('POST', edge, JSON.stringify(data), headers);
     }
 
     public put<T>(edge: string, data: T) {
         let headers = {'Content-Type': 'application/json'};
+        data['s'] = this.sourceApp;
         return this.xhr<IQueryResult<T>>('PUT', edge, JSON.stringify(data), headers);
     }
 
-    public del<T>(edge: string, id: number) {
-        return this.xhr<IQueryResult<T>>('DELETE', `${edge}/${id}`, null, null);
+    public del<T>(edge: string, id: number | string) {
+        return this.xhr<IQueryResult<T>>('DELETE', `${edge}/${id}?s=${this.sourceApp}`, null, null);
     }
 
     public upload<T>(edge: string, id: number, files: T) {
-        return this.xhr<IQueryResult<T>>('POST', `${edge}/${id}`, this.toFormData(files), null);
+        return this.xhr<IQueryResult<T>>('POST', `${edge}/${id}?s=${this.sourceApp}`, this.toFormData(files), null);
     }
 
     public toFormData(data: Object): FormData {
@@ -108,7 +112,7 @@ export class ApiService {
      * jquery-param
      */
     private param(data) {
-        let s = [];
+        let queryStringParts = [];
         let rbracket = /\[\]$/;
 
         return buildParams('', data).join('&').replace(/%20/g, '+');
@@ -118,8 +122,9 @@ export class ApiService {
         }
 
         function add(k: string, v) {
-            v = typeof v === 'function' ? v() : v === null ? '' : v === undefined ? '' : v;
-            s[s.length] = `${encodeURIComponent(k)}=${encodeURIComponent(v)}`;
+            if (typeof v === 'function') return;
+            if (v === null || v === undefined) return;
+            queryStringParts.push(`${encodeURIComponent(k)}=${encodeURIComponent(v)}`);
         }
 
         function buildParams(prefix: string, obj) {
@@ -144,7 +149,7 @@ export class ApiService {
                     buildParams(keys[i], obj[keys[i]]);
                 }
             }
-            return s;
+            return queryStringParts;
         }
     }
 }

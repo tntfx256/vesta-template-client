@@ -1,6 +1,7 @@
 import React, {PureComponent} from "react";
-import CSSTransitionGroup from "react-addons-css-transition-group";
+import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import {BaseComponentProps} from "../BaseComponent";
+import {ConfigService} from "../../service/ConfigService";
 
 export interface ModalProps extends BaseComponentProps {
     show: boolean;
@@ -11,6 +12,7 @@ export class Modal extends PureComponent<ModalProps, null> {
     static count = 0;
     // because of this property, this component can not be stateless
     private isOpen = false;
+    private transTime = ConfigService.getConfig().transition;
 
     private updateStatus(show: boolean) {
         if (show) {
@@ -38,6 +40,7 @@ export class Modal extends PureComponent<ModalProps, null> {
 
     public render() {
         let {name, show, children} = this.props;
+        let {enter, leave} = this.transTime;
         this.updateStatus(show);
         let content = show ?
             <div className="modal" onClick={this.onModalClicked}>
@@ -45,10 +48,10 @@ export class Modal extends PureComponent<ModalProps, null> {
             </div> : null;
 
         return (
-            <CSSTransitionGroup transitionName={name || 'modal'} transitionAppear={true}
-                                transitionAppearTimeout={1} transitionEnterTimeout={300} transitionLeaveTimeout={300}>
+            <ReactCSSTransitionGroup transitionName={name || "modal"} transitionEnterTimeout={enter}
+                                     transitionLeaveTimeout={leave}>
                 {content}
-            </CSSTransitionGroup>
+            </ReactCSSTransitionGroup>
         )
     }
 }

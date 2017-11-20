@@ -9,6 +9,7 @@ export interface FormFileInputProps extends BaseComponentProps {
     onChange?: ChangeEventHandler;
     error?: string;
     multiple?: boolean;
+    placeholder?: boolean;
 }
 
 export class FormFileInput extends PureComponent<FormFileInputProps, null> {
@@ -73,12 +74,14 @@ export class FormFileInput extends PureComponent<FormFileInputProps, null> {
     }
 
     public render() {
-        let {name, label, error, multiple} = this.props;
+        let {name, label, error, multiple, placeholder} = this.props;
         return (
             <div className={`form-group file-input${error ? ' has-error' : ''}`}>
-                <label htmlFor={name}>{label}</label>
+                {placeholder ? null : <label htmlFor={name}>{label}</label>}
                 <div className="form-control">
-                    <input name={name} id={name} type="file" onChange={this.onChange} multiple={multiple}/>
+                    {placeholder ? <label htmlFor={name}>{label}</label> : null}
+                    <input name={name} id={name} type="file" onChange={this.onChange} multiple={multiple}
+                           placeholder={placeholder ? label : ''}/>
                     <p className="form-error">{error || ''}</p>
                     <div className="thumbnails" ref={wrapper => this.wrapper = wrapper}/>
                 </div>

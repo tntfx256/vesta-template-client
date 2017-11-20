@@ -27,6 +27,7 @@ export class Util {
     }
 
     public static unicodeDigit<T>(number: string): T {
+        if (!number) return number as any as T;
         const enChars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         const uniChars = [
             // persian

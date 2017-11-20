@@ -2,9 +2,9 @@
   "name": "Vesta Client App",
   "short_name": "Vesta",
   "description": "Vesta Client Application",
-  "start_url": "index.html",
+  "start_url": "/",
   "display": "standalone",
-  "orientation": "landscape",
+  "orientation": "portrait",
   "theme_color": "#ff9900",
   "background_color": "#9e9e9e",
   "icons": [

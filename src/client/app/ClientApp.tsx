@@ -13,34 +13,40 @@ import {getRoutes, RouteItem} from "./config/route";
 import {KeyboardPlugin} from "./plugin/KeyboardPlugin";
 import {SplashPlugin} from "./plugin/SplashPlugin";
 import {StatusbarPlugin} from "./plugin/StatusbarPlugin";
+import {ApiService} from "./service/ApiService";
+import {LogService} from "./service/LogService";
+import {NotificationPlugin} from "./plugin/NotificationPlugin";
+import {StorageService} from "./service/StorageService";
 
 export class ClientApp {
     private tz = TransitionService.getInstance().willTransitionTo;
     private auth = AuthService.getInstance();
-
-    public init() {
-        this.auth.setDefaultPolicy(AclPolicy.Deny);
-        //<cordova>
-        new KeyboardPlugin().setDefaultProperties();
-        new StatusbarPlugin().styleDefault();
-        new SplashPlugin().hide();
-        //</cordova>
-        //<!cordova>
-        this.registerServiceWorker();
-        //</cordova>
-        // auth event registration
-        Dispatcher.getInstance().register<{ user: IUser }>(AuthService.Events.Update, this.run.bind(this));
-    }
+    private locationTimer;
+    private geoInterval = 120000;// every 2 min
 
     //<!cordova>
     private registerServiceWorker() {
-        // if ('serviceWorker' in navigator) {
-        //     navigator.serviceWorker.register('js/sw.js')
-        //         .then(registration=> {
-        //             console.log('serviceWorker registered', registration);
-        //         })
-        //         .catch(err=>console.error(err));
-        // }
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/OneSignalSDKWorker.js')
+                .then((reg: ServiceWorkerRegistration) => {
+                    try {
+                        reg.update().catch(error => LogService.error(error, 'reg.update', 'ClientApp'));
+                    } catch (error) {
+                        LogService.error(error, 'registerServiceWorker', 'ClientApp');
+                    }
+                })
+                .catch(err => LogService.error(err.message, 'registerServiceWorker', 'ClientApp'));
+        }
+        // register push notification
+        NotificationPlugin.getInstance().register(payload => {
+            let request: IRequest = payload.request;
+            if (request) {
+                StorageService.set<IRequest>('request', request);
+                let route = request.type == RequestType.Health ? 'health' : 'repair';
+                // new request has been requested; navigate to request list
+                window.location.href = `/#/request/${route}`;
+            }
+        });
     }
 
     //</cordova>
@@ -60,6 +66,25 @@ export class ClientApp {
             }
         }
         return links;
+    }
+
+    public init() {
+        this.auth.setDefaultPolicy(AclPolicy.Deny);
+        let notifPlugin = NotificationPlugin.getInstance();
+        notifPlugin.updateNotifToken(this.auth.getUser());
+        //<cordova>
+        new KeyboardPlugin().setDefaultProperties();
+        new StatusbarPlugin().styleDefault();
+        new SplashPlugin().hide();
+        //</cordova>
+        //<!cordova>
+        this.registerServiceWorker();
+        //</cordova>
+        // auth event registration
+        Dispatcher.getInstance().register<{ user: IUser }>(AuthService.Events.Update, (payload) => {
+            notifPlugin.updateNotifToken(payload.user);
+            this.run();
+        });
     }
 
     public run() {

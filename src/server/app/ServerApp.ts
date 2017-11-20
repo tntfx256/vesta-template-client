@@ -1,5 +1,4 @@
 import express from "express";
-import morgan from "morgan";
 import http from "http";
 import spdy from "spdy";
 import {createReadStream, readFileSync} from "fs";
@@ -30,7 +29,6 @@ export class ServerApp {
             noCache: true,
             referrerPolicy: true
         }));
-        this.app.use(morgan(this.setting.env == 'development' ? 'dev' : 'combined'));
         this.app.enable('trust proxy');
         this.app.disable('case sensitive routing');
         this.app.disable('strict routing');

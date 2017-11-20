@@ -1,6 +1,6 @@
 .DS_Store
 .idea
-/node_modules
+node_modules
 npm-debug.log
 /src/client/app/config/config.var.ts
 /vesta/client/cordova/platforms/*
@@ -10,5 +10,5 @@ npm-debug.log
 /vesta/client/cordova/www
 /vesta/client/electron/www
 /vesta/client/web/www
+/vesta/server/app
 /vesta/tmp
-/vesta/server/

@@ -161,11 +161,11 @@ export class DatePicker extends Component<DatePickerProps, DatePickerState> {
         const hour = this.dateTime.getHours();
         const minute = this.dateTime.getMinutes();
         const hourSelect = [];
-        for (let i = 1; i <= 23; ++i) {
+        for (let i = 0; i <= 23; ++i) {
             hourSelect.push(<option value={i} key={i}>{i}</option>);
         }
         const minSelect = [];
-        for (let i = 1; i <= 59; ++i) {
+        for (let i = 0; i <= 59; ++i) {
             minSelect.push(<option value={i} key={i}>{i}</option>);
         }
         return (
@@ -201,8 +201,9 @@ export class DatePicker extends Component<DatePickerProps, DatePickerState> {
                     </table>
                     {time}
                     <div className="btn-group">
-                        <button className="btn btn-primary" onClick={this.onSubmit}>{this.tr('select')}</button>
-                        <button className="btn btn-default" onClick={onAbort}>{this.tr('cancel')}</button>
+                        <button type="button" className="btn btn-primary"
+                                onClick={this.onSubmit}>{this.tr('select')}</button>
+                        <button type="button" className="btn btn-default" onClick={onAbort}>{this.tr('cancel')}</button>
                     </div>
                 </div>
             </div>

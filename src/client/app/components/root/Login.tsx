@@ -48,10 +48,12 @@ export class Login extends PageComponent<LoginProps, LoginState> {
             .then(response => {
                 this.auth.login(response.items[0]);
                 this.props.history.replace('/');
-            }).catch(error => {
-            this.notif.error(error.message);
-            this.setState({showLoader: false, error: this.tr('err_wrong_user_pass')});
-        })
+            })
+            .catch(error => {
+                this.setState({showLoader: false, error: this.tr('err_wrong_user_pass')});
+                if (error.message == 'err_db_no_record') return;
+                this.notif.error(error.message);
+            })
     }
 
     public render() {
@@ -81,7 +83,7 @@ export class Login extends PageComponent<LoginProps, LoginState> {
                 <FormWrapper name="loginForm" onSubmit={this.onSubmit}>
                     {loginErr}
                     <FormTextInput name="mobile" label={this.tr('fld_mobile')} value={user.mobile}
-                                   error={errors.mobile} onChange={this.onChange} placeholder={true}/>
+                                   error={errors.mobile} onChange={this.onChange} placeholder={true} type="tel"/>
                     <FormTextInput name="password" label={this.tr('fld_password')} value={user.password} type="password"
                                    error={errors.password} onChange={this.onChange} placeholder={true}/>
                     <p className="forget-link">

@@ -48,8 +48,8 @@ $page-center-form-padding: 30px 30px 15px 30px;
     }
 
     .form-wrapper {
-        width: 90vw;
-        max-width: 500px;
+        width: 90%;
+        max-width: $layout-medium-max;
         margin: auto;
         background: transparentize($white, 0);
         border-radius: $border-radius;

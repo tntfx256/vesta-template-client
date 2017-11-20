@@ -11,6 +11,16 @@ module.exports = function (setting) {
     let dir = setting.dir;
     let tmpClient = `${setting.dir.build}/tmp/client`;
 
+    gulp.task('client:sw', () => {
+        if (setting.is(setting.target, 'cordova')) return;
+        let target = setting.buildPath(setting.target);
+        let serviceWorkers = ['service-worker.js'];
+        let timestamp = Date.now();
+        for (let i = 0, il = serviceWorkers.length; i < il; ++i) {
+            setting.findInFileAndReplace(`${dir.srcClient}/${serviceWorkers[i]}`, /__TIMESTAMP__/g, timestamp, `${dir.buildClient}/${target}`);
+        }
+    });
+
     gulp.task('client:preBuild', () => {
         setting.clean(tmpClient);
         bundler(setting, getEntry(`${setting.dir.srcClient}/app`), tmpClient);
@@ -19,7 +29,12 @@ module.exports = function (setting) {
             .pipe(gulp.dest(tmpClient))
     });
 
-    gulp.task('client:build', ['client:preBuild'], () => {
+    gulp.task('client:build', ['client:preBuild', 'client:sw'], () => {
+        // copying conf.var to target on production mode
+        if (setting.production && !setting.is(setting.target, 'web')) {
+            fs.copyFileSync(`${setting.dir.resource}/gitignore/config.var.ts`,
+                `${tmpClient}/client/app/config/config.var.ts`);
+        }
         let webpackConfig = getWebpackConfig();
         const compiler = webpack(webpackConfig);
         return new Promise((resolve, reject) => {
@@ -64,7 +79,7 @@ module.exports = function (setting) {
     });
 
     gulp.task(`client:watch`, () => {
-        gulp.watch([`${dir.srcClient}/**/*.ts*`, `${dir.src}/cmn/**/*`], [`client:build`]);
+        gulp.watch([`${dir.srcClient}/**/*.ts*`], [`client:build`]);
     });
 
     return {

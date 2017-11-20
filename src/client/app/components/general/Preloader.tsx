@@ -3,10 +3,11 @@ import {Dialog} from "./Dialog";
 import {TranslateService} from "../../service/TranslateService";
 import {BaseComponentProps} from "../BaseComponent";
 
-export const enum PreloaderType {Linear = 1, Circular, Progress}
+export const enum PreloaderType {Text = 1, Linear, Circular, Progress}
 
 export interface PreloaderProps extends BaseComponentProps {
     show: boolean;
+    type?: PreloaderType;
     message?: string;
 }
 
@@ -33,6 +34,6 @@ export class Preloader extends PureComponent<PreloaderProps, null> {
                         {message ? <p>{message}</p> : null}
                     </div>
                 </div>
-            </Dialog> : null;
+            </Dialog> : <Dialog show={false}/>;
     }
 }

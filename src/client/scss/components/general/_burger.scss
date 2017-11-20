@@ -13,6 +13,8 @@ $burger-item-height: 3px;
     width: $burger-width + ($header-padding/2);
     height: $burger-width - 1;
     overflow: hidden;
+    outline: 0 !important;
+
     > span {
         position: relative;
         #{$float}: 0;
