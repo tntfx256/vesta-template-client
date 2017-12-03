@@ -5,8 +5,8 @@ import {Dispatcher} from "../../service/Dispatcher";
 import {Menu, MenuItem} from "./Menu";
 import {IUser} from "../../cmn/models/User";
 import {Avatar} from "./Avatar";
-import {Util} from "../../util/Util";
 import {Icon} from "./Icon";
+import {getFileUrl} from "../../util/Util";
 
 export interface SideNavContentProps extends BaseComponentProps {
     name: string;
@@ -25,17 +25,18 @@ export class SidenavContent extends PureComponent<SideNavContentProps, null> {
     public render() {
         let {user, menuItems} = this.props;
         user = user || {};
-        const editLink = user && user.id ? <Link to="/profile" onClick={this.closeSidenav}><Icon name="setting"/></Link> : null;
-            let userImage = null;
+        const editLink = user && user.id ?
+            <Link to="/profile" onClick={this.closeSidenav}><Icon name="settings"/></Link> : null;
+        let userImage: string = '';
         if (user.image) {
-            userImage = Util.getFileUrl(`user/${user.image}`);
+            userImage = getFileUrl(`user/${user.image}`);
         }
         return (
             <div className="sidenav-content">
                 <header>
-                    <Avatar src={userImage as string} defaultSrc="img/vesta-logo.png"/>
+                    <Avatar src={userImage} defaultSrc="img/vesta-logo.png"/>
                     <div className="name-wrapper">
-                        <h4>{user.name}</h4>
+                        <h4>{user.username}</h4>
                         {editLink}
                     </div>
                 </header>

@@ -3,6 +3,9 @@ import {withRouter} from "react-router";
 import {BaseComponentProps} from "../BaseComponent";
 import {Link} from "react-router-dom";
 import {Burger} from "./Burger";
+import {DevicePlugin} from "../../plugin/DevicePlugin";
+
+export enum NavBarMainButtonType {Burger = 1, Back, Close}
 
 export interface NavbarProps extends BaseComponentProps {
     title?: string;
@@ -11,17 +14,19 @@ export interface NavbarProps extends BaseComponentProps {
     backAction?: (e) => void;
     showBurger?: boolean;
     hide?: boolean;
+    mainButtonType?: NavBarMainButtonType;
 }
 
 class Navbar extends PureComponent<NavbarProps, null> {
-
     //<android>
+    private pathToExitApps = ['/', '/login'];
+
     public componentDidMount() {
-        document.addEventListener("backbutton", this.goBack, false);
+        DevicePlugin.getInstance().registerBackButtonHandler(this.goBack);
     }
 
     public componentWillUnmount() {
-        document.removeEventListener("backbutton", this.goBack);
+        DevicePlugin.getInstance().unregisterBackButtonHandler(this.goBack);
     }
 
     //</android>
@@ -34,23 +39,27 @@ class Navbar extends PureComponent<NavbarProps, null> {
         }
         const {history, backLink} = this.props;
         if (backLink) return history.replace(backLink);
-        //<cordova>
-        if (this.props.location.pathname == '/') {
+        //<android>
+        if (this.pathToExitApps.indexOf(this.props.location.pathname) >= 0) {
             return navigator['app'].exitApp();
         }
-        //</cordova>
+        //</android>
         if (history.length) return history.goBack();
         history.replace('/');
     }
 
     public render() {
-        let {title, className, backLink, showBurger, hide, backAction} = this.props;
+        let {title, className, backLink, showBurger, hide, backAction, mainButtonType} = this.props;
         if (hide) return null;
         className = `navbar ${className || ''}`;
         title = title || '';
+        let btnClassName = 'back-btn';
+        if (mainButtonType == NavBarMainButtonType.Close) {
+            btnClassName = 'close-btn';
+        }
         let navBtn = (showBurger || location.pathname == '/') && !backLink && !backAction ?
             <Burger className="nav-btn" event="main-sidenav-toggle"/> :
-            <Burger className="nav-btn back-btn" onClick={this.goBack}/>;
+            <Burger className={`nav-btn ${btnClassName}`} onClick={this.goBack}/>;
 
         return (
             <div className={className}>

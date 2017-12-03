@@ -14,7 +14,7 @@ module.exports = function (setting) {
     gulp.task('client:sw', () => {
         if (setting.is(setting.target, 'cordova')) return;
         let target = setting.buildPath(setting.target);
-        let serviceWorkers = ['service-worker.js'];
+        let serviceWorkers = ['service-worker.js', 'OneSignalSDKWorker.js', 'OneSignalSDKUpdaterWorker.js'];
         let timestamp = Date.now();
         for (let i = 0, il = serviceWorkers.length; i < il; ++i) {
             setting.findInFileAndReplace(`${dir.srcClient}/${serviceWorkers[i]}`, /__TIMESTAMP__/g, timestamp, `${dir.buildClient}/${target}`);

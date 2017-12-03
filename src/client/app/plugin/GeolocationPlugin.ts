@@ -1,53 +1,59 @@
 import {ConfigService} from "../service/ConfigService";
-import {LogService} from "../service/LogService";
-import {ILocation} from "../cmn/models/GeoLocation";
 import {StorageService} from "../service/StorageService";
-import {NotificationService} from "../service/NotificationService";
+import {ILocation} from "../util/Geo";
 
 export class GeolocationPlugin {
-    private static instance: GeolocationPlugin;
     private static LocationKey = 'last-location';
-    private defaultLocation: ILocation = ConfigService.get<ILocation>('defaultLocation');
-    private defaultDelayToGetLocation = 10000;
-    private notif = NotificationService.getInstance();
+    private defaultLocation: ILocation;
+    private static timeout = 5000;
+    private static isValid = false;
+    private static preventLocation = false;
 
-    private constructor() {
-    }
-
-    public getCurrentLocation(): Promise<ILocation> {
-        let defaultLocation = StorageService.get<ILocation>(GeolocationPlugin.LocationKey);
-        if (!defaultLocation || !defaultLocation.lat) {
-            defaultLocation = this.defaultLocation;
-        }
+    public static getCurrentLocation(): Promise<ILocation> {
+        let defaultLocation = GeolocationPlugin.getLatestLocation();
         return new Promise<ILocation>((resolve, reject) => {
+            if (GeolocationPlugin.preventLocation) {
+                return reject({message: 'geo_prevent'});
+            }
             if (!navigator.geolocation) {
-                LogService.error('Not supported!', 'getCurrentLocation', 'GeolocationPlugin');
-                this.notif.warning('warn_enable_gps');
-                return resolve(defaultLocation);
+                // geolocation is not available
+                return reject({message: 'geo_not_supported'});
             }
             navigator.geolocation.getCurrentPosition((pos) => {
+                GeolocationPlugin.isValid = true;
                 let location = {
                     lat: pos.coords.latitude,
                     lng: pos.coords.longitude
                 };
+                if (!location.lat && !location.lng) {
+                    location = defaultLocation;
+                    GeolocationPlugin.isValid = false;
+                }
                 StorageService.set(GeolocationPlugin.LocationKey, location);
                 resolve(location);
-            }, (e) => {
-                LogService.error(e.message, 'getCurrentLocation', 'GeolocationPlugin');
-                resolve(defaultLocation);
-            }, {
-                enableHighAccuracy: false,
-                timeout: this.defaultDelayToGetLocation,
-                maximumAge: 90000
+            }, reject, {
+                enableHighAccuracy: true,
+                timeout: GeolocationPlugin.timeout,
+                maximumAge: GeolocationPlugin.timeout
             });
 
         });
     }
 
-    public static getInstance(): GeolocationPlugin {
-        if (!GeolocationPlugin.instance) {
-            GeolocationPlugin.instance = new GeolocationPlugin();
+    public static isLocationValid(): boolean {
+        return GeolocationPlugin.isValid;
+    }
+
+    public static preventGettingLocation(prevent: boolean) {
+        GeolocationPlugin.preventLocation = prevent;
+    }
+
+    public static getLatestLocation(): ILocation {
+        const defaultLocation = ConfigService.get<ILocation>('defaultLocation');
+        let lastLocation = StorageService.get<ILocation>(GeolocationPlugin.LocationKey);
+        if (!lastLocation || !lastLocation.lat) {
+            lastLocation = defaultLocation;
         }
-        return GeolocationPlugin.instance;
+        return lastLocation;
     }
 }

@@ -42,14 +42,14 @@ $page-center-form-padding: 30px 30px 15px 30px;
         overflow: hidden;
         border: $logo-border-size solid transparentize($white, .3);
         img {
-            width: auto;
-            height: 100%;
+            width: 100%;
+            height: auto;
         }
     }
 
     .form-wrapper {
         width: 90%;
-        max-width: $layout-medium-max;
+        max-width: $layout-medium-min;
         margin: auto;
         background: transparentize($white, 0);
         border-radius: $border-radius;

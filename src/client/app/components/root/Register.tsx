@@ -1,9 +1,15 @@
-import * as React from "react";
+import React from "react";
 import {Link} from "react-router-dom";
 import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
 import Navbar from "../general/Navbar";
 import {IUser, User} from "../../cmn/models/User";
-import {FieldValidationMessage, ModelValidationMessage, Util} from "../../util/Util";
+import {
+    FieldValidationMessage,
+    getFileUrl,
+    ModelValidationMessage,
+    shallowClone,
+    validationMessage
+} from "../../util/Util";
 import {FormWrapper} from "../general/form/FormWrapper";
 import {FormTextInput} from "../general/form/FormTextInput";
 import {Preloader} from "../general/Preloader";
@@ -52,13 +58,13 @@ export class Register extends PageComponent<RegisterProps, RegisterState> {
     }
 
     public render() {
-        const user = Util.shallowClone(this.state.user);
-        user.image = Util.getFileUrl(user.image as string);
+        const user = shallowClone(this.state.user);
+        user.image = getFileUrl(user.image as string);
         const requiredErrorMessage = this.tr('err_required');
         const formErrorsMessages: ModelValidationMessage = {
-            name: {
+            username: {
                 required: requiredErrorMessage,
-                minLength: this.tr('err_min_length', 2),
+                minLength: this.tr('err_min_length', 4),
                 maxLength: this.tr('err_max_length', 64)
             },
             mobile: {
@@ -67,7 +73,7 @@ export class Register extends PageComponent<RegisterProps, RegisterState> {
             }
         };
         const {validationErrors} = this.state;
-        const errors: FieldValidationMessage = validationErrors ? Util.validationMessage(formErrorsMessages, validationErrors) : {};
+        const errors: FieldValidationMessage = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
 
         return (
             <div className="page register-page has-navbar page-logo-form">
@@ -79,8 +85,8 @@ export class Register extends PageComponent<RegisterProps, RegisterState> {
                     </div>
                 </div>
                 <FormWrapper onSubmit={this.onSubmit}>
-                    <FormTextInput name="name" label={this.tr('fld_name')} value={user.name}
-                                   error={errors.name} onChange={this.onChange} placeholder={true}/>
+                    <FormTextInput name="username" label={this.tr('fld_username')} value={user.username}
+                                   error={errors.username} onChange={this.onChange} placeholder={true}/>
                     <FormTextInput name="mobile" label={this.tr('fld_mobile')} value={user.mobile}
                                    error={errors.mobile} onChange={this.onChange} type="tel" placeholder={true}/>
                     <div className="btn-group">

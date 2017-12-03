@@ -11,7 +11,6 @@ export const Icon = (props: IconProps) => {
     const {name, size, onClick} = props;
     let sizeClass = size ? ` size-${size}` : '';
     return (
-        <span className={`icon icon-${name}${sizeClass}`} onClick={onClick}>
-        </span>
+        <span className={`icon${sizeClass}`} onClick={onClick}>{name}</span>
     )
 };

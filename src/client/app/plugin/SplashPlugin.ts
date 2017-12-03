@@ -1,43 +1,20 @@
-import {LogService} from "../service/LogService";
-
 /**
  * cordova-plugin-splashscreen
  */
 export class SplashPlugin {
-    private splash: any;
 
-    constructor() {
-        //<development>
-        if (!window.navigator || !window.navigator.splashscreen) {
-            LogService.error('Keyboard is not defined');
-        } else
-        //</development>
-            this.splash = navigator.splashscreen;
+    public static show() {
+        document.body.classList.add('has-splash');
+        //<cordova>
+        // we always display our fake splash; so cordova splash must be hidden
+        navigator.splashscreen.hide();
+        //</cordova>
     }
 
-    hide() {
-        //<development>
-        if (!this.check('hide')) return;
-        //</development>
-        this.splash.hide();
+    public static hide() {
+        //<cordova>
+        navigator.splashscreen.hide();
+        //</cordova>
+        document.body.classList.remove('has-splash');
     }
-
-    show() {
-        //<development>
-        if (!this.check('show')) return;
-        //</development>
-        this.splash.show();
-    }
-
-
-    //<development>
-    private check(method): boolean {
-        if ('undefined' == typeof Keyboard) {
-            LogService.error(`Keyboard is not defined: ${method}`);
-            return false
-        }
-        return true;
-    }
-
-    //</development>
 }

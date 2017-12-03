@@ -1,5 +1,5 @@
 {
-  "name": "vesta-server",
+  "name": "vesta-client-server",
   "version": "0.1.0",
   "license": "UNLICENSED",
   "main": "./app.js",

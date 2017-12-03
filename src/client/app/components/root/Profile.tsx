@@ -5,15 +5,20 @@ import {IValidationError} from "../../cmn/core/Validator";
 import Navbar from "../general/Navbar";
 import {Avatar} from "../general/Avatar";
 import {IUser, User, UserGender} from "../../cmn/models/User";
-import {AuthService} from "../../service/AuthService";
-import {FieldValidationMessage, ModelValidationMessage, Util} from "../../util/Util";
 import {FormOption, FormWrapper} from "../general/form/FormWrapper";
 import {FormTextInput} from "../general/form/FormTextInput";
 import {FormSelect} from "../general/form/FormSelect";
-import {FormTextArea} from "../general/form/FormTextArea";
 import {Preloader} from "../general/Preloader";
 import {IRole} from "../../cmn/models/Role";
 import {FormDateTimeInput} from "../general/form/FormDateTimeInput";
+import {AuthService} from "../../service/AuthService";
+import {
+    FieldValidationMessage,
+    getFileUrl,
+    ModelValidationMessage,
+    shallowClone,
+    validationMessage
+} from "../../util/Util";
 
 export interface ProfileParams {
 }
@@ -33,7 +38,7 @@ export class Profile extends PageComponent<ProfileProps, ProfileState> {
 
     constructor(props: ProfileProps) {
         super(props);
-        let user = Util.shallowClone(this.auth.getUser());
+        let user = shallowClone(this.auth.getUser());
         user.role = (user.role as IRole).id;
         this.state = {
             user,
@@ -83,6 +88,12 @@ export class Profile extends PageComponent<ProfileProps, ProfileState> {
             if (!user.password) {
                 delete validationErrors.password;
             }
+            //deleting file type error on cordova [file isNotInstanceOf File]
+            //<cordova>
+            if (validationErrors.image == "fileType") {
+                delete validationErrors.image;
+            }
+            //</cordova>
             if (Object.keys(validationErrors).length) {
                 return this.setState({validationErrors});
             }
@@ -101,7 +112,7 @@ export class Profile extends PageComponent<ProfileProps, ProfileState> {
                     this.setState({showLoader: false});
                     return this.updateUser(response);
                 }
-                this.api.upload<IUser>('user/file', userModel.id, userImage)
+                return this.api.upload<IUser>('user/file', userModel.id, userImage)
                     .then(response => {
                         this.setState({showLoader: false});
                         this.updateUser(response);
@@ -109,26 +120,31 @@ export class Profile extends PageComponent<ProfileProps, ProfileState> {
             })
             .catch(error => {
                 this.setState({showLoader: false, validationErrors: error.violations});
-                this.notif.error(this.tr(error.message));
+                this.notif.error(error.message);
             })
     }
 
     public render() {
         const {showLoader, validationErrors, imagePreview} = this.state;
-        const user = Util.shallowClone(this.state.user);
+        const user = shallowClone(this.state.user);
         let userImage = null;
-        if (user.image) {
-            userImage = Util.getFileUrl(`user/${user.image}`);
+        if (user.image && "string" == typeof user.image) {
+            userImage = getFileUrl(`user/${user.image}`);
         }
         const requiredErrorMessage = this.tr('err_required');
         const formErrorsMessages: ModelValidationMessage = {
-            name: {
+            firstName: {
+                required: requiredErrorMessage,
+                minLength: this.tr('err_min_length', 2),
+                maxLength: this.tr('err_max_length', 64)
+            },
+            lastName: {
                 required: requiredErrorMessage,
                 minLength: this.tr('err_min_length', 2),
                 maxLength: this.tr('err_max_length', 64)
             },
             email: {
-                email: this.tr('err_email')
+                type: this.tr('err_email')
             },
             password: {
                 required: requiredErrorMessage,
@@ -144,15 +160,12 @@ export class Profile extends PageComponent<ProfileProps, ProfileState> {
             image: {
                 maxSize: this.tr('err_file_size', 6144),
                 fileType: this.tr('err_file_type')
-            },
-            desc: {
-                maxLength: this.tr('err_max_length', 512)
             }
         };
         const genderOptions: Array<FormOption> = [
             {value: UserGender.Male, title: this.tr('enum_male')},
             {value: UserGender.Female, title: this.tr('enum_female')}];
-        const errors: FieldValidationMessage = validationErrors ? Util.validationMessage(formErrorsMessages, validationErrors) : {};
+        const errors: FieldValidationMessage = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
 
         return (
             <div className="page profile-page has-navbar">
@@ -162,26 +175,25 @@ export class Profile extends PageComponent<ProfileProps, ProfileState> {
                     <div className="avatar-wrapper">
                         <Avatar src={imagePreview ? imagePreview : userImage as string}
                                 defaultSrc="img/vesta-logo.png">
-                            <button className="change-image">{this.tr('txt_change_image')}</button>
+                            <button className="change-image" type="button">{this.tr('txt_change_image')}</button>
                             <input className="change-image" type="file" name="image" onChange={this.updateImage}/>
                         </Avatar>
                         <h2>{user.username}</h2>
                         <p>{user.mobile}</p>
                     </div>
+
                     <fieldset className="profile-form">
-                        <FormTextInput name="name" label={this.tr('fld_name')} value={user.name} placeholder={true}
-                                       error={errors.name} onChange={this.onChange}/>
+                        <FormTextInput name="firstName" label={this.tr('fld_firstname')} value={user.firstName}
+                                       placeholder={true} error={errors.firstName} onChange={this.onChange}/>
+                        <FormTextInput name="lastName" label={this.tr('fld_lastname')} value={user.lastName}
+                                       placeholder={true} error={errors.lastName} onChange={this.onChange}/>
                         <FormTextInput name="email" label={this.tr('fld_email')} value={user.email} placeholder={true}
-                                       error={errors.email} onChange={this.onChange} type="email"/>
+                                       error={errors.email} onChange={this.onChange} type="email" dir="ltr"/>
                         <FormSelect name="gender" label={this.tr('fld_gender')} value={user.gender} placeholder={true}
                                     error={errors.gender} onChange={this.onChange} options={genderOptions}/>
-                        <FormTextArea name="desc" label={this.tr('fld_desc')} value={user.desc || ''} placeholder={true}
-                                      error={errors.desc} onChange={this.onChange}/>
                         <FormDateTimeInput name="birthDate" label={this.tr('fld_birth_date')} value={user.birthDate}
-                                           placeholder={true}
-                                           error={errors.birthDate} onChange={this.onChange}/>
+                                           placeholder={true} error={errors.birthDate} onChange={this.onChange}/>
                     </fieldset>
-
 
                     <fieldset className="profile-form">
                         <legend>{this.tr('txt_change_pass')}</legend>
@@ -191,6 +203,7 @@ export class Profile extends PageComponent<ProfileProps, ProfileState> {
                         <FormTextInput name="confPassword" label={this.tr('fld_conf_password')} placeholder={true}
                                        value={user['confPassword']} onChange={this.onChange} type="password"/>
                     </fieldset>
+
                     <div className="btn-group">
                         <button type="submit" className="btn btn-primary">{this.tr('update')}</button>
                     </div>

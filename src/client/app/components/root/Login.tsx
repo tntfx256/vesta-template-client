@@ -6,7 +6,7 @@ import {IUser, User} from "../../cmn/models/User";
 import {Preloader} from "../general/Preloader";
 import {FormWrapper} from "../general/form/FormWrapper";
 import {FormTextInput} from "../general/form/FormTextInput";
-import {FieldValidationMessage, ModelValidationMessage, Util} from "../../util/Util";
+import {FieldValidationMessage, ModelValidationMessage, validationMessage} from "../../util/Util";
 import {Alert} from "../general/Alert";
 import {AuthService} from "../../service/AuthService";
 import {IValidationError} from "../../cmn/core/Validator";
@@ -32,6 +32,13 @@ export class Login extends PageComponent<LoginProps, LoginState> {
         this.state = {showLoader: false, user: {}, error: ''};
     }
 
+    public componentDidMount() {
+        if (!this.auth.isGuest()) {
+            // if it's a user logout first
+            this.props.history.replace('/logout');
+        }
+    }
+
     private onChange = (name: string, value: string) => {
         this.state.user[name] = value;
         this.setState({user: this.state.user});
@@ -39,12 +46,12 @@ export class Login extends PageComponent<LoginProps, LoginState> {
 
     private onSubmit = () => {
         let user = new User(this.state.user);
-        let validationResult = user.validate('mobile', 'password');
+        let validationResult = user.validate('username', 'password');
         if (validationResult) {
             return this.setState({validationErrors: validationResult});
         }
         this.setState({showLoader: true, validationErrors: null});
-        this.api.post<IUser>('account/login', user.getValues('mobile', 'password'))
+        this.api.post<IUser>('account/login', user.getValues('username', 'password'))
             .then(response => {
                 this.auth.login(response.items[0]);
                 this.props.history.replace('/');
@@ -57,11 +64,12 @@ export class Login extends PageComponent<LoginProps, LoginState> {
     }
 
     public render() {
-        const user = this.state.user;
+        const {validationErrors, showLoader, error, user} = this.state;
         const formErrorsMessages: ModelValidationMessage = {
-            mobile: {
+            username: {
                 required: this.tr('err_required'),
-                type: this.tr('err_phone')
+                minLength: this.tr('err_min_length', 4),
+                maxLength: this.tr('err_max_length', 16)
             },
             password: {
                 required: this.tr('err_required'),
@@ -69,12 +77,12 @@ export class Login extends PageComponent<LoginProps, LoginState> {
                 maxLength: this.tr('err_max_length', 16)
             }
         };
-        let errors: FieldValidationMessage = this.state.validationErrors ? Util.validationMessage(formErrorsMessages, this.state.validationErrors) : {};
-        let loginErr = this.state.error ? <Alert type="error">{this.tr('err_wrong_user_pass')}</Alert> : null;
+        let errors: FieldValidationMessage = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
+        let loginErr = error ? <Alert type="error">{this.tr('err_wrong_user_pass')}</Alert> : null;
         return (
             <div className="page login-page has-navbar page-logo-form">
                 <Navbar className="navbar-transparent" showBurger={true}/>
-                <Preloader show={this.state.showLoader}/>
+                <Preloader show={showLoader}/>
                 <div className="logo-wrapper">
                     <div className="logo-container">
                         <img src="img/vesta-logo.png" alt="Vesta Logo"/>
@@ -82,8 +90,8 @@ export class Login extends PageComponent<LoginProps, LoginState> {
                 </div>
                 <FormWrapper name="loginForm" onSubmit={this.onSubmit}>
                     {loginErr}
-                    <FormTextInput name="mobile" label={this.tr('fld_mobile')} value={user.mobile}
-                                   error={errors.mobile} onChange={this.onChange} placeholder={true} type="tel"/>
+                    <FormTextInput name="username" label={this.tr('fld_username')} value={user.username}
+                                   error={errors.username} onChange={this.onChange} placeholder={true}/>
                     <FormTextInput name="password" label={this.tr('fld_password')} value={user.password} type="password"
                                    error={errors.password} onChange={this.onChange} placeholder={true}/>
                     <p className="forget-link">

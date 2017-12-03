@@ -35,7 +35,7 @@ function checkScripts() {
     for (let i = scriptsToCheck.length; i--;) {
         if (!(scriptsToCheck[i] in window)) {
             // check every 500ms
-            return setTimeout(checkScripts, 500);
+            return setTimeout(checkScripts, 300);
         }
     }
     startApp();
@@ -44,7 +44,6 @@ function checkScripts() {
 //</cordova>
 
 function startApp() {
-    document.body.classList.remove('has-splash');
     let client = new ClientApp();
     client.init();
     client.run();
