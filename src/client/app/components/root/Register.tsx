@@ -41,12 +41,12 @@ export class Register extends PageComponent<RegisterProps, RegisterState> {
 
     private onSubmit = () => {
         let user = new User(this.state.user);
-        let validationErrors = user.validate('name', 'mobile');
+        let validationErrors = user.validate('username', 'password');
         if (validationErrors) {
             return this.setState({validationErrors});
         }
         this.setState({showLoader: true, validationErrors: null});
-        this.api.post<IUser>('account', user.getValues('name', 'mobile'))
+        this.api.post<IUser>('account', user.getValues('username', 'password'))
             .then(response => {
                 this.setState({showLoader: false});
                 this.notif.success('msg_register_ok');
@@ -67,9 +67,10 @@ export class Register extends PageComponent<RegisterProps, RegisterState> {
                 minLength: this.tr('err_min_length', 4),
                 maxLength: this.tr('err_max_length', 64)
             },
-            mobile: {
+            password: {
                 required: requiredErrorMessage,
-                type: this.tr('err_phone')
+                minLength: this.tr('err_min_length', 6),
+                assert: this.tr('err_max_length', 16)
             }
         };
         const {validationErrors} = this.state;
@@ -86,9 +87,10 @@ export class Register extends PageComponent<RegisterProps, RegisterState> {
                 </div>
                 <FormWrapper onSubmit={this.onSubmit}>
                     <FormTextInput name="username" label={this.tr('fld_username')} value={user.username}
-                                   error={errors.username} onChange={this.onChange} placeholder={true}/>
-                    <FormTextInput name="mobile" label={this.tr('fld_mobile')} value={user.mobile}
-                                   error={errors.mobile} onChange={this.onChange} type="tel" placeholder={true}/>
+                                   error={errors.username} onChange={this.onChange} placeholder={true} dir="ltr"/>
+                    <FormTextInput name="password" label={this.tr('fld_password')} value={user.password}
+                                   error={errors.password} onChange={this.onChange} type="password" placeholder={true}
+                                   dir="ltr"/>
                     <div className="btn-group">
                         <button type="submit" className="btn btn-primary">{this.tr('register')}</button>
                         <br/>
