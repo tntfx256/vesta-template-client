@@ -1,11 +1,10 @@
-let gulp = require('gulp');
-let fs = require('fs');
-let webpack = require('webpack');
-let webConnect = require('gulp-connect');
-let open = require('open');
-let electronServer = require('electron-connect').server;
-let eliminator = require('./plugins/eliminator');
-let bundler = require('./plugins/bundler');
+const gulp = require('gulp');
+const fs = require('fs-extra');
+const webpack = require('webpack');
+const webConnect = require('gulp-connect');
+const eliminator = require('./plugins/eliminator');
+const bundler = require('./plugins/bundler');
+const electronServer = require('electron-connect').server;
 
 module.exports = function (setting) {
     let dir = setting.dir;
@@ -16,8 +15,10 @@ module.exports = function (setting) {
         let target = setting.buildPath(setting.target);
         let serviceWorkers = ['service-worker.js', 'OneSignalSDKWorker.js', 'OneSignalSDKUpdaterWorker.js'];
         let timestamp = Date.now();
+        const files = getFilesList(`${dir.buildClient}/${target}`, '').join('","');
         for (let i = 0, il = serviceWorkers.length; i < il; ++i) {
             setting.findInFileAndReplace(`${dir.srcClient}/${serviceWorkers[i]}`, /__TIMESTAMP__/g, timestamp, `${dir.buildClient}/${target}`);
+            setting.findInFileAndReplace(`${dir.buildClient}/${target}/${serviceWorkers[i]}`, "__FILES__", `"${files}"`, `${dir.buildClient}/${target}`);
         }
     });
 
@@ -25,15 +26,14 @@ module.exports = function (setting) {
         setting.clean(tmpClient);
         bundler(setting, getEntry(`${setting.dir.srcClient}/app`), tmpClient);
         return gulp.src(`${tmpClient}/**/*.ts*`)
-            .pipe(eliminator(setting, setting.target))
+            .pipe(eliminator(setting))
             .pipe(gulp.dest(tmpClient))
     });
 
-    gulp.task('client:build', ['client:preBuild', 'client:sw'], () => {
-        // copying conf.var to target on production mode
-        if (setting.production && !setting.is(setting.target, 'web')) {
-            fs.copyFileSync(`${setting.dir.resource}/gitignore/config.var.ts`,
-                `${tmpClient}/client/app/config/config.var.ts`);
+    gulp.task('client:build', ['client:preBuild'], () => {
+        // copying conf.var to target on production mode [in case of not using deploy system]
+        if (setting.production) {
+            fs.copySync(`${setting.dir.resource}/gitignore/config.var.ts`, `${tmpClient}/client/app/config/config.var.ts`);
         }
         let webpackConfig = getWebpackConfig();
         const compiler = webpack(webpackConfig);
@@ -79,12 +79,16 @@ module.exports = function (setting) {
     });
 
     gulp.task(`client:watch`, () => {
-        gulp.watch([`${dir.srcClient}/**/*.ts*`], [`client:build`]);
+        gulp.watch([`${dir.srcClient}/**/*.ts*`], [`client:build`, `client:sw`]);
+    });
+
+    gulp.task(`sw:watch`, () => {
+        gulp.watch([`${dir.srcClient}/*.js`], [`client:sw`]);
     });
 
     return {
-        watch: ['client:watch'],
-        tasks: ['client:build', 'client:run']
+        watch: ['client:watch', 'sw:watch'],
+        tasks: ['client:build', "client:sw", 'client:run']
     };
 
     function getWebpackConfig() {
@@ -104,17 +108,24 @@ module.exports = function (setting) {
         if (setting.production) {
             plugins = plugins.concat([
                 new webpack.DefinePlugin({
-                    'process.env': {NODE_ENV: '"production"'}
+                    'process.env': {
+                        NODE_ENV: '"production"'
+                    }
                 }),
                 new webpack.LoaderOptionsPlugin({
                     minimize: true,
                     debug: false
-                }),
-                new webpack.optimize.UglifyJsPlugin({
-                    sourceMap: false,
-                    warnings: false,
                 })
             ]);
+            // cordova has some issues with uglify plugin
+            if (!setting.is(setting.target, 'cordova')) {
+                plugins = plugins.concat([
+                    new webpack.optimize.UglifyJsPlugin({
+                        sourceMap: false,
+                        warnings: false,
+                    })
+                ]);
+            }
         }
         let target = setting.buildPath(setting.target);
         return {
@@ -130,9 +141,15 @@ module.exports = function (setting) {
                 extensions: [".ts", ".tsx", ".js", ".json"]
             },
             module: {
-                rules: [
-                    {test: /\.tsx?$/, loader: `awesome-typescript-loader?sourceMap=${!setting.production}`},
-                    {enforce: "pre", test: /\.js$/, loader: "source-map-loader"}
+                rules: [{
+                        test: /\.tsx?$/,
+                        loader: `awesome-typescript-loader?sourceMap=${!setting.production}`
+                    },
+                    {
+                        enforce: "pre",
+                        test: /\.js$/,
+                        loader: "source-map-loader"
+                    }
                 ]
             },
             plugins,
@@ -153,15 +170,12 @@ module.exports = function (setting) {
 
     function runWebServer(wwwRoot) {
         let assets = `${wwwRoot}/**/*`;
-        let url = `http://localhost:${setting.port.http}`;
 
         webConnect.server({
             root: [wwwRoot],
             livereload: true,
             port: setting.port.http
         });
-
-        setTimeout(open.bind(null, url), 1000);
 
         gulp.watch([assets], function () {
             gulp.src(assets).pipe(webConnect.reload());
@@ -185,5 +199,18 @@ module.exports = function (setting) {
 
     function runCordovaApp(wwwRoot) {
         // spawn('../../../node_modules/.bin/phonegap', ['serve'], {cwd: `${wwwRoot}/..`, stdio: 'inherit'})
+    }
+
+    function getFilesList(dir, base) {
+        let files = [];
+        const thisList = fs.readdirSync(dir);
+        for (let i = 0, il = thisList.length; i < il; ++i) {
+            if (thisList[i].match(/\.[a-z0-9]+$/i)) {
+                files.push(`${base}${thisList[i]}`);
+            } else {
+                files = files.concat(getFilesList(`${dir}/${thisList[i]}`, `${base}${thisList[i]}/`));
+            }
+        }
+        return files;
     }
 };

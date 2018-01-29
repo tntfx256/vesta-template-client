@@ -1,42 +1,42 @@
 import React from "react";
-import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
+import {PageComponent, IPageComponentProps} from "../PageComponent";
 import {IUser} from "../../cmn/models/User";
 import {AuthService} from "../../service/AuthService";
 import {NotificationPlugin} from "../../plugin/NotificationPlugin";
 import {Preloader} from "../general/Preloader";
+import {LogService} from "../../service/LogService";
 
 export interface LogoutParams {
 }
 
-export interface LogoutProps extends PageComponentProps<LogoutParams> {
+export interface LogoutProps extends IPageComponentProps<LogoutParams> {
 }
 
-export interface LogoutState extends PageComponentState {
+export interface LogoutState {
 }
 
 export class Logout extends PageComponent<LogoutProps, LogoutState> {
-    private auth = AuthService.getInstance();
     private notifPlugin = NotificationPlugin.getInstance();
 
-    private onAfterLogout() {
+    private onAfterLogout(user: IUser) {
         this.auth.logout();
-        // this.notifPlugin.logoutToken();
+        this.auth.login(user);
+        this.props.history.replace('/');
     }
 
     public componentDidMount() {
         if (this.auth.isGuest()) {
-            return this.props.history.push('/');
+            return this.props.history.replace('/');
         }
 
-        this.api.get<IUser>('account/logout')
+        this.notifPlugin.deleteToken()
+            .then(() => this.api.get<IUser>('account/logout'))
             .then(response => {
-                this.onAfterLogout();
-                this.auth.login(response.items[0]);
-                this.props.history.push('/login');
+                this.onAfterLogout(response.items[0]);
             })
-            .catch(err => {
-                this.props.history.push('/login');
-                this.notif.error(err.message);
+            .catch(error => {
+                LogService.error(error, 'componentDidMount', 'Logout');
+                this.onAfterLogout({});
             });
     }
 

@@ -26,13 +26,14 @@ $form-error-padding: 5px;
 }
 
 .form-error {
-    padding: $form-error-padding;
+    padding: 0 $form-error-padding;
     position: absolute;
     color: $color-error;
     text-align: end;
     font-size: $font-size-small;
-    top: -1 * ceil($form-control-height / 3);
+    top: -1 * floor($form-control-height / 3);
     #{$opposite-float}: 0;
+    background: $white;
 }
 
 .form-group {
@@ -40,8 +41,9 @@ $form-error-padding: 5px;
     padding: $form-group-padding;
     position: relative;
     display: flex;
-    justify-content: space-around;
-    align-items: flex-end;
+    justify-content: center;
+    align-items: center;
+
     label {
         margin-#{$opposite-float}: 10px;
         white-space: nowrap;

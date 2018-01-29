@@ -41,20 +41,20 @@ $slider-transition-effect: $transition-effect-default;
         }
     }
 
-    &.slide-left {
-        .slider-item:not(.visible) {
-            @include translate3d(100%, 0, 0);
-        }
+    img.slider-item {
+        height: auto;
     }
 
-    &.slide-right {
+    &.slide-left {
         .slider-item:not(.visible) {
             @include translate3d(-100%, 0, 0);
         }
     }
 
-    img.slider-item {
-        height: auto;
+    &.slide-right {
+        .slider-item:not(.visible) {
+            @include translate3d(100%, 0, 0);
+        }
     }
 
     &.no-bullets {

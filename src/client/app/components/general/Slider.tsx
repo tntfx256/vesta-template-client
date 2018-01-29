@@ -102,7 +102,7 @@ export class Slider extends PureComponent<SliderProps, null> {
         event.stopPropagation();
         let diff = onDragEnd - this.touchStartPosition;
         if (!diff) return;
-        this.onSliderChange(this.currentIndex + (diff > 0 ? 1 : -1));
+        this.onSliderChange(this.currentIndex + (diff < 0 ? 1 : -1));
         this.startInterval();
     }
 

@@ -23,7 +23,7 @@ export class FormTextArea extends PureComponent<FormTextAreaProps, null> {
             <div className={`form-group text-area${error ? ' has-error' : ''}`}>
                 {placeholder ? null : <label htmlFor={name}>{label}</label>}
                 <textarea className="form-control" name={name} id={name} placeholder={placeholder ? label : ''}
-                          value={value} onChange={this.onChange}/>
+                          value={value || ''} onChange={this.onChange}/>
                 <p className="form-error">{error || ''}</p>
             </div>
         )

@@ -1,40 +1,44 @@
-import {ComponentClass} from "react";
-import {IPermissionCollection} from "../service/AuthService";
-import {TranslateService} from "../service/TranslateService";
-import {Login} from "../components/root/Login";
-import {Home} from "../components/root/Home";
-import {Logout} from "../components/root/Logout";
-import {Forget} from "../components/root/Forget";
-import {Profile} from "../components/root/Profile";
-import {Register} from "../components/root/Register";
-import {Contact} from "../components/root/Contact";
-import {About} from "../components/root/About";
+import { ComponentClass } from "react";
+import { About } from "../components/root/About";
+import { Forget } from "../components/root/Forget";
+import { Home } from "../components/root/Home";
+import { Login } from "../components/root/Login";
+import { Logout } from "../components/root/Logout";
+import { Profile } from "../components/root/Profile";
+import { Register } from "../components/root/Register";
+import { Support } from "../components/root/Support";
+import { IPermissionCollection } from "../service/AuthService";
+import { TranslateService } from "../service/TranslateService";
 
-export interface RouteItem {
-    link: string;
-    title: string;
-    exact?: boolean;
+export interface IRouteItem {
     abstract?: boolean;
-    children?: Array<RouteItem>;
+    children?: Array<IRouteItem>;
     component?: ComponentClass<any>;
-    permissions?: IPermissionCollection;
-    // show/hide in menu list
+    exact?: boolean;
+    // show/hide this item in menu list
     hidden?: boolean;
+    // show icon on menu
+    icon?: string;
+    link: string;
+    permissions?: IPermissionCollection;
+    title: string;
 }
 
-export function getRoutes(isLoggedIn: boolean): Array<RouteItem> {
+export function getRoutes(isLoggedIn: boolean): Array<IRouteItem> {
     const tr = TranslateService.getInstance().translate;
-    return isLoggedIn ? [
-        {link: '', title: tr('home'), component: Home, exact: true},
-        {link: 'about', title: tr('about'), component: About},
-        {link: 'contact', title: tr('contact_us'), component: Contact},
-        {link: 'profile', title: tr('profile'), component: Profile, permissions: {user: ['read']}},
-        {link: 'logout', title: tr('logout'), component: Logout, permissions: {account: ['logout']}},
-    ] : [
-        {link: '', title: tr('home'), component: Home, exact: true},
-        {link: 'about', title: tr('about'), component: About},
-        {link: 'forget', title: tr('forget_pass'), component: Forget, permissions: {account: ['forget']}},
-        {link: 'login', title: tr('login'), component: Login, permissions: {account: ['login']}},
-        {link: 'register', title: tr('register'), component: Register, permissions: {account: ['register']}},
+    const commonRoutes = [
+        { link: "about", title: tr("about"), component: About },
+        { link: "contact", title: tr("contact_us"), component: Support },
     ];
+    return isLoggedIn ? [
+        { link: "", title: tr("home"), component: Home, exact: true },
+        ...commonRoutes,
+        { link: "profile", title: tr("profile"), component: Profile },
+        { link: "logout", title: tr("logout"), component: Logout },
+    ] : [
+            { link: "", title: tr("login"), component: Login, exact: true },
+            ...commonRoutes,
+            { link: "forget", title: tr("forget_pass"), component: Forget, hidden: true },
+            { link: "register", title: tr("register"), component: Register },
+        ];
 }

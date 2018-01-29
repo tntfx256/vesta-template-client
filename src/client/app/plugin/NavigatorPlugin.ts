@@ -1,7 +1,6 @@
-import {GeolocationPlugin} from "./GeolocationPlugin";
-import {ConfigService} from "../service/ConfigService";
-import {launchLink} from "../util/Util";
-import {ILocation} from "../util/Geo";
+import { ILocation } from "../cmn/interfaces/GeoLocation";
+import { launchLink } from "../util/Util";
+import { GeolocationPlugin } from "./GeolocationPlugin";
 
 /**
  * uk.co.workingedge.phonegap.plugin.launchnavigator
@@ -21,24 +20,22 @@ export class NavigatorPlugin {
         //</cordova>
     }
 
-    //<!cordova>
-    private static launchNavigator(destination: ILocation, source?: ILocation) {
-        let baseUrl = ConfigService.get('google-navigator-url');
-        let sourceQuery = source ? `origin=${source.lat},${source.lng}&` : '';
-        let link = `${baseUrl}${sourceQuery}destination=${destination.lat},${destination.lng}&travelmode=driving`;
-        launchLink(link);
-    }
-
-    //</cordova>
-
     //<cordova>
     private static launchCordovaNavigator(destination: ILocation, source?: ILocation) {
         let options = null;
         if (source) {
-            options = {start: [source.lat, source.lng]}
+            options = { start: [source.lat, source.lng] };
         }
         launchnavigator.navigate([destination.lat, destination.lng], options);
     }
+    //</cordova>
 
+    //<!cordova>
+    private static launchNavigator(destination: ILocation, source?: ILocation) {
+        const baseUrl = "https://www.google.com/maps/dir/?api=1&";
+        const sourceQuery = source ? `origin=${source.lat},${source.lng}&` : "";
+        const link = `${baseUrl}${sourceQuery}destination=${destination.lat},${destination.lng}&travelmode=driving`;
+        launchLink(link);
+    }
     //</cordova>
 }

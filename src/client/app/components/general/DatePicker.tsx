@@ -1,43 +1,69 @@
-import React, {Component} from "react";
-import {BaseComponentProps} from "../BaseComponent";
-import {Culture} from "../../cmn/core/Culture";
-import {DateTime} from "../../cmn/core/DateTime";
-import {TranslateService} from "../../service/TranslateService";
+import React, { Component } from "react";
+import { Culture, DateTime } from "../../medium";
+import { TranslateService } from "../../service/TranslateService";
+import { BaseComponentProps } from "../BaseComponent";
 
-export interface DatePickerProps extends BaseComponentProps {
-    value: string;
-    onChange: (value: string) => void;
-    onAbort: () => void;
+export interface IDatePickerProps extends BaseComponentProps {
     hasTime?: boolean;
+    onAbort: () => void;
+    onChange: (value: string) => void;
+    value: string;
 }
 
-export interface DatePickerState {
+export interface IDatePickerState {
 }
 
-export class DatePicker extends Component<DatePickerProps, DatePickerState> {
+export class DatePicker extends Component<IDatePickerProps, IDatePickerState> {
     private dateTime: DateTime = Culture.getDateTimeInstance();
-    private selectedDateTime = Culture.getDateTimeInstance();
     private dateTimeFormat = this.props.hasTime ? Culture.getLocale().defaultDateTimeFormat : Culture.getLocale().defaultDateFormat;
     private format;
-    private weekDayNames: Array<string> = [];
     private monthNames: Array<string> = [];
+    // the datePicker should render the month in which the selected date exist
+    private selectedDateTime = Culture.getDateTimeInstance();
     private tr = TranslateService.getInstance().translate;
-    private monthTimer;
-    private yearTimer;
-    private defaultRenderTimeout = 200;
+    private weekDayNames: Array<string> = [];
 
-    constructor(props: DatePickerProps) {
+    constructor(props: IDatePickerProps) {
         super(props);
-        let timestamp = this.dateTime.validate(props.value);
-        if (timestamp) {
-            this.dateTime.setTime(timestamp);
-            this.selectedDateTime.setTime(timestamp);
+        // dateTime validation, also sets the correct values
+        if (this.selectedDateTime.validate(props.value, props.hasTime)) {
+            this.dateTime.setTime(this.selectedDateTime.getTime());
+        } else {
+            this.selectedDateTime.setTime(this.dateTime.getTime());
         }
         this.state = {};
-        let locale = this.dateTime.locale;
+        const locale = this.dateTime.locale;
         this.format = locale.defaultDateFormat;
         this.weekDayNames = locale.weekDays;
         this.monthNames = locale.monthNames;
+    }
+
+    public render() {
+        const { onAbort, hasTime } = this.props;
+        const time = hasTime ? this.renderTime() : null;
+        return (
+            <div className="date-picker">
+                <div className="picker-wrapper">
+                    {this.renderHeader()}
+                    <table>
+                        <thead>
+                            <tr className="week-days-name">
+                                {this.renderWeekDaysHeader()}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {this.renderWeekDays()}
+                        </tbody>
+                    </table>
+                    {time}
+                    <div className="btn-group">
+                        <button type="button" className="btn btn-primary"
+                            onClick={this.onSubmit}>{this.tr("select")}</button>
+                        <button type="button" className="btn btn-default" onClick={onAbort}>{this.tr("cancel")}</button>
+                    </div>
+                </div>
+            </div>
+        );
     }
 
     private nextMonth = () => {
@@ -59,28 +85,27 @@ export class DatePicker extends Component<DatePickerProps, DatePickerState> {
         this.forceUpdate();
     }
 
-    private onYearSelect = () => {
-    }
+    private onYearSelect = () => { }
 
-    private onMonthSelect = () => {
-    }
+    private onMonthSelect = () => { }
 
     private onDaySelect = (e) => {
+        // this.dateTime holds the current month & year
         this.dateTime.setDate(+e.currentTarget.textContent);
         this.selectedDateTime.setTime(this.dateTime.getTime());
         this.forceUpdate();
     }
 
     private onHourSelect = (e) => {
-        let hour = +e.target.value;
-        this.dateTime.setHours(hour);
+        const hour = +e.target.value;
+        // this.dateTime.setHours(hour);
         this.selectedDateTime.setHours(hour);
         this.forceUpdate();
     }
 
     private onMinSelect = (e) => {
-        let minute = +e.target.value;
-        this.dateTime.setMinutes(minute);
+        const minute = +e.target.value;
+        // this.dateTime.setMinutes(minute);
         this.selectedDateTime.setMinutes(minute);
         this.forceUpdate();
     }
@@ -109,8 +134,8 @@ export class DatePicker extends Component<DatePickerProps, DatePickerState> {
     }
 
     private renderWeekDaysHeader() {
-        let row = [];
-        let weekDays = this.dateTime.locale.weekDaysShort;
+        const row = [];
+        const weekDays = this.dateTime.locale.weekDaysShort;
         for (let i = 0; i < 7; ++i) {
             row.push(<th key={i}>{weekDays[i]}</th>);
         }
@@ -118,26 +143,28 @@ export class DatePicker extends Component<DatePickerProps, DatePickerState> {
     }
 
     private renderWeekDays() {
-        let tmpDate = Culture.getDateTimeInstance();
+        const tmpDate = Culture.getDateTimeInstance();
         const isThisMonth = tmpDate.getFullYear() === this.dateTime.getFullYear() && tmpDate.getMonth() === this.dateTime.getMonth();
         const today = tmpDate.getDate();
+        //
         tmpDate.setFullYear(this.dateTime.getFullYear(), this.dateTime.getMonth(), 1);
         const isSelectedMonth = this.selectedDateTime.getFullYear() === this.dateTime.getFullYear() && this.selectedDateTime.getMonth() === this.dateTime.getMonth();
-        let rows = [];
+        const selectedDay = this.selectedDateTime.getDate();
+        const rows = [];
         let rowCounter = 1;
         let colCounter = 0;
-        let daysInMonth = this.dateTime.locale.daysInMonth[this.dateTime.getMonth()];
+        const daysInMonth = this.dateTime.locale.daysInMonth[this.dateTime.getMonth()];
         let row = [];
         // get weekDay first day of month
-        let firstWeekDayOfMonth = tmpDate.getDay();
+        const firstWeekDayOfMonth = tmpDate.getDay();
         // first row
         for (let i = 0; i < firstWeekDayOfMonth; ++i) {
             row.push(<td key={colCounter}>&nbsp;</td>);
             ++colCounter;
         }
         for (let i = 1; i <= daysInMonth; i++) {
-            let className = isThisMonth && i == today ? 'today' : '';
-            className = `${className}${isSelectedMonth && i == this.selectedDateTime.getDate() ? ' selected' : ''}`
+            let className = isThisMonth && i == today ? "today" : "";
+            className = `${className} ${isSelectedMonth && i == selectedDay ? "selected" : ""}`;
             row.push(<td key={colCounter} className={className} onClick={this.onDaySelect}><i>{i}</i></td>);
             ++colCounter;
             if (colCounter % 7 == 0) {
@@ -158,8 +185,8 @@ export class DatePicker extends Component<DatePickerProps, DatePickerState> {
     }
 
     private renderTime() {
-        const hour = this.dateTime.getHours();
-        const minute = this.dateTime.getMinutes();
+        const hour = this.selectedDateTime.getHours();
+        const minute = this.selectedDateTime.getMinutes();
         const hourSelect = [];
         for (let i = 0; i <= 23; ++i) {
             hourSelect.push(<option value={i} key={i}>{i}</option>);
@@ -171,40 +198,12 @@ export class DatePicker extends Component<DatePickerProps, DatePickerState> {
         return (
             <div className="time-select">
                 <div className="hour-select">
-                    <label>{this.tr('hour')}</label>
+                    <label>{this.tr("hour")}</label>
                     <select className="form-control" value={hour} onChange={this.onHourSelect}>{hourSelect}</select>
                 </div>
                 <div className="min-select">
                     <select className="form-control" value={minute} onChange={this.onMinSelect}>{minSelect}</select>
-                    <label>{this.tr('minute')}</label>
-                </div>
-            </div>
-        );
-    }
-
-    public render() {
-        const {onAbort, hasTime} = this.props;
-        const time = hasTime ? this.renderTime() : null;
-        return (
-            <div className="date-picker">
-                <div className="picker-wrapper">
-                    {this.renderHeader()}
-                    <table>
-                        <thead>
-                        <tr className='week-days-name'>
-                            {this.renderWeekDaysHeader()}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {this.renderWeekDays()}
-                        </tbody>
-                    </table>
-                    {time}
-                    <div className="btn-group">
-                        <button type="button" className="btn btn-primary"
-                                onClick={this.onSubmit}>{this.tr('select')}</button>
-                        <button type="button" className="btn btn-default" onClick={onAbort}>{this.tr('cancel')}</button>
-                    </div>
+                    <label>{this.tr("minute")}</label>
                 </div>
             </div>
         );

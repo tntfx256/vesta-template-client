@@ -1,14 +1,15 @@
-@import "misc/funcs";
-@import "misc/colors";
-@import "misc/variables";
-@import "misc/mixins";
-@import "fonts/material";
+@import 'misc/funcs';
+@import 'misc/colors';
+@import 'misc/variables';
+@import 'misc/mixins';
+@import 'misc/animation';
+@import 'fonts/material';
 ///<vesta:scssFont/>
 ///<vesta:scssLibrary/>
-@import "elements/global";
-@import "elements/button";
-@import "elements/form";
-@import "elements/frame";
+@import 'elements/global';
+@import 'elements/button';
+@import 'elements/form';
+@import 'elements/frame';
 ///<vesta:scssElement/>
 @import "components/page";
 @import "components/root";
@@ -48,4 +49,6 @@
 @import "components/root/register";
 @import "components/root/logout";
 @import "components/root/profile";
+@import "components/root/contact";
+@import "components/root/about";
 ///<vesta:scssPageComponent/>

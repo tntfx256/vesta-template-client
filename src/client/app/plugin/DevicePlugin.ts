@@ -1,6 +1,4 @@
-export interface BackButtonHandler {
-    (e: any): void;
-}
+export type BackButtonHandler = (e: any) => void;
 
 export class DevicePlugin {
     private static instance: DevicePlugin;
@@ -13,8 +11,8 @@ export class DevicePlugin {
 
     private onBackButton = (e) => {
         // calling the last registered handler
-        let handler = this.handlers.length && this.handlers[this.handlers.length - 1];
-        if (!handler) return;
+        const handler = this.handlers.length && this.handlers[this.handlers.length - 1];
+        if (!handler) { return; }
         handler(e);
     }
 

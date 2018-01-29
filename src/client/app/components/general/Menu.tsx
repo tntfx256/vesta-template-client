@@ -1,33 +1,46 @@
-import React, {PureComponent} from "react";
-import {Link} from "react-router-dom";
-import {RouteItem} from "../../config/route";
-import {BaseComponentProps} from "../BaseComponent";
+import React, { PureComponent } from "react";
+import { Link } from "react-router-dom";
+import { IRouteItem } from "../../config/route";
+import { BaseComponentProps } from "../BaseComponent";
+import { Icon } from "./Icon";
 
-export interface MenuItem extends RouteItem {
+export interface IMenuItem extends IRouteItem { }
 
-}
-
-export interface MenuProps extends BaseComponentProps {
-    name: string;
-    items: Array<MenuItem>;
-    onClick?: (e: MouseEvent) => boolean;
+interface IMenuProps extends BaseComponentProps {
     horizontal?: boolean;
+    items: Array<IMenuItem>;
+    name: string;
+    onClick?: (e: MouseEvent) => boolean;
 }
 
-export class Menu extends PureComponent<MenuProps, null> {
+export class Menu extends PureComponent<IMenuProps, null> {
+    public static defaultProps = { horizontal: false };
     private keyCounter = 1;
 
-    private renderMenuItems(routeItems: Array<RouteItem>, prefix: string) {
-        let {onClick} = this.props;
+    public render() {
+        const { name, items, horizontal } = this.props;
+        const menuItems = this.renderMenuItems(items, "");
+        const className = `menu ${name ? `${name}-menu` : ""} ${horizontal ? "menu-hr" : "menu-vr"}`;
+
+        return (
+            <nav className={className}>
+                <ul>{menuItems}</ul>
+            </nav>
+        );
+    }
+
+    private renderMenuItems(routeItems: Array<IRouteItem>, prefix: string) {
+        const { onClick } = this.props;
         let links = [];
         const routeCount = routeItems.length;
         for (let i = 0, il = routeCount; i < il; ++i) {
             const item = routeItems[i];
             if (!item.abstract && !item.hidden) {
-                let basePath = prefix ? `/${prefix}` : '';
+                const basePath = prefix ? `/${prefix}` : "";
+                const content = item.icon ? <Icon name={item.icon} /> : item.title;
                 links.push(
                     <li key={this.keyCounter++}>
-                        <Link to={`${basePath}/${item.link}`} onClick={onClick}>{item.title}</Link>
+                        <Link to={`${basePath}/${item.link}`} onClick={onClick}>{content}</Link>
                     </li>);
             }
             if (item.children) {
@@ -35,17 +48,5 @@ export class Menu extends PureComponent<MenuProps, null> {
             }
         }
         return links;
-    }
-
-    public render() {
-        let {name, items, horizontal} = this.props;
-        const menuItems = this.renderMenuItems(items, '');
-        const className = `menu-component ${name} ${horizontal ? 'horizontal' : 'vertical'}`;
-
-        return (
-            <nav className={className}>
-                <ul>{menuItems}</ul>
-            </nav>
-        )
     }
 }

@@ -1,48 +1,55 @@
 import React from "react";
-import {Link} from "react-router-dom";
-import {PageComponent, PageComponentProps, PageComponentState} from "../PageComponent";
+import { Link } from "react-router-dom";
+import { IContext } from "../../cmn/models/Context";
+import { StorageService } from "../../service/StorageService";
 import Navbar from "../general/Navbar";
-import {IContext} from "../../cmn/models/Context";
-import {StorageService} from "../../service/StorageService";
+import { IPageComponentProps, PageComponent } from "../PageComponent";
 
-export interface AboutParams {
+interface IAboutParams {
 }
 
-export interface AboutProps extends PageComponentProps<AboutParams> {
+interface IAboutProps extends IPageComponentProps<IAboutParams> {
 }
 
-export interface AboutState extends PageComponentState {
+interface IAboutState {
     text: string;
 }
 
-export class About extends PageComponent<AboutProps, AboutState> {
-    private static storageKey = 'about';
+export class About extends PageComponent<IAboutProps, IAboutState> {
+    private static storageKey = "about";
 
-    constructor(props: AboutProps) {
+    constructor(props: IAboutProps) {
         super(props);
-        let prevAbout = StorageService.get<AboutState>(About.storageKey);
-        this.state = {text: (prevAbout && prevAbout.text) || ''};
+        const prevAbout = StorageService.get<IAboutState>(About.storageKey);
+        this.state = { text: (prevAbout && prevAbout.text) || "" };
     }
 
     public componentDidMount() {
-        this.api.get<IContext>('context', {query: {key: About.storageKey}})
-            .then(response => {
-                if (!response.items.length) return;
-                let aboutText = response.items[0].value;
-                this.setState({text: aboutText});
-                StorageService.set<AboutState>(About.storageKey, {text: aboutText});
+        this.api.get<IContext>("context", { query: { key: About.storageKey } })
+            .then((response) => {
+                if (!response.items.length) { return; }
+                const aboutText = response.items[0].value;
+                this.setState({ text: aboutText });
+                StorageService.set<IAboutState>(About.storageKey, { text: aboutText });
             })
-            .catch(error => {
+            .catch((error) => {
                 this.notif.error(error.message);
-            })
+            });
     }
 
     public render() {
-        const {text} = this.state;
+        const { text } = this.state;
+        const rulesUrl = "https://autoapp.ir/terms-rules.html";
+        const privacyUrl = "https://autoapp.ir/privacy-policy.html";
+
         return (
             <div className="page about-page has-navbar">
-                <Navbar title={this.tr('about')} showBurger={true}/>
-                <div className="content" dangerouslySetInnerHTML={{__html: text}}/>
+                <Navbar title={this.tr("about")} backLink="/" />
+                <div className="content" dangerouslySetInnerHTML={{ __html: text }} />
+                <p className="app-version">
+                    Version: <span>1.0.0-rc</span>
+                    <span>(<a href={rulesUrl} target="_blank">{this.tr("rules")}</a> & <a href={privacyUrl} target="_blank">{this.tr("privacy")}</a>)</span>
+                </p>
             </div>
         );
     }

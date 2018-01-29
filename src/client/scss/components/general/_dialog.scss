@@ -3,8 +3,8 @@ $dialog-header-padding: 7px;
 $dialog-padding: 30px;
 $dialog-border-radius: $border-radius;
 
-.dialog-component {
-    position: absolute;
+.dialog {
+    position: relative;
     align-items: center;
     border-radius: $border-radius;
     overflow: hidden;
@@ -16,15 +16,17 @@ $dialog-border-radius: $border-radius;
     > .dialog-header {
         padding: $dialog-header-padding;
         border-bottom: 1px solid $border-color;
+
         h3 {
             white-space: nowrap;
             font-weight: lighter;
         }
-        button {
+        .btn {
             position: absolute;
             top: 0;
-            #{$opposite-float}: $dialog-header-padding;
-            min-width: auto;
+            #{$opposite-float}: 0;
+            font-size: $font-size-medium;
+            min-width: 1px;
         }
     }
     > .dialog-content {
@@ -34,6 +36,7 @@ $dialog-border-radius: $border-radius;
     > .dialog-footer {
         border-top: 1px solid $border-color;
         text-align: end;
+
         .btn-group {
             display: flex;
             justify-content: flex-end;

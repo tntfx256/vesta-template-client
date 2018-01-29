@@ -1,38 +1,26 @@
-import {CordovaPlugin} from "./CordovaPlugin";
-
 /**
  * cordova-plugin-x-socialsharing
  */
-export class SharingPlugin extends CordovaPlugin {
+export class SharingPlugin {
+    private static instance: SharingPlugin;
     private socialSharing: any;
 
-    constructor() {
-        super();
-        this.socialSharing = window.plugins && window.plugins.socialsharing;
-        //<development>
-        if (!this.socialSharing) {
-            this.mock();
+    public static getInstance(): SharingPlugin {
+        if (!SharingPlugin.instance) {
+            SharingPlugin.instance = new SharingPlugin();
         }
-        //</development>
+        return SharingPlugin.instance;
     }
 
-    public shareMessage(message: string, subject?: string) {
-        this.socialSharing.share(message, subject);
+    constructor() {
+        this.socialSharing = window.plugins && window.plugins.socialsharing;
     }
 
     public shareImage(message: string, subject: string, image: string, link?: string) {
         this.socialSharing.share(message, subject, image, link);
     }
 
-    //<development>
-    protected mock(): void {
-        this.mockingMode = true;
-        this.socialSharing = {
-            share: function (message?: string, subject?: string, file?: string, link?: string) {
-                console.log(`Mocking SocialSharing plugin: share(${message}, ${subject}, ${file}, ${link})`);
-            }
-        };
+    public shareMessage(message: string, subject: string) {
+        this.socialSharing.share(message, subject);
     }
-
-    //</development>
 }

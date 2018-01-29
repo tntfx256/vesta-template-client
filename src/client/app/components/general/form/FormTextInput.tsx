@@ -9,7 +9,7 @@ export interface FormTextInputProps extends BaseComponentProps {
     onChange?: ChangeEventHandler;
     error?: string;
     type?: string;
-    dir?: 'ltr' | 'rtl';
+    dir?: "ltr" | "rtl";
     placeholder?: boolean;
 }
 

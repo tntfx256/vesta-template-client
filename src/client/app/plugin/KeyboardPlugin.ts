@@ -6,15 +6,17 @@ declare const Keyboard: any;
 export class KeyboardPlugin {
 
     public static setDefaultProperties() {
-        window.addEventListener('keyboardDidShow', (ev: any) => {
-            document.body.classList.add('shrink-view');
+        window.addEventListener("keyboardDidShow", (ev: any) => {
+            document.body.classList.add("shrink-view");
             // ev.keyboardHeight
         });
-        window.addEventListener('keyboardDidHide', () => {
-            document.body.classList.remove('shrink-view');
+        window.addEventListener("keyboardDidHide", () => {
+            document.body.classList.remove("shrink-view");
         });
         //<android>
-        Keyboard.hideKeyboardAccessoryBar();
+        if (Keyboard.hideKeyboardAccessoryBar) {
+            Keyboard.hideKeyboardAccessoryBar();
+        }
         //</android>
     }
 }

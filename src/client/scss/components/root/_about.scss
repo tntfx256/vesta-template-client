@@ -1,0 +1,29 @@
+.about-page {
+    //display: flex;
+    //flex-direction: column;
+    background: $white;
+    .logo-wrapper {
+        margin: auto;
+        width: 15vh;
+        height: 15vh;
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .content {
+        text-align: justify;
+        margin: -10px 20px 20px 20px;
+        padding: 10px;
+        border: 1px solid $border-color;
+        border-left: 0;
+        border-right: 0;
+        //flex: 1;
+    }
+
+    .app-version {
+        color: $color-semidark;
+        text-align: center;
+    }
+}

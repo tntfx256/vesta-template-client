@@ -15,7 +15,7 @@ export class Dialog extends PureComponent<DialogProps, null> {
     private renderHeader() {
         const {title, onClose} = this.props;
         const titlebar = title ? <h3>{title}</h3> : null;
-        const closeBtn = onClose ? <button className="btn" onClick={close}>X</button> : null;
+        const closeBtn = onClose ? <span className="btn" onClick={onClose}>X</span> : null;
         return titlebar || closeBtn ? <div className="dialog-header">
             {titlebar}
             {closeBtn}
@@ -37,7 +37,7 @@ export class Dialog extends PureComponent<DialogProps, null> {
 
         return (
             <Modal show={show} name="modal-zoom" className={modalClassName}>
-                <div className={`dialog-component${className ? ` ${className}` : ''}`}>
+                <div className={`dialog ${className ? `${className}` : ''}`}>
                     {header}
                     <div className="dialog-content">{content}</div>
                     {footer}

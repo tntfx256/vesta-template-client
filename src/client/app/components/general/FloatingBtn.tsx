@@ -1,9 +1,9 @@
-import React, {PureComponent} from "react";
+import React, {MouseEventHandler, PureComponent} from "react";
 import {BaseComponentProps} from "../BaseComponent";
 
 export interface FloatingBtnProps extends BaseComponentProps {
     className?: string;
-    onClick?: (e) => void;
+    onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
 export class FloatingBtn extends PureComponent<FloatingBtnProps, null> {
@@ -12,8 +12,8 @@ export class FloatingBtn extends PureComponent<FloatingBtnProps, null> {
         const {className, onClick, children} = this.props;
 
         return (
-            <div className={`floating-btn ${className}`} onClick={onClick}>
-                {children}
+            <div className={`floating-btn ${className}`}>
+                <button type='button' onClick={onClick}>{children}</button>
             </div>
         )
     }

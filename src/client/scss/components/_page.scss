@@ -2,9 +2,8 @@ $page-transition-enter-duration: $transition-duration-default;
 $page-transition-leave-duration: floor(2 * $page-transition-enter-duration / 3);
 $page-transition-effect: $transition-effect-default;
 $page-center-form-padding: 30px 30px 15px 30px;
-
 .page {
-    max-width: $layout-medium-max;
+    max-width: $page-max-width;
     margin: auto;
     &.has-navbar {
         padding-top: $header-height;
@@ -13,7 +12,7 @@ $page-center-form-padding: 30px 30px 15px 30px;
 }
 
 .crud-page {
-    & + .crud-page {
+    &+.crud-page {
         display: none;
     }
 }
@@ -22,10 +21,6 @@ $page-center-form-padding: 30px 30px 15px 30px;
     $logo-img-size: 25vh;
     $logo-border-size: floor($logo-img-size / 10);
     $logo-wrapper-size: $logo-img-size + (2 * $logo-border-size);
-
-    display: flex;
-    flex-direction: column;
-
     .logo-wrapper {
         height: $logo-wrapper-size;
         width: $logo-wrapper-size;
@@ -34,7 +29,6 @@ $page-center-form-padding: 30px 30px 15px 30px;
         border: $logo-border-size solid transparentize($white, .5);
         margin: 5px auto 30px auto;
     }
-
     .logo-container {
         display: flex;
         justify-content: center;
@@ -45,11 +39,10 @@ $page-center-form-padding: 30px 30px 15px 30px;
         overflow: hidden;
         border: $logo-border-size solid transparentize($white, .3);
         img {
-            width: 100%;
-            height: auto;
+            width: auto;
+            height: 100%;
         }
     }
-
     .form-wrapper {
         width: 90%;
         max-width: $layout-medium-min;
@@ -58,23 +51,19 @@ $page-center-form-padding: 30px 30px 15px 30px;
         border-radius: $border-radius;
         padding: $page-center-form-padding;
     }
-
     .form-control {
         background-color: transparent;
         border: 0;
         border-bottom: 1px solid $color-dark;
         border-radius: 0;
     }
-
     .btn-group {
         margin-top: 30px;
     }
-
     .btn {
         height: $btn-height-large;
     }
-
     .form-error {
-        top: $form-control-height;
+        top: floor($form-control-height / 2);
     }
 }

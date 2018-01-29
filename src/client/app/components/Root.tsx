@@ -1,63 +1,95 @@
-import React, {Component} from "react";
-import {Link} from "react-router-dom";
-import {ApiService} from "../service/ApiService";
-import {AuthService} from "../service/AuthService";
-import {Dispatcher} from "../service/Dispatcher";
-import {ToastMessage} from "./general/ToastMessage";
-import {RouteItem} from "../config/route";
-import {IUser} from "../cmn/models/User";
-import {Sidenav} from "./general/Sidenav";
-import {SidenavContent} from "./general/SidenavContent";
-import {Html} from "./general/Html";
-import {LogService} from "../service/LogService";
-import {Culture} from "../cmn/core/Culture";
+import React, { Component, ComponentType } from "react";
+import { RouteComponentProps, withRouter } from "react-router";
+import { IUser } from "../cmn/models/User";
+import { IRouteItem } from "../config/route";
+import { Culture } from "../medium";
+import { GeolocationPlugin } from "../plugin/GeolocationPlugin";
+import { OpenSettingPlugin } from "../plugin/OpenSettingPlugin";
+import { ApiService } from "../service/ApiService";
+import { AuthService } from "../service/AuthService";
+import { ConfigService } from "../service/ConfigService";
+import { Dispatcher } from "../service/Dispatcher";
+import { LogService } from "../service/LogService";
+import { NotificationService } from "../service/NotificationService";
+import { StorageService } from "../service/StorageService";
+import { TranslateService } from "../service/TranslateService";
+import { Html } from "./general/Html";
+import { MessageBox, MessageBoxBtn, MessageBoxBtnGroup, MessageBoxType } from "./general/MessageBox";
+import { Sidenav } from "./general/Sidenav";
+import { SidenavContent } from "./general/SidenavContent";
+import { ToastMessage } from "./general/ToastMessage";
 
-export interface RootProps {
-    routeItems: Array<RouteItem>;
+interface IRootParams { }
+
+interface IRootProps extends RouteComponentProps<IRootParams> {
+    routeItems: Array<IRouteItem>;
 }
 
-interface RootState {
+interface IRootState {
     user: IUser;
 }
 
-export class Root extends Component<RootProps, RootState> {
+class Root extends Component<IRootProps, IRootState> {
     private api = ApiService.getInstance();
     private auth = AuthService.getInstance();
     private dispatcher = Dispatcher.getInstance();
+    private lastPathKey = "last-path";
 
-    constructor(props: RootProps) {
+    constructor(props: IRootProps) {
         super(props);
-        this.state = {user: this.auth.getUser()};
+        this.state = { user: this.auth.getUser() };
     }
 
     public componentDidMount() {
+        // registering for user auth status change event
         this.dispatcher.register<IUser>(AuthService.Events.Update, (user) => {
-            this.setState({user});
+            this.setState({ user });
         });
-        this.api.get<IUser>('me')
-            .then(response => {
-                this.auth.login(response.items[0]);
-            })
-            .catch(err => {
-                LogService.error(err, 'componentDidMount', 'Root');
-            });
+        // application in/out checking
+        // window.addEventListener("load", this.onLoad);
+        // window.addEventListener("focus", this.toForeground);
+        window.onfocus = this.toForeground;
+        document.addEventListener("resume", this.toForeground);
+        // window.addEventListener("blur", this.toBackground);
+        window.onblur = this.toBackground;
+        document.addEventListener("pause", this.toBackground);
+        window.onunload = this.onExit;
+        // updating user information from API
+        // updating user information from API
+        this.api.get<IUser>("me")
+            .then((response) => this.auth.login(response.items[0]))
+            .catch((err) => LogService.error(err, "componentDidMount", "Root"));
     }
 
     public render() {
-        const {user} = this.state;
-        const {routeItems} = this.props;
-        const {code, dir} = Culture.getLocale();
+        const { user } = this.state;
+        const { routeItems } = this.props;
+        const { code, dir } = Culture.getLocale();
         return (
             <div id="main-wrapper" className="root-component">
-                <Html lang={code} dir={dir}/>
+                <Html lang={code} dir={dir} />
                 <div id="content-wrapper">
                     {this.props.children}
                 </div>
                 <Sidenav name="main-sidenav">
-                    <SidenavContent name="main-sidenav" user={user} menuItems={routeItems}/>
+                    <SidenavContent name="main-sidenav" user={user} menuItems={routeItems} />
                 </Sidenav>
-                <ToastMessage/>
+                <ToastMessage />
             </div>
-        )
+        );
+    }
+
+    private onExit = () => {
+        StorageService.set(this.lastPathKey, this.props.location.pathname);
+    }
+
+    private toBackground = () => {
+        ConfigService.set("isAppInBackground", true);
+    }
+
+    private toForeground = () => {
+        ConfigService.set("isAppInBackground", false);
     }
 }
+
+export default withRouter(Root as ComponentType<IRootProps>);

@@ -1,34 +1,37 @@
-import React, {PureComponent} from "react";
-import {BaseComponentProps} from "../../BaseComponent";
+import React, { PureComponent } from "react";
+import { BaseComponentProps } from "../../BaseComponent";
 
-export interface ChangeEventHandler {
-    (name: string, value: any): void;
-}
+export type ChangeEventHandler = (name: string, value: any) => void;
 
-export interface FormOption {
+export interface IFormOption {
+    id: number;
     title: string;
-    value: any;
 }
 
-export interface FormWrapperProps extends BaseComponentProps {
+interface IFormWrapperProps extends BaseComponentProps {
     name?: string;
-    onSubmit: (e: Event) => void;
+    onSubmit?: (e: Event) => void;
 }
 
-export class FormWrapper extends PureComponent<FormWrapperProps, null> {
-
-    private onSubmit = (e) => {
-        e.preventDefault();
-        this.props.onSubmit(e);
-    }
+export class FormWrapper extends PureComponent<IFormWrapperProps, null> {
 
     public render() {
+        const { name, children } = this.props;
+
         return (
             <div className="form-wrapper">
-                <form name={this.props.name} onSubmit={this.onSubmit} noValidate>
-                    {this.props.children}
+                <form name={name} onSubmit={this.onSubmit} noValidate={true}>
+                    {children}
                 </form>
             </div>
-        )
+        );
+    }
+
+    private onSubmit = (e) => {
+        const { onSubmit } = this.props;
+        e.preventDefault();
+        if (onSubmit) {
+            onSubmit(e);
+        }
     }
 }
