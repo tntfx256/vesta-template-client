@@ -23,9 +23,7 @@
   },
   "dependencies": {
     "@vesta/core-es5": "^1.1.6",
-    "cordova": "^8.0.0",
     "core-js": "^2.5.3",
-    "electron": "^1.7.10",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.2.0",
