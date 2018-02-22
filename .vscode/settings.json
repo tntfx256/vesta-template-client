@@ -1,8 +1,0 @@
-{
-    "search.exclude": {
-        "**/node_modules": true,
-        "vesta/client": true,
-        "vesta/server": true,
-        "vesta/tmp": true
-    }
-}
