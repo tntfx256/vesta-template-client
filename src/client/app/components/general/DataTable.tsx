@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { IQueryRequest } from "../../medium";
 import { shallowClone } from "../../util/Util";
-import { BaseComponentProps } from "../BaseComponent";
+import { IBaseComponentProps } from "../BaseComponent";
 import Pagination from "./Pagination";
 
 export interface IColumn<T> {
@@ -14,7 +14,7 @@ export interface IDataTableQueryOption<T> extends IQueryRequest<T> {
     total?: number;
 }
 
-interface IDataTableProps<T> extends BaseComponentProps {
+export interface IDataTableProps<T> extends IBaseComponentProps {
     columns: Array<IColumn<T>>;
     fetch?: (option: IDataTableQueryOption<T>) => void;
     pagination?: boolean;
@@ -24,7 +24,7 @@ interface IDataTableProps<T> extends BaseComponentProps {
     showIndex?: boolean;
 }
 
-interface IDataTableState {
+export interface IDataTableState {
 }
 
 export class DataTable<T> extends Component<IDataTableProps<T>, IDataTableState> {
@@ -39,11 +39,17 @@ export class DataTable<T> extends Component<IDataTableProps<T>, IDataTableState>
         this.createHeader();
     }
 
+    // public shouldComponentUpdate(nextProps, nextState) {
+    //     // todo
+    //     return true;
+    // }
+
     public render() {
+        const { pagination, queryOption } = this.props;
         const rows = this.createRows();
-        const queryOption = this.props.queryOption;
-        const pagination = this.props.pagination ?
+        const paging = pagination ?
             <Pagination totalRecords={queryOption.total} currentPage={queryOption.page} fetch={this.onPaginationChange} recordsPerPage={queryOption.limit} /> : null;
+
         return (
             <div>
                 <div className="data-table">
@@ -52,7 +58,7 @@ export class DataTable<T> extends Component<IDataTableProps<T>, IDataTableState>
                         <tbody>{rows}</tbody>
                     </table>
                 </div>
-                {pagination}
+                {paging}
             </div>
         );
     }

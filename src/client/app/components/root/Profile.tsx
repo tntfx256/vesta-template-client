@@ -3,7 +3,7 @@ import { IRole } from "../../cmn/models/Role";
 import { IUser, User, UserGender } from "../../cmn/models/User";
 import { IQueryResult, IValidationError } from "../../medium";
 import { AuthService } from "../../service/AuthService";
-import { getFileUrl, IFieldValidationMessage, IModelValidationMessage, shallowClone, validationMessage } from "../../util/Util";
+import { getFileUrl, IModelValidationMessage, shallowClone, validationMessage } from "../../util/Util";
 import { Avatar } from "../general/Avatar";
 import { FormDateTimeInput } from "../general/form/FormDateTimeInput";
 import { FormSelect } from "../general/form/FormSelect";
@@ -76,7 +76,7 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
         const genderOptions: Array<IFormOption> = [
             { id: UserGender.Male, title: this.tr("enum_male") },
             { id: UserGender.Female, title: this.tr("enum_female") }];
-        const errors: IFieldValidationMessage = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
+        const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
 
         return (
             <div className="page profile-page has-navbar">
@@ -93,17 +93,24 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
                     </div>
 
                     <fieldset className="profile-form">
-                        <FormTextInput name="firstName" label={this.tr("fld_firstname")} value={user.firstName} placeholder={true} error={errors.firstName} onChange={this.onChange} />
-                        <FormTextInput name="lastName" label={this.tr("fld_lastname")} value={user.lastName} placeholder={true} error={errors.lastName} onChange={this.onChange} />
-                        <FormTextInput name="email" label={this.tr("fld_email")} value={user.email} placeholder={true} error={errors.email} onChange={this.onChange} type="email" dir="ltr" />
-                        <FormSelect name="gender" label={this.tr("fld_gender")} value={user.gender} placeholder={true} error={errors.gender} onChange={this.onChange} options={genderOptions} />
-                        <FormDateTimeInput name="birthDate" label={this.tr("fld_birth_date")} value={user.birthDate} placeholder={true} error={errors.birthDate} onChange={this.onChange} />
+                        <FormTextInput name="firstName" label={this.tr("fld_firstname")} value={user.firstName}
+                            placeholder={true} error={errors.firstName} onChange={this.onChange} />
+                        <FormTextInput name="lastName" label={this.tr("fld_lastname")} value={user.lastName}
+                            placeholder={true} error={errors.lastName} onChange={this.onChange} />
+                        <FormTextInput name="email" label={this.tr("fld_email")} value={user.email}
+                            placeholder={true} error={errors.email} onChange={this.onChange} type="email" dir="ltr" />
+                        <FormSelect name="gender" label={this.tr("fld_gender")} value={user.gender}
+                            placeholder={true} error={errors.gender} onChange={this.onChange} options={genderOptions} />
+                        <FormDateTimeInput name="birthDate" label={this.tr("fld_birth_date")} value={user.birthDate}
+                            placeholder={true} error={errors.birthDate} onChange={this.onChange} />
                     </fieldset>
 
                     <fieldset className="profile-form">
                         <legend>{this.tr("txt_change_pass")}</legend>
-                        <FormTextInput name="password" label={this.tr("fld_password")} value={user.password} placeholder={true} error={errors.password} onChange={this.onChange} type="password" />
-                        <FormTextInput name="confPassword" label={this.tr("fld_conf_password")} placeholder={true} value={(user as any).confPassword} onChange={this.onChange} type="password" />
+                        <FormTextInput name="password" label={this.tr("fld_password")} value={user.password}
+                            placeholder={true} error={errors.password} onChange={this.onChange} type="password" />
+                        <FormTextInput name="confPassword" label={this.tr("fld_conf_password")} placeholder={true}
+                            value={(user as any).confPassword} onChange={this.onChange} type="password" />
                     </fieldset>
 
                     <div className="btn-group">
@@ -154,7 +161,7 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
                     this.setState({ showLoader: false });
                     return this.updateUser(response);
                 }
-                return this.api.upload<IUser>(`user/file${userModel.id}`, userImage)
+                return this.api.upload<IUser>(`user/file/${userModel.id}`, userImage)
                     .then((uploadResponse) => {
                         this.setState({ showLoader: false });
                         this.updateUser(uploadResponse);

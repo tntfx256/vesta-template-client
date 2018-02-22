@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
 import { IValidationError } from "../../medium";
-import { getFileUrl, IFieldValidationMessage, IModelValidationMessage, shallowClone, validationMessage } from "../../util/Util";
+import { getFileUrl, IModelValidationMessage, shallowClone, validationMessage } from "../../util/Util";
 import { FormTextInput } from "../general/form/FormTextInput";
 import { FormWrapper } from "../general/form/FormWrapper";
 import Navbar from "../general/Navbar";
@@ -45,7 +45,7 @@ export class Register extends PageComponent<IRegisterProps, IRegisterState> {
             },
         };
         const { validationErrors } = this.state;
-        const errors: IFieldValidationMessage = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
+        const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
 
         return (
             <div className="page register-page has-navbar page-logo-form">
@@ -57,15 +57,18 @@ export class Register extends PageComponent<IRegisterProps, IRegisterState> {
                     </div>
                 </div>
                 <FormWrapper onSubmit={this.onSubmit}>
-                    <FormTextInput name="username" label={this.tr("fld_username")} value={user.username} error={errors.username} onChange={this.onChange} placeholder={true} dir="ltr" />
-                    <FormTextInput name="password" label={this.tr("fld_password")} value={user.password} error={errors.password} onChange={this.onChange} type="password" placeholder={true} dir="ltr" /><div className="agreement">
+                    <FormTextInput name="username" label={this.tr("fld_username")} value={user.username}
+                        error={errors.username} onChange={this.onChange} placeholder={true} dir="ltr" />
+                    <FormTextInput name="password" label={this.tr("fld_password")} value={user.password}
+                        error={errors.password} onChange={this.onChange} type="password" placeholder={true} dir="ltr" />
+                    <div className="agreement">
                         {this.tr("register_accept")}
-                        <br />
-                        (<a href="https://vesta.bz/terms-rules.html" target="_blank">{this.tr("rules")}</a> & <a href="https://vesta.bz/privacy-policy.html" target="_blank">{this.tr("privacy")}</a>)
+                        &nbsp;(<a href="https://vesta.bz/terms-rules.html" target="_blank">{this.tr("rules")}</a>,
+                        <a href="https://vesta.bz/privacy-policy.html" target="_blank">{this.tr("privacy")}</a>)
                     </div>
                     <div className="btn-group">
                         <button type="submit" className="btn btn-primary">{this.tr("register")}</button>
-                        <Link className="btn" to="/">{this.tr("login")}</Link>
+                        <Link className="btn btn-outline" to="/">{this.tr("login")}</Link>
                     </div>
                 </FormWrapper>
             </div>

@@ -33,7 +33,6 @@ export class Support extends PageComponent<ISupportProps, ISupportState> {
         super(props);
         const prevContact = StorageService.get<ISupportState>(Support.storageKey);
         this.state = { supportInfo: {}, text: (prevContact && prevContact.text) || "" };
-
         this.formErrorsMessages = {
             content: {
                 minLength: this.tr("err_min_length", 10),
@@ -65,19 +64,22 @@ export class Support extends PageComponent<ISupportProps, ISupportState> {
 
     public render() {
         const { supportInfo, text, validationErrors } = this.state;
-        const errors: IFieldValidationMessage = validationErrors ? validationMessage(this.formErrorsMessages, validationErrors) : {};
+        const errors = validationErrors ? validationMessage(this.formErrorsMessages, validationErrors) : {};
 
         return (
             <div className="page contact-page has-navbar">
                 <Navbar title={this.tr("contact_us")} backLink="/" />
                 <Preloader show={this.state.showLoader} />
                 <FormWrapper name="contactForm" onSubmit={this.onSubmit}>
-                    <FormTextInput label={this.tr("fld_phone")} onChange={this.onChange} name="phone" placeholder={true} value={supportInfo.phone} error={errors.phone} dir="ltr" />
-                    <FormTextInput label={this.tr("fld_title")} onChange={this.onChange} name="title" placeholder={true} value={supportInfo.title} error={errors.title} />
-                    <FormTextArea label={this.tr("fld_content")} onChange={this.onChange} name="content" value={supportInfo.content} error={errors.content} placeholder={true} />
-                    <div className="contact-btns">
-                        <button className="btn btn-primary btn-lg" type="submit">{this.tr("submit")}</button>
-                        <a className="btn btn-secondary btn-lg" href="tel:">
+                    <FormTextInput label={this.tr("fld_phone")} onChange={this.onChange} name="phone"
+                        placeholder={true} value={supportInfo.phone} error={errors.phone} dir="ltr" />
+                    <FormTextInput label={this.tr("fld_title")} onChange={this.onChange} name="title"
+                        placeholder={true} value={supportInfo.title} error={errors.title} />
+                    <FormTextArea label={this.tr("fld_desc")} onChange={this.onChange} name="content"
+                        value={supportInfo.content} error={errors.content} placeholder={true} />
+                    <div className="btn-group">
+                        <button className="btn btn-primary" type="submit">{this.tr("submit")}</button>
+                        <a className="btn btn-outline" href="tel:">
                             {this.tr("call_support")} <Icon name="call" />
                         </a>
                     </div>

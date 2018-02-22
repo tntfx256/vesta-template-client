@@ -1,8 +1,6 @@
 import { Culture, Dictionary } from "../medium";
 
 export class TranslateService {
-    private static instance: TranslateService;
-    private dictionary: Dictionary = Culture.getDictionary();
 
     public static getInstance(): TranslateService {
         if (!TranslateService.instance) {
@@ -10,6 +8,9 @@ export class TranslateService {
         }
         return TranslateService.instance;
     }
+
+    private static instance: TranslateService;
+    private dictionary: Dictionary = Culture.getDictionary();
 
     private constructor() {
     }

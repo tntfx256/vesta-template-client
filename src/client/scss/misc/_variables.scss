@@ -7,9 +7,6 @@ $layout-large-min: $layout-medium-max;
 $layout-large-max: 1024px;
 $layout-xlarge-min: $layout-large-max;
 
-// page
-$page-max-width: $layout-medium-max;
-
 // font
 $font-size-xsmall: font-size(.65);
 $font-size-small: font-size(.85);
@@ -47,6 +44,7 @@ $header-padding: 16px; // from google
 $breadcrumb-height: 45px;
 $footer-height: 32px;
 $sidenav-width: 300px;
+$page-max-width: $layout-medium-max;
 
 // colors
 $color-primary: #6b036b;

@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Culture, DateTime } from "../../medium";
 import { TranslateService } from "../../service/TranslateService";
-import { BaseComponentProps } from "../BaseComponent";
+import { IBaseComponentProps } from "../BaseComponent";
 
-export interface IDatePickerProps extends BaseComponentProps {
+export interface IDatePickerProps extends IBaseComponentProps {
     hasTime?: boolean;
     onAbort: () => void;
     onChange: (value: string) => void;
@@ -15,16 +15,17 @@ export interface IDatePickerState {
 
 export class DatePicker extends Component<IDatePickerProps, IDatePickerState> {
     private dateTime: DateTime = Culture.getDateTimeInstance();
-    private dateTimeFormat = this.props.hasTime ? Culture.getLocale().defaultDateTimeFormat : Culture.getLocale().defaultDateFormat;
+    private dateTimeFormat: string;
     private format;
     private monthNames: Array<string> = [];
-    // the datePicker should render the month in which the selected date exist
     private selectedDateTime = Culture.getDateTimeInstance();
+    // the datePicker should render the month in which the selected date exist
     private tr = TranslateService.getInstance().translate;
     private weekDayNames: Array<string> = [];
 
     constructor(props: IDatePickerProps) {
         super(props);
+        this.dateTimeFormat = props.hasTime ? Culture.getLocale().defaultDateTimeFormat : Culture.getLocale().defaultDateFormat
         // dateTime validation, also sets the correct values
         if (this.selectedDateTime.validate(props.value, props.hasTime)) {
             this.dateTime.setTime(this.selectedDateTime.getTime());
@@ -57,9 +58,8 @@ export class DatePicker extends Component<IDatePickerProps, IDatePickerState> {
                     </table>
                     {time}
                     <div className="btn-group">
-                        <button type="button" className="btn btn-primary"
-                            onClick={this.onSubmit}>{this.tr("select")}</button>
-                        <button type="button" className="btn btn-default" onClick={onAbort}>{this.tr("cancel")}</button>
+                        <button type="button" className="btn btn-primary" onClick={this.onSubmit}>{this.tr("select")}</button>
+                        <button type="button" className="btn btn-outline" onClick={onAbort}>{this.tr("cancel")}</button>
                     </div>
                 </div>
             </div>
@@ -87,7 +87,8 @@ export class DatePicker extends Component<IDatePickerProps, IDatePickerState> {
 
     private onYearSelect = () => { }
 
-    private onMonthSelect = () => { }
+    private onMonthSelect = () => {
+    }
 
     private onDaySelect = (e) => {
         // this.dateTime holds the current month & year

@@ -1,14 +1,23 @@
 import React, { PureComponent } from "react";
-import { BaseComponentProps } from "../../BaseComponent";
+import { IBaseComponentProps } from "../../BaseComponent";
 
 export type ChangeEventHandler = (name: string, value: any) => void;
+
+export interface IFromControlProps {
+    error?: string;
+    label?: string;
+    name?: string;
+    onChange?: ChangeEventHandler;
+    placeholder?: boolean;
+    value?: any;
+}
 
 export interface IFormOption {
     id: number;
     title: string;
 }
 
-interface IFormWrapperProps extends BaseComponentProps {
+interface IFormWrapperProps extends IBaseComponentProps {
     name?: string;
     onSubmit?: (e: Event) => void;
 }
@@ -16,12 +25,10 @@ interface IFormWrapperProps extends BaseComponentProps {
 export class FormWrapper extends PureComponent<IFormWrapperProps, null> {
 
     public render() {
-        const { name, children } = this.props;
-
         return (
             <div className="form-wrapper">
-                <form name={name} onSubmit={this.onSubmit} noValidate={true}>
-                    {children}
+                <form name={this.props.name} onSubmit={this.onSubmit} noValidate={true}>
+                    {this.props.children}
                 </form>
             </div>
         );

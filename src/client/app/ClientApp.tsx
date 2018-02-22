@@ -7,7 +7,7 @@ import { Preloader } from "./components/general/Preloader";
 import Root from "./components/Root";
 import { NotFound } from "./components/root/NotFound";
 import { getRoutes, IRouteItem } from "./config/route";
-import { createHistory, DynamicRouter } from "./medium";
+import { DynamicRouter } from "./medium";
 import { KeyboardPlugin } from "./plugin/KeyboardPlugin";
 import { NotificationPlugin } from "./plugin/NotificationPlugin";
 import { SplashPlugin } from "./plugin/SplashPlugin";

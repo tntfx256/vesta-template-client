@@ -1,17 +1,12 @@
 import React, { PureComponent } from "react";
 import { Culture } from "../../../medium";
-import { BaseComponentProps } from "../../BaseComponent";
+import { IBaseComponentProps } from "../../BaseComponent";
 import { DatePicker } from "../DatePicker";
 import { Modal } from "../Modal";
-import { ChangeEventHandler } from "./FormWrapper";
+import { ChangeEventHandler, IFromControlProps } from "./FormWrapper";
 
-interface IFormDateTimeInputProps extends BaseComponentProps {
-    error?: string;
+interface IFormDateTimeInputProps extends IBaseComponentProps, IFromControlProps {
     hasTime?: boolean;
-    label: string;
-    name: string;
-    onChange?: ChangeEventHandler;
-    placeholder?: boolean;
     value?: number;
 }
 
@@ -22,11 +17,19 @@ interface IFormDateTimeInputState {
 
 export class FormDateTimeInput extends PureComponent<IFormDateTimeInputProps, IFormDateTimeInputState> {
     private dateTime = Culture.getDateTimeInstance();
-    private dateTimeFormat = this.props.hasTime ? Culture.getLocale().defaultDateTimeFormat : Culture.getLocale().defaultDateFormat;
+    private dateTimeFormat: string;
 
     constructor(props: IFormDateTimeInputProps) {
         super(props);
-        this.state = { value: this.format(), showPicker: false };
+        this.dateTimeFormat = this.props.hasTime ? Culture.getLocale().defaultDateTimeFormat : Culture.getLocale().defaultDateFormat;
+        this.state = { value: this.format(props.value) };
+    }
+
+    public componentWillReceiveProps(newProps: IFormDateTimeInputProps) {
+        const { value } = this.props;
+        if (newProps.value !== value) {
+            this.setState({ value: this.format(newProps.value) });
+        }
     }
 
     public render() {
@@ -41,23 +44,15 @@ export class FormDateTimeInput extends PureComponent<IFormDateTimeInputProps, IF
         return (
             <div className={`form-group date-time-input${error ? " has-error" : ""}`}>
                 {placeholder ? null : <label htmlFor={name}>{label}</label>}
-                <input className="form-control" name={name} id={name} placeholder={placeholder ? label : null} value={value} onChange={this.onInputChange} readOnly={true} onClick={this.showPicker} />
+                <input className="form-control" name={name} id={name} placeholder={placeholder ? label : null}
+                    value={value} onChange={this.onInputChange} readOnly={true} onClick={this.showPicker} />
                 <p className="form-error">{error || ""}</p>
                 {picker}
             </div>
         );
     }
 
-    private showPicker = () => {
-        this.setState({ showPicker: true });
-    }
-
-    private hidePicker = () => {
-        this.setState({ showPicker: false });
-    }
-
-    private format(): string {
-        const { value } = this.props;
+    private format(value: number): string {
         const timestamp = +value;
         if (!isNaN(timestamp)) {
             this.dateTime.setTime(timestamp);
@@ -65,10 +60,14 @@ export class FormDateTimeInput extends PureComponent<IFormDateTimeInputProps, IF
         return this.dateTime.format(this.dateTimeFormat);
     }
 
+    private hidePicker = () => {
+        this.setState({ showPicker: false });
+    }
+
     private onChange = (value) => {
         const { name, onChange, hasTime } = this.props;
         // dateTime validation, also sets the correct values
-        if (this.dateTime.validate(value, hasTime)) {
+        if (this.dateTime.validate(value, hasTime) && onChange) {
             onChange(name, this.dateTime.getTime());
         }
         this.setState({ value, showPicker: false });
@@ -77,5 +76,9 @@ export class FormDateTimeInput extends PureComponent<IFormDateTimeInputProps, IF
     private onInputChange = (e) => {
         const value = e.target.value;
         this.onChange(value);
+    }
+
+    private showPicker = () => {
+        this.setState({ showPicker: true });
     }
 }

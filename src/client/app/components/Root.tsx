@@ -65,6 +65,7 @@ class Root extends Component<IRootProps, IRootState> {
         const { user } = this.state;
         const { routeItems } = this.props;
         const { code, dir } = Culture.getLocale();
+
         return (
             <div id="main-wrapper" className="root-component">
                 <Html lang={code} dir={dir} />

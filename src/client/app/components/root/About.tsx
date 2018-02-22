@@ -39,16 +39,22 @@ export class About extends PageComponent<IAboutProps, IAboutState> {
 
     public render() {
         const { text } = this.state;
-        const rulesUrl = "https://autoapp.ir/terms-rules.html";
-        const privacyUrl = "https://autoapp.ir/privacy-policy.html";
+        const rulesUrl = "https://vesta.bz/terms-rules.html";
+        const privacyUrl = "https://vesta.bz/privacy-policy.html";
 
         return (
             <div className="page about-page has-navbar">
                 <Navbar title={this.tr("about")} backLink="/" />
+                <div className="logo-wrapper">
+                    <img src="img/icons/192x192.png" alt="Vesta Logo" />
+                </div>
                 <div className="content" dangerouslySetInnerHTML={{ __html: text }} />
                 <p className="app-version">
-                    Version: <span>1.0.0-rc</span>
-                    <span>(<a href={rulesUrl} target="_blank">{this.tr("rules")}</a> & <a href={privacyUrl} target="_blank">{this.tr("privacy")}</a>)</span>
+                    Version: <span>1.0.0-rc</span>&nbsp;
+                    <span>
+                        <a href={rulesUrl} target="_blank">{this.tr("rules")}</a> &&nbsp;
+                        <a href={privacyUrl} target="_blank">{this.tr("privacy")}</a>
+                    </span>
                 </p>
             </div>
         );

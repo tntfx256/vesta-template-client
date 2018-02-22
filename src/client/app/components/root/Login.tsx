@@ -2,8 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
 import { IValidationError } from "../../medium";
-import { AuthService } from "../../service/AuthService";
-import { IFieldValidationMessage, IModelValidationMessage, validationMessage } from "../../util/Util";
+import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { Alert } from "../general/Alert";
 import { FormTextInput } from "../general/form/FormTextInput";
 import { FormWrapper } from "../general/form/FormWrapper";
@@ -19,28 +18,18 @@ interface ILoginProps extends IPageComponentProps<ILoginParams> {
 
 interface ILoginState {
     error: string;
-    showLoader: boolean;
+    showLoader?: boolean;
     user: IUser;
     validationErrors?: IValidationError;
 }
 
 export class Login extends PageComponent<ILoginProps, ILoginState> {
+    private formErrorsMessages: IModelValidationMessage;
 
     constructor(props: ILoginProps) {
         super(props);
-        this.state = { showLoader: false, user: {}, error: "" };
-    }
-
-    public componentDidMount() {
-        if (!this.auth.isGuest()) {
-            // if it's a user logout first
-            this.props.history.push("/logout");
-        }
-    }
-
-    public render() {
-        const { validationErrors, showLoader, error, user } = this.state;
-        const formErrorsMessages: IModelValidationMessage = {
+        this.state = { user: {}, error: "" };
+        this.formErrorsMessages = {
             password: {
                 maxLength: this.tr("err_max_length", 16),
                 minLength: this.tr("err_min_length", 4),
@@ -52,11 +41,23 @@ export class Login extends PageComponent<ILoginProps, ILoginState> {
                 required: this.tr("err_required"),
             },
         };
-        const errors: IFieldValidationMessage = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
+    }
+
+    public componentDidMount() {
+        if (!this.auth.isGuest()) {
+            // if it's a user logout first
+            this.props.history.push("/logout");
+        }
+    }
+
+    public render() {
+        const { validationErrors, showLoader, error, user } = this.state;
+        const errors = validationErrors ? validationMessage(this.formErrorsMessages, validationErrors) : {};
         const loginErr = error ? <Alert type="error">{this.tr("err_wrong_user_pass")}</Alert> : null;
+
         return (
             <div className="page login-page has-navbar page-logo-form">
-                <Navbar className="navbar-transparent" showBurger={true} />
+                <Navbar className="navbar-transparent"/>
                 <Preloader show={showLoader} />
                 <div className="logo-wrapper">
                     <div className="logo-container">
@@ -65,14 +66,16 @@ export class Login extends PageComponent<ILoginProps, ILoginState> {
                 </div>
                 <FormWrapper name="loginForm" onSubmit={this.onSubmit}>
                     {loginErr}
-                    <FormTextInput name="username" label={this.tr("fld_username")} value={user.username} error={errors.username} onChange={this.onChange} placeholder={true} />
-                    <FormTextInput name="password" label={this.tr("fld_password")} value={user.password} error={errors.password} onChange={this.onChange} placeholder={true} type="password" />
+                    <FormTextInput name="username" label={this.tr("fld_username")} value={user.username}
+                        error={errors.username} onChange={this.onChange} placeholder={true} />
+                    <FormTextInput name="password" label={this.tr("fld_password")} value={user.password} type="password"
+                        error={errors.password} onChange={this.onChange} placeholder={true} />
                     <p className="forget-link">
                         <Link to="forget">{this.tr("forget_pass")}</Link>
                     </p>
                     <div className="btn-group">
                         <button type="submit" className="btn btn-primary">{this.tr("login")}</button>
-                        <Link to="register" className="btn">{this.tr("register")}</Link>
+                        <Link to="register" className="btn btn-outline">{this.tr("register")}</Link>
                     </div>
                 </FormWrapper>
             </div>

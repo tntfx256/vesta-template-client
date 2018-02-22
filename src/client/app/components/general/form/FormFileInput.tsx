@@ -1,16 +1,11 @@
 import React, { PureComponent } from "react";
-import { BaseComponentProps } from "../../BaseComponent";
-import { ChangeEventHandler } from "./FormWrapper";
 import { Mime } from "../../../medium";
+import { IBaseComponentProps } from "../../BaseComponent";
+import { ChangeEventHandler, IFromControlProps } from "./FormWrapper";
 
-interface IFormFileInputProps extends BaseComponentProps {
+interface IFormFileInputProps extends IBaseComponentProps, IFromControlProps {
     accept?: string;
-    error?: string;
-    label: string;
     multiple?: boolean;
-    name: string;
-    onChange?: ChangeEventHandler;
-    placeholder?: boolean;
     value?: string | File | Array<string | File>;
 }
 
@@ -43,7 +38,8 @@ export class FormFileInput extends PureComponent<IFormFileInputProps, IFormFileI
                 {placeholder ? null : <label htmlFor={name}>{label}</label>}
                 <div className="form-control">
                     {placeholder ? <label htmlFor={name}>{label}</label> : null}
-                    <input name={name} type="file" onChange={this.onChange} multiple={multiple} placeholder={placeholder ? label : ""} accept={accept} />
+                    <input name={name} type="file" onChange={this.onChange} multiple={multiple}
+                        placeholder={placeholder ? label : ""} accept={accept} />
                     <p className="form-error">{error || ""}</p>
                     {thumbnails}
                 </div>
@@ -65,6 +61,36 @@ export class FormFileInput extends PureComponent<IFormFileInputProps, IFormFileI
                 filesSrc.push(value as string);
             }
         }
+    }
+
+    private getAppropriateFileWrapper(fileType: string, src: string) {
+        switch (fileType) {
+            case "image":
+                return <img src={src} />;
+            case "video":
+                return <video controls={true}><source src={src} /></video>;
+            default:
+                return <span className="file" />;
+        }
+    }
+
+    private onChange = (e) => {
+        const { multiple } = this.props;
+        this.hasStateChanged = true;
+        if (multiple) {
+            const files = [].concat(this.state.files);
+            for (let i = 0, il = e.target.files.length; i < il; ++i) {
+                files.push(e.target.files[i]);
+            }
+            return this.setState({ files }, this.onChangePropagate);
+        }
+        this.setState({ files: [e.target.files[0]], filesSrc: [] }, this.onChangePropagate);
+    }
+
+    private onChangePropagate = () => {
+        const { name, onChange, multiple } = this.props;
+        const { files } = this.state;
+        onChange(name, multiple ? files : files[0]);
     }
 
     private readFile(file: File, index: number = 0) {
@@ -92,25 +118,6 @@ export class FormFileInput extends PureComponent<IFormFileInputProps, IFormFileI
         this.setState({ files: [].concat(files), filesSrc: [].concat(filesSrc) }, this.onChangePropagate);
     }
 
-    private onChange = (e) => {
-        const { multiple } = this.props;
-        this.hasStateChanged = true;
-        if (multiple) {
-            const files = [].concat(this.state.files);
-            for (let i = 0, il = e.target.files.length; i < il; ++i) {
-                files.push(e.target.files[i]);
-            }
-            return this.setState({ files }, this.onChangePropagate);
-        }
-        this.setState({ files: [e.target.files[0]], filesSrc: [] }, this.onChangePropagate);
-    }
-
-    private onChangePropagate = () => {
-        const { name, onChange, multiple } = this.props;
-        const { files } = this.state;
-        onChange(name, multiple ? files : files[0]);
-    }
-
     private renderThumbnails() {
         const { files, filesSrc } = this.state;
         const thumbnails = [];
@@ -129,7 +136,8 @@ export class FormFileInput extends PureComponent<IFormFileInputProps, IFormFileI
             const src = filesSrc[i];
             let isImage = false;
             let fileType = "";
-            // src = new file ? data:type/extesion : otherwise it's the url of uploaded file e.g. http://domain.com/path/to/file.ext
+            // src = new file => data:type/extesion
+            // else otherwise it's the url of uploaded file e.g. http://domain.com/path/to/file.ext
             if (src.indexOf("data:") == 0) {
                 fileType = src.substring(5, src.indexOf("/"));
             } else {
@@ -153,16 +161,5 @@ export class FormFileInput extends PureComponent<IFormFileInputProps, IFormFileI
         return (
             <div className="thumbnails">{thumbnails}</div>
         );
-    }
-
-    private getAppropriateFileWrapper(fileType: string, src: string) {
-        switch (fileType) {
-            case "image":
-                return <img src={src} />;
-            case "video":
-                return <video controls={true}><source src={src} /></video>;
-            default:
-                return <span className="file" />;
-        }
     }
 }

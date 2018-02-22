@@ -11,7 +11,7 @@ $sidenav-transition-effect: $transition-effect-default;
 .sidenav {
     @include translate3d(0);
     #{$float}: 0;
-    background: $white;
+    background: url("../img/bg-main.jpg") no-repeat center / cover;
     bottom: 0;
     max-width: $sidenav-width;
     overflow: auto;

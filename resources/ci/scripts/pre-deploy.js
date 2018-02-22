@@ -5,10 +5,7 @@ const packagePath = `${__dirname}/../../../package.json`;
 
 try {
     const packageContent = JSON.parse(fs.readFileSync(packagePath, {encoding: 'utf8'}).toString());
-    const packagesToRemove = [
-        "cordova",
-        "electron",
-    ];
+    const packagesToRemove = [];
     const devPackagesToRemove = [
         "jest-cli",
         "ts-jest"

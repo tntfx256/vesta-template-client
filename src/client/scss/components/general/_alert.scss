@@ -20,6 +20,10 @@ $alert-lighten-ratio: 50%;
     @include alert-style($color-error);
 }
 
+.alert-warn {
+    @include alert-style($color-warning);
+}
+
 .alert-info {
     @include alert-style($color-info);
 }

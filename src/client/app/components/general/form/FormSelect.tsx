@@ -1,16 +1,10 @@
 import React, { PureComponent } from "react";
-import { BaseComponentProps } from "../../BaseComponent";
-import { ChangeEventHandler } from "./FormWrapper";
+import { IBaseComponentProps } from "../../BaseComponent";
+import { ChangeEventHandler, IFromControlProps } from "./FormWrapper";
 
-export interface IFormSelectProps extends BaseComponentProps {
-    error?: string;
-    label: string;
-    name: string;
-    onChange: ChangeEventHandler;
+interface IFormSelectProps extends IBaseComponentProps, IFromControlProps {
     options: Array<{}>;
-    placeholder?: boolean;
     titleKey?: string;
-    value?: any;
     valueKey?: string;
 }
 

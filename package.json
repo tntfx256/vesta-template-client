@@ -23,7 +23,10 @@
   },
   "dependencies": {
     "@vesta/core-es5": "^1.1.6",
+    "@vesta/culture-ir": "^0.2.3",
+    "@vesta/culture-us": "^0.2.1",
     "core-js": "^2.5.3",
+    "md-font": "^2.2.3",
     "react": "^16.2.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.2.0",

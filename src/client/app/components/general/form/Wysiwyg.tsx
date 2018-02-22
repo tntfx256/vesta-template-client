@@ -1,23 +1,19 @@
 import React, { Component } from "react";
 import { TranslateService } from "../../../service/TranslateService";
 import { getFileUrl } from "../../../util/Util";
-import { BaseComponentProps } from "../../BaseComponent";
+import { IBaseComponentProps } from "../../BaseComponent";
 import { Dialog } from "../Dialog";
 import { FileManager } from "../FileManager";
 import { Icon } from "../Icon";
-import { ChangeEventHandler } from "./FormWrapper";
+import { ChangeEventHandler, IFromControlProps } from "./FormWrapper";
 
 interface IToolbarAction {
     command: string;
     icon: string;
 }
 
-export interface IWysiwygProps extends BaseComponentProps {
-    label: string;
-    name: string;
+export interface IWysiwygProps extends IBaseComponentProps, IFromControlProps {
     value?: string;
-    onChange?: ChangeEventHandler;
-    error?: string;
 }
 
 export interface IWysiwygState {
@@ -25,10 +21,10 @@ export interface IWysiwygState {
 }
 
 export class Wysiwyg extends Component<IWysiwygProps, IWysiwygState> {
-    private editor: HTMLDivElement;
-    private tr = TranslateService.getInstance().translate;
-    private toolbarActions: Array<IToolbarAction> = [];
     private content = "";
+    private editor: HTMLDivElement;
+    private toolbarActions: Array<IToolbarAction> = [];
+    private tr = TranslateService.getInstance().translate;
 
     constructor(props: IWysiwygProps) {
         super(props);
@@ -69,6 +65,17 @@ export class Wysiwyg extends Component<IWysiwygProps, IWysiwygState> {
         );
     }
 
+    private hideFileManager = () => {
+        this.setState({ showFileManager: false });
+    }
+
+    private onChange = (e) => {
+        const { name, onChange } = this.props;
+        const value = e.currentTarget.innerHTML;
+        this.content = value;
+        onChange(name, value);
+    }
+
     private onFileSelect = (file: string) => {
         const url = getFileUrl(file);
         this.editor.focus();
@@ -95,17 +102,6 @@ export class Wysiwyg extends Component<IWysiwygProps, IWysiwygState> {
                 <FileManager onFileSelect={this.onFileSelect} />
             </Dialog>
         );
-    }
-
-    private hideFileManager = () => {
-        this.setState({ showFileManager: false });
-    }
-
-    private onChange = (e) => {
-        const { name, onChange } = this.props;
-        const value = e.currentTarget.innerHTML;
-        this.content = value;
-        onChange(name, value);
     }
 
     private renderToolbar() {

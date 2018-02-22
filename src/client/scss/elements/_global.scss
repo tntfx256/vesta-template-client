@@ -5,7 +5,7 @@
 }
 
 html {
-    background: url("../img/bg-main.jpg") no-repeat fixed center $white;
+    background: url("../img/bg-main.jpg") no-repeat fixed center $color-default;
     background-size: cover;
 }
 
@@ -78,7 +78,7 @@ input, textarea, select, button {
 
 a {
     text-decoration: none;
-    color: $color-secondary;
+    color: $teal;
 }
 
 table {

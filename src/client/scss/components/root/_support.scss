@@ -1,0 +1,31 @@
+.contact-page {
+    display: flex;
+    flex-direction: column;
+
+    .content {
+        text-align: justify;
+        background: $white;
+        padding: 3vh;
+        margin: $form-group-margin;
+        border-radius: $form-control-border-radius;
+    }
+
+    .contact-btns {
+        text-align: center;
+    }
+
+    // .btn {
+    //     width: 60%;
+    //     margin: 20px auto;
+    //     position: relative;
+    //     font-weight: lighter;
+    //     font-size: $font-size-medium;
+
+    //     .icon {
+    //         position: absolute;
+    //         #{$opposite-float}: 5%;
+    //         top: 8px;
+    //         font-size: 30px;
+    //     }
+    // }
+}

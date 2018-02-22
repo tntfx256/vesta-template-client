@@ -3,7 +3,7 @@ import { IVariantClientAppConfig } from "../service/ConfigService";
 export const VariantConfig: IVariantClientAppConfig = {
     api: "https://api.vesta.bz",
     env: "production",
-    sw: "OneSignalSDKWorker",
+    sw: "service-worker",
     viewport: {
         Large: 1024,
         Medium: 768,

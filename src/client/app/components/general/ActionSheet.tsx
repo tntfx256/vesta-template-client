@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { ConfigService } from "../../service/ConfigService";
-import { BaseComponentProps } from "../BaseComponent";
+import { IBaseComponentProps } from "../BaseComponent";
 
 export interface IActionSheetItem {
     onClick: () => void;
@@ -9,7 +9,7 @@ export interface IActionSheetItem {
     value?: string;
 }
 
-interface IActionSheetProps extends BaseComponentProps {
+interface IActionSheetProps extends IBaseComponentProps {
     actions: Array<IActionSheetItem>;
     show: boolean;
 }

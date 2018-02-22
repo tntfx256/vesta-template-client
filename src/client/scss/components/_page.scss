@@ -2,19 +2,16 @@ $page-transition-enter-duration: $transition-duration-default;
 $page-transition-leave-duration: floor(2 * $page-transition-enter-duration / 3);
 $page-transition-effect: $transition-effect-default;
 $page-center-form-padding: 30px 30px 15px 30px;
+$page-padding: 15px;
+
 .page {
     max-width: $page-max-width;
     margin: auto;
+    padding: $page-padding;
     &.has-navbar {
         padding-top: $header-height;
     }
     position: relative;
-}
-
-.crud-page {
-    &+.crud-page {
-        display: none;
-    }
 }
 
 .page-logo-form {

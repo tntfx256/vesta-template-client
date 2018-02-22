@@ -108,9 +108,7 @@ module.exports = function (setting) {
         if (setting.production) {
             plugins = plugins.concat([
                 new webpack.DefinePlugin({
-                    'process.env': {
-                        NODE_ENV: '"production"'
-                    }
+                    'process.env': { NODE_ENV: '"production"' }
                 }),
                 new webpack.LoaderOptionsPlugin({
                     minimize: true,
@@ -141,15 +139,9 @@ module.exports = function (setting) {
                 extensions: [".ts", ".tsx", ".js", ".json"]
             },
             module: {
-                rules: [{
-                        test: /\.tsx?$/,
-                        loader: `awesome-typescript-loader?sourceMap=${!setting.production}`
-                    },
-                    {
-                        enforce: "pre",
-                        test: /\.js$/,
-                        loader: "source-map-loader"
-                    }
+                rules: [
+                    { test: /\.tsx?$/, loader: `awesome-typescript-loader?sourceMap=${!setting.production}` },
+                    { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
                 ]
             },
             plugins,
@@ -205,7 +197,9 @@ module.exports = function (setting) {
         let files = [];
         const thisList = fs.readdirSync(dir);
         for (let i = 0, il = thisList.length; i < il; ++i) {
-            if (thisList[i].match(/\.[a-z0-9]+$/i)) {
+            const thisPath = `${dir}/${thisList[i]}`;
+            const stat = fs.statSync(thisPath);
+            if (stat.isFile()) {
                 files.push(`${base}${thisList[i]}`);
             } else {
                 files = files.concat(getFilesList(`${dir}/${thisList[i]}`, `${base}${thisList[i]}/`));

@@ -1,12 +1,12 @@
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { IRouteItem } from "../../config/route";
-import { BaseComponentProps } from "../BaseComponent";
+import { IBaseComponentProps } from "../BaseComponent";
 import { Icon } from "./Icon";
 
 export interface IMenuItem extends IRouteItem { }
 
-interface IMenuProps extends BaseComponentProps {
+interface IMenuProps extends IBaseComponentProps {
     horizontal?: boolean;
     items: Array<IMenuItem>;
     name: string;

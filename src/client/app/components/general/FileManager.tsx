@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {BaseComponentProps} from "../BaseComponent";
+import {IBaseComponentProps} from "../BaseComponent";
 import {IFile} from "../../cmn/interfaces/FileSystem";
 import {LogService} from "../../service/LogService";
 import {Icon} from "./Icon";
@@ -13,7 +13,7 @@ export interface FileSelectCallback {
     (path: string): void;
 }
 
-export interface FileManagerProps extends BaseComponentProps {
+export interface FileManagerProps extends IBaseComponentProps {
     onFileSelect: FileSelectCallback;
 }
 

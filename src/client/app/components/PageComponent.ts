@@ -7,7 +7,7 @@ import { ConfigService, IPaginationConfig } from "../service/ConfigService";
 import { NotificationService } from "../service/NotificationService";
 import { TransitionService } from "../service/TransitionService";
 import { TranslateService } from "../service/TranslateService";
-import { BaseComponentProps } from "./BaseComponent";
+import { IBaseComponentProps } from "./BaseComponent";
 import { IDataTableQueryOption } from "./general/DataTable";
 
 export type FetchById<T> = (id: number) => Promise<T>;
@@ -18,7 +18,7 @@ export type FetchAll<T> = (query: IQueryRequest<T> | IDataTableQueryOption<T>) =
 
 export type Save<T> = (model: T) => void;
 
-export interface IPageComponentProps<T> extends BaseComponentProps {
+export interface IPageComponentProps<T> extends IBaseComponentProps {
     match?: match<T>;
 }
 

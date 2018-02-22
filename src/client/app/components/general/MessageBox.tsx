@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react";
-import { BaseComponentProps } from "../BaseComponent";
+import { IBaseComponentProps } from "../BaseComponent";
 import { Dialog } from "./Dialog";
 import { TranslateService } from "../../service/TranslateService";
 
@@ -9,7 +9,7 @@ export enum MessageBoxBtn { Ok = 1, Cancel, Retry, Yes, No }
 
 export enum MessageBoxBtnGroup { OK, OkCancel = 1, OkCancelRetry, CancelRetry, YesNo }
 
-export interface MessageBoxProps extends BaseComponentProps {
+export interface MessageBoxProps extends IBaseComponentProps {
     show: boolean;
     title?: string;
     type?: MessageBoxType;

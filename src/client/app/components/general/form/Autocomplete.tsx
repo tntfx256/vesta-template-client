@@ -1,35 +1,29 @@
 import React, { Component } from "react";
-import { BaseComponentProps } from "../../BaseComponent";
+import { IBaseComponentProps } from "../../BaseComponent";
 import { Search } from "../../PageComponent";
-import { ChangeEventHandler } from "./FormWrapper";
+import { ChangeEventHandler, IFromControlProps } from "./FormWrapper";
 
 export enum KeyCode { Backspace = 8, Enter = 13, Escape = 27, ArrowLeft = 37, ArrowUp = 38, ArrowRight = 39, ArrowDown = 40 }
 
-interface IAutocompleteProps extends BaseComponentProps {
-    error?: string;
-    label: string;
+interface IAutocompleteProps extends IBaseComponentProps, IFromControlProps {
     multi?: boolean;
-    name: string;
-    onChange?: ChangeEventHandler;
-    placeholder?: boolean;
     search: Search<any>;
     titleKey?: string;
-    value?: any;
     valueKey?: string;
 }
 
 interface IAutocompleteState {
-    term: string;
     items: Array<any>;
+    menuIndex: number;
     showDropDown: boolean;
     showLoader: boolean;
-    menuIndex: number;
+    term: string;
 }
 
 export class Autocomplete extends Component<IAutocompleteProps, IAutocompleteState> {
     public static defaultProps = { valueKey: "id", titleKey: "title" };
-    private selectedItems: Array<any> = [];
     private hasStateChanged = false;
+    private selectedItems: Array<any> = [];
 
     constructor(props: IAutocompleteProps) {
         super(props);
@@ -81,30 +75,6 @@ export class Autocomplete extends Component<IAutocompleteProps, IAutocompleteSta
         }
     }
 
-    private selectItemByIndex(index: number) {
-        const { titleKey, valueKey, multi, onChange, name } = this.props;
-        const { items } = this.state;
-        const selectedItem = items[index];
-        if (!selectedItem) { return; }
-        const term = selectedItem[titleKey];
-        const selectedValue = selectedItem[valueKey];
-        if (multi) {
-            let found = false;
-            for (let i = 0, il = this.selectedItems.length; i < il; ++i) {
-                if (this.selectedItems[i][valueKey] == selectedItem[valueKey]) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                this.selectedItems.push(selectedItem);
-            }
-        }
-        this.hasStateChanged = true;
-        onChange(name, multi ? this.selectedItems.map((item) => item[valueKey]) : selectedValue);
-        this.setState({ term: multi ? "" : term, menuIndex: -1, showDropDown: false });
-    }
-
     private onChange = (e) => {
         const term = e.target.value;
         this.setState({ term });
@@ -121,17 +91,17 @@ export class Autocomplete extends Component<IAutocompleteProps, IAutocompleteSta
             });
     }
 
-    private onItemSelect = (e) => {
-        const index = e.currentTarget.getAttribute("data-index");
-        this.selectItemByIndex(index);
-    }
-
     private onItemDelete = (e) => {
         const index = e.currentTarget.getAttribute("data-index");
         if (index >= 0) {
             this.selectedItems.splice(index, 1);
         }
         this.forceUpdate();
+    }
+
+    private onItemSelect = (e) => {
+        const index = e.currentTarget.getAttribute("data-index");
+        this.selectItemByIndex(index);
     }
 
     private onKeyDown = (e) => {
@@ -188,5 +158,29 @@ export class Autocomplete extends Component<IAutocompleteProps, IAutocompleteSta
             selectedItems.push(<span key={i} data-index={i} onClick={this.onItemDelete}>{this.selectedItems[i][titleKey]}</span>);
         }
         return <div className="selected-items">{selectedItems}</div>;
+    }
+
+    private selectItemByIndex(index: number) {
+        const { titleKey, valueKey, multi, onChange, name } = this.props;
+        const { items } = this.state;
+        const selectedItem = items[index];
+        if (!selectedItem) { return; }
+        const term = selectedItem[titleKey];
+        const selectedValue = selectedItem[valueKey];
+        if (multi) {
+            let found = false;
+            for (let i = 0, il = this.selectedItems.length; i < il; ++i) {
+                if (this.selectedItems[i][valueKey] == selectedItem[valueKey]) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                this.selectedItems.push(selectedItem);
+            }
+        }
+        this.hasStateChanged = true;
+        onChange(name, multi ? this.selectedItems.map((item) => item[valueKey]) : selectedValue);
+        this.setState({ term: multi ? "" : term, menuIndex: -1, showDropDown: false });
     }
 }

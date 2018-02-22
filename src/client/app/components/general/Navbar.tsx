@@ -2,7 +2,6 @@ import React, { ComponentType, PureComponent } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { Burger } from "./Burger";
-import { DevicePlugin } from "../../plugin/DevicePlugin";
 
 export enum NavBarMainButtonType { Burger = 1, Back, Close }
 
@@ -19,37 +18,6 @@ interface INavbarProps extends RouteComponentProps<INavbarParams> {
 }
 
 class Navbar extends PureComponent<INavbarProps, null> {
-    //<android>
-    private pathToExitApps = ["/"];
-
-    public componentDidMount() {
-        DevicePlugin.getInstance().registerBackButtonHandler(this.goBack);
-    }
-
-    public componentWillUnmount() {
-        DevicePlugin.getInstance().unregisterBackButtonHandler(this.goBack);
-    }
-
-    //</android>
-
-    private goBack = (e) => {
-        if (e) {
-            e.stopPropagation();
-        }
-        const { backAction } = this.props;
-        if (backAction) {
-            return backAction(e);
-        }
-        const { history, backLink } = this.props;
-        if (backLink) { return history.replace(backLink); }
-        //<android>
-        if (this.pathToExitApps.indexOf(this.props.location.pathname) >= 0) {
-            return (navigator as any).app.exitApp();
-        }
-        //</android>
-        if (history.length) { return history.goBack(); }
-        history.replace("/");
-    }
 
     public render() {
         const { title, className, backLink, showBurger, hide, backAction, mainButtonType } = this.props;
@@ -71,6 +39,20 @@ class Navbar extends PureComponent<INavbarProps, null> {
                 </div>
             </div>
         );
+    }
+
+    private goBack = (e) => {
+        if (e) {
+            e.stopPropagation();
+        }
+        const { backAction } = this.props;
+        if (backAction) {
+            return backAction(e);
+        }
+        const { history, backLink } = this.props;
+        if (backLink) { return history.replace(backLink); }
+        if (history.length) { return history.goBack(); }
+        history.replace("/");
     }
 }
 

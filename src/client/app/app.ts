@@ -1,8 +1,7 @@
+import { IrDate, IrLocale } from "@vesta/culture-ir";
 import { ClientApp } from "./ClientApp";
-import { IrDate } from "./cmn/culture/ir/IrDate";
-import { IrLocale } from "./cmn/culture/ir/IrLocale";
-import { IrVocabs } from "./cmn/culture/ir/IrVocabs";
 import { SourceApp } from "./cmn/models/User";
+import { IrVocabs } from "./cmn/vocabs/IrVocabs";
 import { Config } from "./config/config";
 import { Culture } from "./medium";
 import { ConfigService } from "./service/ConfigService";

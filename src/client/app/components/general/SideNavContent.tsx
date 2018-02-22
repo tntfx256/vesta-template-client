@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { IUser } from "../../cmn/models/User";
 import { Dispatcher } from "../../service/Dispatcher";
 import { getFileUrl } from "../../util/Util";
-import { BaseComponentProps } from "../BaseComponent";
+import { IBaseComponentProps } from "../BaseComponent";
 import { Avatar } from "./Avatar";
 import { Icon } from "./Icon";
 import { IMenuItem, Menu } from "./Menu";
 
-interface ISideNavContentProps extends BaseComponentProps {
+interface ISideNavContentProps extends IBaseComponentProps {
     menuItems: Array<IMenuItem>;
     name: string;
     user: IUser;
@@ -20,7 +20,7 @@ export class SidenavContent extends PureComponent<ISideNavContentProps, null> {
     public render() {
         const { user = {}, menuItems } = this.props;
         const editLink = user && user.id ?
-            <Link to="/profile" onClick={this.closeSidenav}><Icon name="setting" /></Link> : null;
+            <Link to="/profile" onClick={this.closeSidenav}><Icon name="settings" /></Link> : null;
         let userImage: string = "";
         if (user.image) {
             userImage = getFileUrl(`user/${user.image}`);
@@ -28,7 +28,7 @@ export class SidenavContent extends PureComponent<ISideNavContentProps, null> {
         return (
             <div className="sidenav-content">
                 <header>
-                    <Avatar src={userImage} defaultSrc="img/icons/512.png" />
+                    <Avatar src={userImage} defaultSrc="img/icons/192x192.png" />
                     <div className="name-wrapper">
                         <h4>{user.username}</h4>
                         {editLink}

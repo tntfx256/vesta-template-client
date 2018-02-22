@@ -1,7 +1,7 @@
 import React, { PureComponent } from "react";
-import { BaseComponentProps } from "../BaseComponent";
+import { IBaseComponentProps } from "../BaseComponent";
 
-interface IAlertProps extends BaseComponentProps {
+interface IAlertProps extends IBaseComponentProps {
     type?: string;
 }
 

@@ -19,8 +19,8 @@ interface IForgetProps extends IPageComponentProps<IForgetParams> {
 interface IForgetState {
     message: string;
     mobile: string;
-    showLoader: boolean;
-    validationErrors: IValidationError;
+    showLoader?: boolean;
+    validationErrors?: IValidationError;
 }
 
 export class Forget extends PageComponent<IForgetProps, IForgetState> {
@@ -28,7 +28,7 @@ export class Forget extends PageComponent<IForgetProps, IForgetState> {
 
     constructor(props: IForgetProps) {
         super(props);
-        this.state = { showLoader: false, mobile: "", message: "", validationErrors: null };
+        this.state = { mobile: "", message: "" };
         this.formErrorsMessages = {
             mobile: {
                 invalid: this.tr("err_invalid_phone"),
@@ -42,12 +42,12 @@ export class Forget extends PageComponent<IForgetProps, IForgetState> {
 
     public render() {
         const { message, validationErrors, showLoader, mobile } = this.state;
-
-        const errors: IFieldValidationMessage = validationErrors ? validationMessage(this.formErrorsMessages, validationErrors) : {};
+        const errors = validationErrors ? validationMessage(this.formErrorsMessages, validationErrors) : {};
         const alert = message ? <Alert type="info">{message}</Alert> : null;
+
         return (
             <div className="page forget-page has-navbar page-logo-form">
-                <Navbar showBurger={true} className="navbar-transparent" />
+                <Navbar backLink="/login" className="navbar-transparent" />
                 <Preloader show={showLoader} />
                 <div className="logo-wrapper">
                     <div className="logo-container">
@@ -55,11 +55,12 @@ export class Forget extends PageComponent<IForgetProps, IForgetState> {
                     </div>
                 </div>
                 <FormWrapper name="ForgetForm" onSubmit={this.onSubmit}>
-                    <FormTextInput name="mobile" label={this.tr("fld_mobile")} value={mobile} type="tel" error={errors.mobile} placeholder={true} onChange={this.onChange} />
+                    <FormTextInput name="mobile" label={this.tr("fld_mobile")} value={mobile} type="tel"
+                        error={errors.mobile} placeholder={true} onChange={this.onChange} />
                     {alert}
                     <div className="btn-group">
                         <button type="submit" className="btn btn-primary">{this.tr("send_reset")}</button>
-                        <Link to="/" className="btn">{this.tr("login")}</Link>
+                        <Link to="/" className="btn btn-outline">{this.tr("login")}</Link>
                     </div>
                 </FormWrapper>
             </div>

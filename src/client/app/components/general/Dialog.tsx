@@ -1,8 +1,8 @@
 import React, {EventHandler, PureComponent, ReactChild} from "react";
-import {BaseComponentProps} from "../BaseComponent";
+import {IBaseComponentProps} from "../BaseComponent";
 import {Modal} from "./Modal";
 
-export interface DialogProps extends BaseComponentProps {
+export interface DialogProps extends IBaseComponentProps {
     title?: string;
     show: boolean;
     onClose?: EventHandler<any>;

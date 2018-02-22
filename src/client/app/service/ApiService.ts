@@ -1,6 +1,6 @@
-import { Err, IQueryRequest, IQueryResult } from "../medium";
 import { AuthService } from "./AuthService";
 import { ConfigService, IClientAppConfig } from "./ConfigService";
+import { IQueryRequest, IQueryResult, Err } from "../medium";
 
 export interface IApiServiceRequest<T> extends Promise<T> {
     abort?: () => void;
@@ -9,10 +9,6 @@ export interface IApiServiceRequest<T> extends Promise<T> {
 
 export class ApiService {
     private static instance: ApiService;
-    private endPoint: string = "";
-    private sourceApp;
-    // private enableCache: boolean;
-    private tokenHeaderKeyName = "X-Auth-Token";
 
     public static getInstance(authService: AuthService = AuthService.getInstance()): ApiService {
         if (!ApiService.instance) {
@@ -20,6 +16,11 @@ export class ApiService {
         }
         return ApiService.instance;
     }
+
+    private endPoint: string = "";
+    private sourceApp;
+    // private enableCache: boolean;
+    private tokenHeaderKeyName = "X-Auth-Token";
 
     private constructor(private authService: AuthService) {
         const cfg: IClientAppConfig = ConfigService.getConfig();
