@@ -8,7 +8,6 @@ export interface IApiServiceRequest<T> extends Promise<T> {
 }
 
 export class ApiService {
-    private static instance: ApiService;
 
     public static getInstance(authService: AuthService = AuthService.getInstance()): ApiService {
         if (!ApiService.instance) {
@@ -17,6 +16,7 @@ export class ApiService {
         return ApiService.instance;
     }
 
+    private static instance: ApiService;
     private endPoint: string = "";
     private sourceApp;
     // private enableCache: boolean;

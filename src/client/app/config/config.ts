@@ -16,7 +16,7 @@ export const Config: IClientAppConfig = {
     },
     version: {
         api: "v1",
-        app: "0.8.1",
+        app: "0.1.0",
     },
     viewport: VariantConfig.viewport,
 };

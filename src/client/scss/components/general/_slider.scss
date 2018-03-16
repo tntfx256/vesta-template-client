@@ -6,7 +6,7 @@ $slider-transition-effect: $transition-effect-default;
 %slider-next-prev-btn {
     position: absolute;
     height: 100%;
-    width: 50%;
+    width: 20%;
     z-index: 2;
     top: 0;
 }
@@ -70,7 +70,6 @@ $slider-transition-effect: $transition-effect-default;
         z-index: 2;
         direction: ltr;
         padding: $slider-bullet-margin $slider-bullet-margin 0 $slider-bullet-margin;
-        //background: transparentize($color-dark, .75);
         //border-radius: $border-radius $border-radius 0 0;
         @include translate3d(-50%, 0, 0);
     }

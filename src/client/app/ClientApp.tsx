@@ -79,7 +79,6 @@ export class ClientApp {
     }
 
     private registerServiceWorker() {
-        //<!cordova>
         if (!("serviceWorker" in navigator)) { return; }
         const splashTimeout = ConfigService.get<number>("splashTimeout");
         const swScript = ConfigService.getConfig().sw;
@@ -105,7 +104,6 @@ export class ClientApp {
                 });
             })
             .catch((error) => LogService.error(error.message, "registerServiceWorker", "ClientApp"));
-        //</cordova>
     }
 
     private renderRoutes(routeItems: Array<IRouteItem>, prefix: string) {
@@ -115,7 +113,10 @@ export class ClientApp {
             const item = routeItems[i];
             if (!item.abstract) {
                 const basePath = prefix ? `/${prefix}` : "";
-                links.push(<Route path={`${basePath}/${item.link}`} key={i} exact={item.exact} render={this.tz(item.component, item.permissions)} />);
+                links.push((
+                    <Route path={`${basePath}/${item.link}`} key={i} exact={item.exact}
+                        render={this.tz(item.component, item.permissions)} />
+                ));
             }
             if (item.children) {
                 links = links.concat(this.renderRoutes(item.children, item.link));

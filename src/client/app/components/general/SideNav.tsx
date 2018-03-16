@@ -1,9 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
-import {IBaseComponentProps} from "../BaseComponent";
-import {Dispatcher} from "../../service/Dispatcher";
-import {ConfigService} from "../../service/ConfigService";
-import Navbar from "./Navbar";
+import { IBaseComponentProps } from "../BaseComponent";
+import { Dispatcher } from "../../service/Dispatcher";
+import { ConfigService } from "../../service/ConfigService";
+import Navbar, { NavBarMainButtonType } from "./Navbar";
 
 export interface SideNavProps extends IBaseComponentProps {
     name: string;
@@ -26,12 +26,12 @@ export class Sidenav extends Component<SideNavProps, SideNavState> {
     }
 
     public close = () => {
-        this.setState({open: false});
+        this.setState({ open: false });
         document.documentElement.classList.remove('sidenav-open');
     }
 
     public open = () => {
-        this.setState({open: true});
+        this.setState({ open: true });
         document.documentElement.classList.add('sidenav-open');
     }
 
@@ -48,17 +48,17 @@ export class Sidenav extends Component<SideNavProps, SideNavState> {
 
     public render() {
         let navContent = null;
-        let {enter, leave} = this.transTime;
+        let { enter, leave } = this.transTime;
         if (this.state.open) {
             navContent = <aside className="sidenav-component">
-                <Navbar className="navbar-transparent" backAction={this.close}/>
+                <Navbar className="navbar-transparent" backAction={this.close} mainButtonType={NavBarMainButtonType.Close} />
                 <div onClick={this.close} className="sidenav-backdrop">&nbsp;</div>
                 <div className="sidenav">{this.props.children}</div>
             </aside>
         }
         return (
             <ReactCSSTransitionGroup transitionName="sidenav" transitionEnterTimeout={enter / 2}
-                                     transitionLeaveTimeout={leave / 2}>
+                transitionLeaveTimeout={leave / 2}>
                 {navContent}
             </ReactCSSTransitionGroup>
         );

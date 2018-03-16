@@ -7,11 +7,11 @@ export interface IconProps extends IBaseComponentProps {
     size?: string;
 }
 
-export class Icon extends PureComponent<IconProps, null>{
+export class Icon extends PureComponent<IconProps, null> {
 
     public render() {
         const { name, size, onClick } = this.props;
-        let sizeClass = size ? `size-${size}` : '';
+        const sizeClass = size ? `size-${size}` : "";
 
         return (
             <span className={`icon ${sizeClass}`} onClick={onClick}>{name}</span>

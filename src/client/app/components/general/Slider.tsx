@@ -1,9 +1,11 @@
 import React, { PureComponent } from "react";
 import { IBaseComponentProps } from "../BaseComponent";
+import { launchLink } from "../../util/Util";
 
 export interface ISliderItem {
-    image?: string | File;
     background?: string;
+    image?: string | File;
+    link?: string;
     title?: string;
 }
 
@@ -154,11 +156,19 @@ export class Slider extends PureComponent<ISliderProps, null> {
         }
     }
 
+    private onItemClick = (e) => {
+        const index = +e.currentTarget.getAttribute("data-item");
+        const item = this.props.items[index];
+        if (!item || !item.link) { return; }
+        launchLink(item.link);
+    }
+
     private renderItem(item: ISliderItem, i: number) {
         const className = `slider-item ${i ? "" : "visible"}`;
+        const style = { background: item.background };
         return (item.background ?
-            <div className={className} key={i} data-item={i} style={{ background: item.background }} /> :
-            <img className={className} key={i} data-item={i} src={item.image as string} />
+            <div className={className} key={i} data-item={i} onClick={this.onItemClick} style={style} /> :
+            <img className={className} key={i} data-item={i} onClick={this.onItemClick} src={item.image as string} />
         );
     }
 

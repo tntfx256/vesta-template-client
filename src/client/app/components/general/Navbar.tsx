@@ -1,6 +1,7 @@
 import React, { ComponentType, PureComponent } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { Link } from "react-router-dom";
+import { DevicePlugin } from "../../plugin/DevicePlugin";
 import { Burger } from "./Burger";
 
 export enum NavBarMainButtonType { Burger = 1, Back, Close }
@@ -18,6 +19,17 @@ interface INavbarProps extends RouteComponentProps<INavbarParams> {
 }
 
 class Navbar extends PureComponent<INavbarProps, null> {
+    //<android>
+    private pathToExitApps = ["/"];
+
+    public componentDidMount() {
+        DevicePlugin.getInstance().registerBackButtonHandler(this.goBack);
+    }
+
+    public componentWillUnmount() {
+        DevicePlugin.getInstance().unregisterBackButtonHandler(this.goBack);
+    }
+    //</android>
 
     public render() {
         const { title, className, backLink, showBurger, hide, backAction, mainButtonType } = this.props;
@@ -51,6 +63,11 @@ class Navbar extends PureComponent<INavbarProps, null> {
         }
         const { history, backLink } = this.props;
         if (backLink) { return history.replace(backLink); }
+        //<android>
+        if (this.pathToExitApps.indexOf(this.props.location.pathname) >= 0) {
+            return (navigator as any).app.exitApp();
+        }
+        //</android>
         if (history.length) { return history.goBack(); }
         history.replace("/");
     }

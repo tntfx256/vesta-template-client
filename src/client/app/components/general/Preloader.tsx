@@ -1,9 +1,9 @@
-import React, {PureComponent} from "react";
-import {Dialog} from "./Dialog";
-import {TranslateService} from "../../service/TranslateService";
-import {IBaseComponentProps} from "../BaseComponent";
+import React, { PureComponent } from "react";
+import { Dialog } from "./Dialog";
+import { TranslateService } from "../../service/TranslateService";
+import { IBaseComponentProps } from "../BaseComponent";
 
-export const enum PreloaderType {Text = 1, Linear, Circular, Progress}
+export const enum PreloaderType { Text = 1, Linear, Circular, Progress }
 
 export interface PreloaderProps extends IBaseComponentProps {
     show: boolean;
@@ -12,9 +12,12 @@ export interface PreloaderProps extends IBaseComponentProps {
     message?: string;
 }
 
-export class Preloader extends PureComponent<PreloaderProps, null> {
+interface IPreloaderState { }
+
+export class Preloader extends PureComponent<PreloaderProps, IPreloaderState> {
     private waitMessage;
     private inProgressMessage;
+    private show;
 
     constructor(props: PreloaderProps) {
         super(props);
@@ -22,30 +25,32 @@ export class Preloader extends PureComponent<PreloaderProps, null> {
         const tr = TranslateService.getInstance().translate;
         this.waitMessage = tr('msg_inprogress');
         this.inProgressMessage = tr('msg_wait');
+        this.state = {};
     }
 
-    private getPreloader() {
-        const {type} = this.props;
-        let preloader = null;
-        switch (type) {
-            default:
-                preloader = <div className="pl-circular"/>;
-                break;
+    public componentWillReceiveProps(newProps: PreloaderProps) {
+        if (newProps.show == true) {
+            this.show = false;
         }
-        return (
-            <div className="pl-wrapper">
-                {preloader}
-            </div>
-        );
     }
 
     public render() {
-        let {show, title, message} = this.props;
+        let { show, title, message } = this.props;
         title = title || this.waitMessage;
         message = message || this.inProgressMessage;
         const preloader = this.getPreloader();
 
-        return show ?
+        if (show && !this.show) {
+            setTimeout(() => {
+                this.show = true;
+                this.forceUpdate();
+            }, 900);
+        }
+        if (!this.show || !show) {
+            return <Dialog show={false} />;
+        }
+
+        return (
             <Dialog show={true} modalClassName="preloader-modal">
                 <div className="preloader">
                     {preloader}
@@ -54,6 +59,22 @@ export class Preloader extends PureComponent<PreloaderProps, null> {
                         {message ? <p className="pl-message">{message}</p> : null}
                     </div>
                 </div>
-            </Dialog> : <Dialog show={false}/>;
+            </Dialog>
+        );
+    }
+
+    private getPreloader() {
+        const { type } = this.props;
+        let preloader = null;
+        switch (type) {
+            default:
+                preloader = <div className="pl-circular" />;
+                break;
+        }
+        return (
+            <div className="pl-wrapper">
+                {preloader}
+            </div>
+        );
     }
 }
