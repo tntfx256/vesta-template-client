@@ -2,15 +2,15 @@ import { IrDate, IrLocale } from "@vesta/culture-ir";
 import { ClientApp } from "./ClientApp";
 import { SourceApp } from "./cmn/models/User";
 import { IrVocabs } from "./cmn/vocabs/IrVocabs";
-import { Config } from "./config/config";
+import { appConfig } from "./config/appConfig";
 import { Culture } from "./medium";
-import { ConfigService } from "./service/ConfigService";
+import { Config } from "./service/Config";
 
 // initial configurations
-ConfigService.init(Config);
-ConfigService.set("sourceApp", SourceApp.EndUser);
-ConfigService.set("splashTimeout", 2000);
-ConfigService.set("onesignal-id", "");
+Config.init(appConfig);
+Config.set("sourceApp", SourceApp.EndUser);
+Config.set("splashTimeout", 2000);
+Config.set("onesignal-id", "");
 
 // initiating locale
 Culture.register(IrLocale, IrVocabs, IrDate);

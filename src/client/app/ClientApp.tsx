@@ -1,6 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 import { Route, Switch } from "react-router";
+import { IVersion } from "./cmn/config/cmnConfig";
 import { AclPolicy } from "./cmn/enum/Acl";
 import { IUser } from "./cmn/models/User";
 import { Preloader } from "./components/general/Preloader";
@@ -13,7 +14,7 @@ import { NotificationPlugin } from "./plugin/NotificationPlugin";
 import { SplashPlugin } from "./plugin/SplashPlugin";
 import { StatusbarPlugin } from "./plugin/StatusbarPlugin";
 import { AuthService } from "./service/AuthService";
-import { ConfigService, IVersion } from "./service/ConfigService";
+import { Config } from "./service/Config";
 import { Dispatcher } from "./service/Dispatcher";
 import { LogService } from "./service/LogService";
 import { TransitionService } from "./service/TransitionService";
@@ -49,9 +50,9 @@ export class ClientApp {
 
     public run() {
         const routeItems = getRoutes(!this.auth.isGuest());
-        const appName = ConfigService.get<string>("name");
-        const version = ConfigService.get<IVersion>("version").app;
-        const splashTimeout = ConfigService.get<number>("splashTimeout");
+        const appName = Config.get<string>("name");
+        const version = Config.get<IVersion>("version").app;
+        const splashTimeout = Config.get<number>("splashTimeout");
         const routes = this.renderRoutes(routeItems, "");
 
         render(
@@ -61,7 +62,8 @@ export class ClientApp {
                         {routes}
                         <Route component={NotFound} />
                     </Switch>
-                    <Preloader show={this.showAppUpdate} title={this.tr("app_update")} message={`${appName} v${version}`} />
+                    <Preloader show={this.showAppUpdate} title={this.tr("app_update")}
+                        message={`${appName} v${version}`} />
                 </Root>
             </DynamicRouter>,
             document.getElementById("root"),
@@ -80,8 +82,8 @@ export class ClientApp {
 
     private registerServiceWorker() {
         if (!("serviceWorker" in navigator)) { return; }
-        const splashTimeout = ConfigService.get<number>("splashTimeout");
-        const swScript = ConfigService.getConfig().sw;
+        const splashTimeout = Config.get<number>("splashTimeout");
+        const swScript = Config.getConfig().sw;
         navigator.serviceWorker.register(`/${swScript}.js`)
             .then((reg: ServiceWorkerRegistration) => {
                 reg.addEventListener("updatefound", () => {
@@ -106,7 +108,7 @@ export class ClientApp {
             .catch((error) => LogService.error(error.message, "registerServiceWorker", "ClientApp"));
     }
 
-    private renderRoutes(routeItems: Array<IRouteItem>, prefix: string) {
+    private renderRoutes(routeItems: IRouteItem[], prefix: string) {
         let links = [];
         const routeCount = routeItems.length;
         for (let i = 0, il = routeCount; i < il; ++i) {

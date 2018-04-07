@@ -1,11 +1,11 @@
 import React, { PureComponent } from "react";
-import { Dialog } from "./Dialog";
 import { TranslateService } from "../../service/TranslateService";
 import { IBaseComponentProps } from "../BaseComponent";
+import { Dialog } from "./Dialog";
 
 export const enum PreloaderType { Text = 1, Linear, Circular, Progress }
 
-export interface PreloaderProps extends IBaseComponentProps {
+export interface IPreloaderProps extends IBaseComponentProps {
     show: boolean;
     type?: PreloaderType;
     title?: string;
@@ -14,30 +14,28 @@ export interface PreloaderProps extends IBaseComponentProps {
 
 interface IPreloaderState { }
 
-export class Preloader extends PureComponent<PreloaderProps, IPreloaderState> {
+export class Preloader extends PureComponent<IPreloaderProps, IPreloaderState> {
     private waitMessage;
     private inProgressMessage;
     private show;
 
-    constructor(props: PreloaderProps) {
+    constructor(props: IPreloaderProps) {
         super(props);
         // translate messages
         const tr = TranslateService.getInstance().translate;
-        this.waitMessage = tr('msg_inprogress');
-        this.inProgressMessage = tr('msg_wait');
+        this.waitMessage = tr("msg_inprogress");
+        this.inProgressMessage = tr("msg_wait");
         this.state = {};
     }
 
-    public componentWillReceiveProps(newProps: PreloaderProps) {
+    public componentWillReceiveProps(newProps: IPreloaderProps) {
         if (newProps.show == true) {
             this.show = false;
         }
     }
 
     public render() {
-        let { show, title, message } = this.props;
-        title = title || this.waitMessage;
-        message = message || this.inProgressMessage;
+        const { show, title = this.waitMessage, message = this.inProgressMessage } = this.props;
         const preloader = this.getPreloader();
 
         if (show && !this.show) {

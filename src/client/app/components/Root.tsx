@@ -3,18 +3,13 @@ import { RouteComponentProps, withRouter } from "react-router";
 import { IUser } from "../cmn/models/User";
 import { IRouteItem } from "../config/route";
 import { Culture } from "../medium";
-import { GeolocationPlugin } from "../plugin/GeolocationPlugin";
-import { OpenSettingPlugin } from "../plugin/OpenSettingPlugin";
 import { ApiService } from "../service/ApiService";
 import { AuthService } from "../service/AuthService";
-import { ConfigService } from "../service/ConfigService";
+import { Config } from "../service/Config";
 import { Dispatcher } from "../service/Dispatcher";
 import { LogService } from "../service/LogService";
-import { NotificationService } from "../service/NotificationService";
 import { StorageService } from "../service/StorageService";
-import { TranslateService } from "../service/TranslateService";
 import { Html } from "./general/Html";
-import { MessageBox, MessageBoxBtn, MessageBoxBtnGroup, MessageBoxType } from "./general/MessageBox";
 import { Sidenav } from "./general/Sidenav";
 import { SidenavContent } from "./general/SidenavContent";
 import { ToastMessage } from "./general/ToastMessage";
@@ -22,7 +17,7 @@ import { ToastMessage } from "./general/ToastMessage";
 interface IRootParams { }
 
 interface IRootProps extends RouteComponentProps<IRootParams> {
-    routeItems: Array<IRouteItem>;
+    routeItems: IRouteItem[];
 }
 
 interface IRootState {
@@ -85,11 +80,11 @@ class Root extends Component<IRootProps, IRootState> {
     }
 
     private toBackground = () => {
-        ConfigService.set("isAppInBackground", true);
+        Config.set("isAppInBackground", true);
     }
 
     private toForeground = () => {
-        ConfigService.set("isAppInBackground", false);
+        Config.set("isAppInBackground", false);
     }
 }
 

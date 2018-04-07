@@ -1,5 +1,5 @@
 import { IValidationError } from "../medium";
-import { ConfigService } from "../service/ConfigService";
+import { Config } from "../service/Config";
 
 export interface IModelValidationMessage {
     // {fieldName: {ruleName: error message}}
@@ -25,8 +25,13 @@ export function validationMessage(messages: IModelValidationMessage, validationE
     return appliedMessages;
 }
 
-export function shallowClone<T>(object: T) {
-    return (JSON.parse(JSON.stringify(object))) as T;
+export function shallowClone<T>(object: T): T {
+    // return (JSON.parse(JSON.stringify(object))) as T;
+    const clone: T = {} as T;
+    for (let keys = Object.keys(object), i = keys.length; i--;) {
+        clone[keys[i]] = object[keys[i]];
+    }
+    return clone;
 }
 
 export function launchLink(link: string, target: string = "_blank") {
@@ -40,6 +45,6 @@ export function launchLink(link: string, target: string = "_blank") {
 }
 
 export function getFileUrl(address: string) {
-    const basePath = ConfigService.getConfig().version.api;
-    return `${basePath}/upl/${address || ""}`;
+    const api = Config.getConfig().api;
+    return `${api}/upl/${address || ""}`;
 }

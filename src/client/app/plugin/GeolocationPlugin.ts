@@ -1,30 +1,17 @@
 import { ILocation } from "../cmn/interfaces/GeoLocation";
-import { ConfigService } from "../service/ConfigService";
+import { Config } from "../service/Config";
 import { StorageService } from "../service/StorageService";
 import { shallowClone } from "../util/Util";
 
 /**
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/Using_geolocation
  * By default, getCurrentPosition() tries to answer as fast as possible with a low accuracy result.
- * It is useful if you need a quick answer regardless of the accuracy. Devices with a GPS, for example, can take a minute or more to get a GPS fix,
+ * It is useful if you need a quick answer regardless of the accuracy. Devices with a GPS,
+ *  for example, can take a minute or more to get a GPS fix,
  * so less accurate data (IP location or wifi) may be returned to getCurrentPosition().
  */
 export class GeolocationPlugin {
     public static Event = "location-update";
-    private static defaultLocation: ILocation;
-    private static isAccurate = false;
-    private static isValid = false;
-    private static LocationKey = "last-location";
-    private static preventLocation = false;
-    private static timeout = 10000;
-    private static timeoutThreshold = 30000;
-    private static tmpPositionOptions: PositionOptions;
-    // tslint:disable-next-line:member-ordering
-    private static positionOptions: PositionOptions = {
-        enableHighAccuracy: true,
-        maximumAge: 5000,
-        timeout: GeolocationPlugin.timeout,
-    };
 
     public static getCurrentLocation(): Promise<ILocation> {
         return new Promise<ILocation>((resolve, reject) => {
@@ -33,7 +20,7 @@ export class GeolocationPlugin {
     }
 
     public static getLatestLocation(): ILocation {
-        const defaultLocation = ConfigService.get<ILocation>("defaultLocation");
+        const defaultLocation = Config.get<ILocation>("defaultLocation");
         let lastLocation = StorageService.get<ILocation>(GeolocationPlugin.LocationKey);
         if (!lastLocation || !lastLocation.lat) {
             lastLocation = defaultLocation;
@@ -52,6 +39,21 @@ export class GeolocationPlugin {
     public static preventGettingLocation(prevent: boolean) {
         GeolocationPlugin.preventLocation = prevent;
     }
+
+    private static defaultLocation: ILocation;
+    private static isAccurate = false;
+    private static isValid = false;
+    private static LocationKey = "last-location";
+    private static preventLocation = false;
+    private static timeout = 10000;
+    private static timeoutThreshold = 30000;
+    private static tmpPositionOptions: PositionOptions;
+    // tslint:disable-next-line:member-ordering
+    private static positionOptions: PositionOptions = {
+        enableHighAccuracy: true,
+        maximumAge: 5000,
+        timeout: GeolocationPlugin.timeout,
+    };
 
     private static getLocation(resolve, reject) {
         const defaultLocation = GeolocationPlugin.getLatestLocation();
@@ -95,7 +97,7 @@ export class GeolocationPlugin {
                     positionOptions.enableHighAccuracy = false;
                 } else {
                     // checking app activity
-                    if (ConfigService.get<boolean>("isAppInBackground")) {
+                    if (Config.get<boolean>("isAppInBackground")) {
                         // super extend timeout if app in background
                         // console.log("app in bg; extending timeout even more");
                         positionOptions.timeout = Math.floor(3 * positionOptions.timeout / 2);

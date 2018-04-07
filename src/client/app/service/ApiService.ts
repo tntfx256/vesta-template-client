@@ -1,6 +1,6 @@
+import { Err, IQueryRequest, IQueryResult } from "../medium";
 import { AuthService } from "./AuthService";
-import { ConfigService, IClientAppConfig } from "./ConfigService";
-import { IQueryRequest, IQueryResult, Err } from "../medium";
+import { Config } from "./Config";
 
 export interface IApiServiceRequest<T> extends Promise<T> {
     abort?: () => void;
@@ -23,10 +23,10 @@ export class ApiService {
     private tokenHeaderKeyName = "X-Auth-Token";
 
     private constructor(private authService: AuthService) {
-        const cfg: IClientAppConfig = ConfigService.getConfig();
+        const cfg = Config.getConfig();
         this.endPoint = `${cfg.api}/api/${cfg.version.api}`;
         // this.enableCache = !!cfg.cache.api;
-        this.sourceApp = ConfigService.get("sourceApp");
+        this.sourceApp = Config.get("sourceApp");
     }
 
     public del<T>(edge: string, data?: IQueryRequest<T>) {

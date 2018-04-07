@@ -2,6 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    outline: 0;
 }
 
 html {
@@ -10,8 +11,9 @@ html {
 }
 
 html, body {
-    font-family: $base-font-family;
     direction: $direction;
+    font-family: $base-font-family;
+    font-size: $font-size-base;
     text-overflow: clip;
 }
 
@@ -74,8 +76,8 @@ body {
 }
 
 .en {
-    font-family: Verdana, Geneva, sans-serif;
     direction: ltr;
+    font-family: Verdana, Geneva, sans-serif;
 }
 
 input, textarea, select, button {
@@ -83,8 +85,8 @@ input, textarea, select, button {
 }
 
 a {
-    text-decoration: none;
     color: $teal;
+    text-decoration: none;
 }
 
 table {

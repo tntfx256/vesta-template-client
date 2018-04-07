@@ -1,7 +1,7 @@
 import { IToken } from "../cmn/models/Token";
 import { IUser } from "../cmn/models/User";
 import { ApiService } from "../service/ApiService";
-import { ConfigService } from "../service/ConfigService";
+import { Config } from "../service/Config";
 import { LogService } from "../service/LogService";
 import { StorageService } from "../service/StorageService";
 
@@ -16,11 +16,6 @@ export interface IPushNotifData {
 export type PushNotifCallBack = (data: any, fromBackground?: boolean) => void;
 
 export class NotificationPlugin {
-    private static instance: NotificationPlugin;
-    private api = ApiService.getInstance();
-    private cbs: Array<PushNotifCallBack> = [];
-    private OneSignal: any;
-    private tokenKeyName = "push-token";
 
     public static getInstance(): NotificationPlugin {
         if (!NotificationPlugin.instance) {
@@ -29,12 +24,18 @@ export class NotificationPlugin {
         return NotificationPlugin.instance;
     }
 
+    private static instance: NotificationPlugin;
+    private api = ApiService.getInstance();
+    private cbs: PushNotifCallBack[] = [];
+    private OneSignal: any;
+    private tokenKeyName = "push-token";
+
     private constructor() {
         //<!cordova>
         this.OneSignal = (window as any).OneSignal || [];
         this.OneSignal.push(["init", {
             allowLocalhostAsSecureOrigin: true,
-            appId: ConfigService.get("onesignal-id"),
+            appId: Config.get("onesignal-id"),
             autoRegister: true,
             notificationClickHandlerAction: "focus",
             notificationClickHandlerMatch: "origin",
@@ -45,7 +46,7 @@ export class NotificationPlugin {
 
         //<cordova>
         (window.plugins as any).OneSignal
-            .startInit(ConfigService.get("onesignal-id"))
+            .startInit(Config.get("onesignal-id"))
             .inFocusDisplaying((window.plugins as any).OneSignal.OSInFocusDisplayOption.None)
             // when app is in focus and new notification arrives
             .handleNotificationReceived(this.callCordovaRegisteres)

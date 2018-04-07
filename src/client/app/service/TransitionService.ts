@@ -1,10 +1,8 @@
-import React, {Attributes, ComponentClass, ReactNode} from "react";
-import {Forbidden} from "../components/root/Forbidden";
-import {AuthService, IPermissionCollection} from "./AuthService";
+import React, { Attributes, ComponentClass, ReactNode } from "react";
+import { Forbidden } from "../components/root/Forbidden";
+import { AuthService, IPermissionCollection } from "./AuthService";
 
 export class TransitionService {
-    private static instance: TransitionService;
-    private idCounter = 1;
 
     public static getInstance(auth: AuthService = AuthService.getInstance()): TransitionService {
         if (!TransitionService.instance) {
@@ -12,6 +10,9 @@ export class TransitionService {
         }
         return TransitionService.instance;
     }
+
+    private static instance: TransitionService;
+    private idCounter = 1;
 
     constructor(private auth: AuthService) {
     }
@@ -22,7 +23,7 @@ export class TransitionService {
         extraProps = extraProps || {};
         return (props) => {
             return this.auth.hasAccessToState(id) ?
-                React.createElement(componentClass, {...props, ...extraProps}, children) :
+                React.createElement(componentClass, { ...props, ...extraProps }, children) :
                 React.createElement(Forbidden, props);
         };
     }
