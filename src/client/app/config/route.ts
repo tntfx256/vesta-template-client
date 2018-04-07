@@ -12,7 +12,7 @@ import { TranslateService } from "../service/TranslateService";
 
 export interface IRouteItem {
     abstract?: boolean;
-    children?: Array<IRouteItem>;
+    children?: IRouteItem[];
     component?: ComponentClass<any>;
     exact?: boolean;
     // show/hide this item in menu list
@@ -24,7 +24,7 @@ export interface IRouteItem {
     title: string;
 }
 
-export function getRoutes(isLoggedIn: boolean): Array<IRouteItem> {
+export function getRoutes(isLoggedIn: boolean): IRouteItem[] {
     const tr = TranslateService.getInstance().translate;
     const commonRoutes = [
         { link: "about", title: tr("about"), component: About },
