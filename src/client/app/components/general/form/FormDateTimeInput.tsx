@@ -17,10 +17,11 @@ interface IFormDateTimeInputState {
 
 export class FormDateTimeInput extends PureComponent<IFormDateTimeInputProps, IFormDateTimeInputState> {
     private dateTime = Culture.getDateTimeInstance();
-    private dateTimeFormat = this.props.hasTime ? Culture.getLocale().defaultDateTimeFormat : Culture.getLocale().defaultDateFormat;
+    private dateTimeFormat: string;
 
     constructor(props: IFormDateTimeInputProps) {
         super(props);
+        this.dateTimeFormat = this.props.hasTime ? Culture.getLocale().defaultDateTimeFormat : Culture.getLocale().defaultDateFormat;
         this.state = { value: this.format(props.value) };
     }
 
@@ -43,7 +44,8 @@ export class FormDateTimeInput extends PureComponent<IFormDateTimeInputProps, IF
         return (
             <div className={`form-group date-time-input${error ? " has-error" : ""}`}>
                 {placeholder ? null : <label htmlFor={name}>{label}</label>}
-                <input className="form-control" name={name} id={name} placeholder={placeholder ? label : null} value={value} onChange={this.onInputChange} readOnly={true} onClick={this.showPicker} />
+                <input className="form-control" name={name} id={name} placeholder={placeholder ? label : null}
+                    value={value} onChange={this.onInputChange} readOnly={true} onClick={this.showPicker} />
                 <p className="form-error">{error || ""}</p>
                 {picker}
             </div>

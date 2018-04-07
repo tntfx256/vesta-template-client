@@ -23,7 +23,7 @@ interface IProfileState {
     imagePreview: string;
     showLoader?: boolean;
     user: IUser;
-    validationErrors: IValidationError;
+    validationErrors?: IValidationError;
 }
 
 export class Profile extends PageComponent<IProfileProps, IProfileState> {
@@ -32,7 +32,7 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
         super(props);
         const user = shallowClone(this.auth.getUser());
         user.role = (user.role as IRole).id;
-        this.state = { user, validationErrors: null, imagePreview: null };
+        this.state = { user, imagePreview: null };
     }
 
     public render() {
