@@ -5,7 +5,7 @@
 export class NetworkPlugin {
 
     public static getConnectionType(): string {
-        let type = '';
+        let type = "";
         //<cordova>
         type = navigator.connection && navigator.connection.type;
         //</cordova>

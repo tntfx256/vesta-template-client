@@ -6,27 +6,21 @@ import {NotificationPlugin} from "../../plugin/NotificationPlugin";
 import {Preloader} from "../general/Preloader";
 import {LogService} from "../../service/LogService";
 
-export interface LogoutParams {
+interface ILogoutParams {
 }
 
-export interface LogoutProps extends IPageComponentProps<LogoutParams> {
+interface ILogoutProps extends IPageComponentProps<ILogoutParams> {
 }
 
-export interface LogoutState {
+interface ILogoutState {
 }
 
-export class Logout extends PageComponent<LogoutProps, LogoutState> {
+export class Logout extends PageComponent<ILogoutProps, ILogoutState> {
     private notifPlugin = NotificationPlugin.getInstance();
-
-    private onAfterLogout(user: IUser) {
-        this.auth.logout();
-        this.auth.login(user);
-        this.props.history.replace('/');
-    }
 
     public componentDidMount() {
         if (this.auth.isGuest()) {
-            return this.props.history.replace('/');
+            return this.props.history.replace("/");
         }
 
         this.notifPlugin.deleteToken()
@@ -34,13 +28,19 @@ export class Logout extends PageComponent<LogoutProps, LogoutState> {
             .then(response => {
                 this.onAfterLogout(response.items[0]);
             })
-            .catch(error => {
-                LogService.error(error, 'componentDidMount', 'Logout');
+            .catch((error) => {
+                LogService.error(error, "componentDidMount", "Logout");
                 this.onAfterLogout({});
             });
     }
 
     public render() {
-        return <Preloader show={true}/>;
+        return <Preloader show={true} />;
+    }
+
+    private onAfterLogout(user: IUser) {
+        this.auth.logout();
+        this.auth.login(user);
+        this.props.history.replace("/");
     }
 }

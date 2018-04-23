@@ -16,7 +16,9 @@ export class FilePlugin {
     //private privateEntry: DirectoryEntry;
 
     public getDirectory(type: AppLocationType, relativePath?: string): Promise<DirectoryEntry> {
-        const baseDirectory: string = type == AppLocationType.Public ? this.file.externalRootDirectory : this.file.dataDirectory;
+        const baseDirectory: string = type == AppLocationType.Public ?
+            this.file.externalRootDirectory :
+            this.file.dataDirectory;
         return this.resolveUrl(baseDirectory)
             .then((result) => {
                 if (relativePath) {
@@ -45,14 +47,15 @@ export class FilePlugin {
         return new Promise(((resolve, reject) => {
             mkdir(entry, 0);
 
-            function mkdir(entry: DirectoryEntry, index: number) {
+            function mkdir(dirEntry: DirectoryEntry, index: number) {
                 if (index == folders.length) {
-                    return resolve(entry);
+                    return resolve(dirEntry);
                 }
-                entry.getDirectory(folders[index], { create: true, exclusive: false }, (newEntry: DirectoryEntry) => {
+                // tslint:disable-next-line:max-line-length
+                dirEntry.getDirectory(folders[index], { create: true, exclusive: false }, (newEntry: DirectoryEntry) => {
                     mkdir(newEntry, ++index);
                 }, (err) => {
-                    reject(new Error(`Failed creating the '${entry.nativeURL}/${folders[index]}'`));
+                    reject(new Error(`Failed creating the '${dirEntry.nativeURL}/${folders[index]}'`));
                 });
             }
         }));
@@ -65,7 +68,7 @@ export class FilePlugin {
         };
 
         return Promise.all([checkType(src), checkType(dest)])
-            .then((result: Array<Entry>) => {
+            .then((result: Entry[]) => {
                 const srcEntry: Entry = result[0];
                 const destEntry: Entry = result[1];
                 if (destEntry.isFile) {
@@ -75,6 +78,7 @@ export class FilePlugin {
                     fileName = srcEntry.name;
                 }
                 return new Promise<FileEntry>((resolve, reject) => {
+                    // tslint:disable-next-line:max-line-length
                     srcEntry.copyTo(destEntry as DirectoryEntry, fileName, (entry) => resolve(entry as FileEntry), reject);
                 });
             });
@@ -92,7 +96,8 @@ export class FilePlugin {
                     config.progressHandler(progressEvent);
                 };
             }
-            ft.download(encodeURI(config.endPoint + "/" + config.fileName), destDirEntry.toURL() + config.fileName, (entry) => {
+            // tslint:disable-next-line:max-line-length
+            ft.download(encodeURI(`${config.endPoint}/${config.fileName}`), `${destDirEntry.toURL()}${config.fileName}`, (entry) => {
                 config.cb(null, entry);
             }, (err) => {
                 try {

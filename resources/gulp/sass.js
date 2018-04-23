@@ -34,7 +34,8 @@ module.exports = function (setting) {
         'iOS >= 7',
         'Android >= 4',
         'Explorer >= 10',
-        'ExplorerMobile >= 11'];
+        'ExplorerMobile >= 11'
+    ];
 
     gulp.task('sass:postCss', ['sass:compile'], () => {
         let target = setting.buildPath(setting.target);

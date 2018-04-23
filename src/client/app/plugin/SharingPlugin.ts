@@ -2,8 +2,6 @@
  * cordova-plugin-x-socialsharing
  */
 export class SharingPlugin {
-    private static instance: SharingPlugin;
-    private socialSharing: any;
 
     public static getInstance(): SharingPlugin {
         if (!SharingPlugin.instance) {
@@ -11,6 +9,9 @@ export class SharingPlugin {
         }
         return SharingPlugin.instance;
     }
+
+    private static instance: SharingPlugin;
+    private socialSharing: any;
 
     constructor() {
         this.socialSharing = window.plugins && window.plugins.socialsharing;

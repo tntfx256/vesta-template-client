@@ -2,7 +2,6 @@ import React from "react";
 import { IRole } from "../../cmn/models/Role";
 import { IUser, User, UserGender } from "../../cmn/models/User";
 import { IQueryResult, IValidationError } from "../../medium";
-import { AuthService } from "../../service/AuthService";
 import { getFileUrl, IModelValidationMessage, shallowClone, validationMessage } from "../../util/Util";
 import { Avatar } from "../general/Avatar";
 import { FormDateTimeInput } from "../general/form/FormDateTimeInput";
@@ -27,23 +26,17 @@ interface IProfileState {
 }
 
 export class Profile extends PageComponent<IProfileProps, IProfileState> {
+    private formErrorsMessages: IModelValidationMessage;
+    private genderOptions: IFormOption[] = [
+        { id: UserGender.Male, title: this.tr("enum_male") },
+        { id: UserGender.Female, title: this.tr("enum_female") }];
 
     constructor(props: IProfileProps) {
         super(props);
         const user = shallowClone(this.auth.getUser());
         user.role = (user.role as IRole).id;
         this.state = { user, imagePreview: null };
-    }
-
-    public render() {
-        const { showLoader, validationErrors, imagePreview } = this.state;
-        const user = shallowClone(this.state.user);
-        let userImage = null;
-        if (user.image && "string" == typeof user.image) {
-            userImage = getFileUrl(`user/${user.image}`);
-        }
-        const requiredErrorMessage = this.tr("err_required");
-        const formErrorsMessages: IModelValidationMessage = {
+        this.formErrorsMessages = {
             birthDate: {
                 timestamp: this.tr("err_date"),
             },
@@ -53,7 +46,7 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
             firstName: {
                 maxLength: this.tr("err_max_length", 64),
                 minLength: this.tr("err_min_length", 2),
-                required: requiredErrorMessage,
+                required: this.tr("err_required"),
             },
             gender: {
                 enum: this.tr("err_enum"),
@@ -65,18 +58,24 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
             lastName: {
                 maxLength: this.tr("err_max_length", 64),
                 minLength: this.tr("err_min_length", 2),
-                required: requiredErrorMessage,
+                required: this.tr("err_required"),
             },
             password: {
                 conf: this.tr("not_equal"),
                 minLength: this.tr("err_min_length", 4),
-                required: requiredErrorMessage,
+                required: this.tr("err_required"),
             },
         };
-        const genderOptions: Array<IFormOption> = [
-            { id: UserGender.Male, title: this.tr("enum_male") },
-            { id: UserGender.Female, title: this.tr("enum_female") }];
-        const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
+    }
+
+    public render() {
+        const { showLoader, validationErrors, imagePreview } = this.state;
+        const user = shallowClone(this.state.user);
+        let userImage = null;
+        if (user.image && "string" == typeof user.image) {
+            userImage = getFileUrl(`user/${user.image}`);
+        }
+        const errors = validationErrors ? validationMessage(this.formErrorsMessages, validationErrors) : {};
 
         return (
             <div className="page profile-page has-navbar">
@@ -84,7 +83,8 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
                 <Preloader show={showLoader} />
                 <FormWrapper onSubmit={this.onSubmit}>
                     <div className="avatar-wrapper">
-                        <Avatar src={imagePreview ? imagePreview : userImage as string} defaultSrc="img/vesta-logo.png">
+                        <Avatar src={imagePreview ? imagePreview : userImage as string}
+                            defaultSrc="img/vesta-logo.png">
                             <button className="change-image" type="button">{this.tr("txt_change_image")}</button>
                             <input className="change-image" type="file" name="image" onChange={this.updateImage} />
                         </Avatar>
@@ -97,10 +97,10 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
                             placeholder={true} error={errors.firstName} onChange={this.onChange} />
                         <FormTextInput name="lastName" label={this.tr("fld_lastname")} value={user.lastName}
                             placeholder={true} error={errors.lastName} onChange={this.onChange} />
-                        <FormTextInput name="email" label={this.tr("fld_email")} value={user.email}
-                            placeholder={true} error={errors.email} onChange={this.onChange} type="email" dir="ltr" />
-                        <FormSelect name="gender" label={this.tr("fld_gender")} value={user.gender}
-                            placeholder={true} error={errors.gender} onChange={this.onChange} options={genderOptions} />
+                        <FormTextInput name="email" label={this.tr("fld_email")} value={user.email} placeholder={true}
+                            error={errors.email} onChange={this.onChange} type="email" dir="ltr" />
+                        <FormSelect name="gender" label={this.tr("fld_gender")} value={user.gender} placeholder={true}
+                            error={errors.gender} onChange={this.onChange} options={this.genderOptions} />
                         <FormDateTimeInput name="birthDate" label={this.tr("fld_birth_date")} value={user.birthDate}
                             placeholder={true} error={errors.birthDate} onChange={this.onChange} />
                     </fieldset>
@@ -108,7 +108,8 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
                     <fieldset className="profile-form">
                         <legend>{this.tr("txt_change_pass")}</legend>
                         <FormTextInput name="password" label={this.tr("fld_password")} value={user.password}
-                            placeholder={true} error={errors.password} onChange={this.onChange} type="password" />
+                            placeholder={true} error={errors.password} onChange={this.onChange}
+                            type="password" />
                         <FormTextInput name="confPassword" label={this.tr("fld_conf_password")} placeholder={true}
                             value={(user as any).confPassword} onChange={this.onChange} type="password" />
                     </fieldset>
@@ -137,12 +138,6 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
             if (!user.password) {
                 delete validationErrors.password;
             }
-            //deleting file type error on cordova [file isNotInstanceOf File]
-            //<cordova>
-            if (validationErrors.image == "fileType") {
-                delete validationErrors.image;
-            }
-            //</cordova>
             if (Object.keys(validationErrors).length) {
                 return this.setState({ validationErrors });
             }
@@ -162,9 +157,9 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
                     return this.updateUser(response);
                 }
                 return this.api.upload<IUser>(`user/file/${userModel.id}`, userImage)
-                    .then((uploadResponse) => {
+                    .then((uplResponse) => {
                         this.setState({ showLoader: false });
-                        this.updateUser(uploadResponse);
+                        this.updateUser(uplResponse);
                     });
             })
             .catch((error) => {
@@ -187,12 +182,13 @@ export class Profile extends PageComponent<IProfileProps, IProfileState> {
     }
 
     private updateUser(response: IQueryResult<IUser>) {
+        const { user } = this.state;
         const newUser = response.items[0];
         newUser.role = this.auth.getUser().role;
         this.auth.login(newUser);
         // removing user password from state
-        delete this.state.user.password;
-        delete (this.state.user as any).confPassword;
+        delete user.password;
+        delete (user as any).confPassword;
         this.setState({ user: this.state.user });
     }
 }
