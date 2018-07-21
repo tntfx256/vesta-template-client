@@ -1,6 +1,6 @@
 {
   "name": "vesta-template-client",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "description": "Vesta boilerplate for client side application",
   "license": "Apache-2.0",
   "author": "hbtb <bishehsary@gmail.com>",
@@ -9,7 +9,6 @@
   ],
   "main": "./vesta/electron/main.js",
   "scripts": {
-    "test": "jest",
     "start": "npm run dev:web",
     "dev:web": "gulp dev:web",
     "dev:electron": "gulp dev:electron",
@@ -23,6 +22,7 @@
   "dependencies": {
     "@vesta/core-es5": "^1.1.8",
     "@vesta/culture-ir": "^0.2.3",
+    "@vesta/culture-us": "^0.2.1",
     "core-js": "^2.5.7",
     "es6-promise": "^4.2.4",
     "md-font": "^2.2.3",
