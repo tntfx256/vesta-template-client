@@ -2,12 +2,12 @@ const gulp = require('gulp');
 const webpack = require('webpack');
 const eliminator = require('./plugins/eliminator');
 
-module.exports = function (setting) {
+module.exports = function(setting) {
     let dir = setting.dir;
-    let tmpClient = `${setting.dir.build}/tmp/client`;
+    let tmpClient = `${setting.dir.build}/tmp`;
 
     gulp.task('polyfill:preBuild', () => {
-        return gulp.src(`${setting.dir.srcClient}/app/polyfill.ts`)
+        return gulp.src(`${setting.dir.src}/app/polyfill.ts`)
             .pipe(eliminator(setting))
             .pipe(gulp.dest(tmpClient))
     });
@@ -16,24 +16,22 @@ module.exports = function (setting) {
         let target = setting.buildPath(setting.target);
         const compiler = webpack({
             entry: {
-                polyfill: `${setting.dir.srcClient}/app/polyfill.ts`
+                polyfill: `${setting.dir.src}/app/polyfill.ts`
             },
             output: {
                 filename: "[name].js",
-                path: `${dir.buildClient}/${target}/js`
+                path: `${dir.build}/${target}/js`
             },
+            mode: "production",
             resolve: {
                 extensions: [".ts", ".tsx", ".js", ".json"]
             },
             module: {
                 rules: [
-                    {test: /\.tsx?$/, loader: `awesome-typescript-loader?sourceMap=false`}
+                    { test: /\.tsx?$/, loader: `ts-loader` }
                 ]
             },
-            plugins: [new webpack.optimize.UglifyJsPlugin({
-                sourceMap: false,
-                warnings: false,
-            })]
+            plugins: []
         });
 
         return new Promise((resolve, reject) => {

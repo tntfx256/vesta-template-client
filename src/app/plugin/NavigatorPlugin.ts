@@ -12,15 +12,15 @@ export class NavigatorPlugin {
         if (useSourceIfPossible) {
             sourceLocation = GeolocationPlugin.isLocationValid() ? GeolocationPlugin.getLatestLocation() : null;
         }
-        //<cordova>
+        /// <cordova>
         NavigatorPlugin.launchCordovaNavigator(dest, sourceLocation);
-        //</cordova>
-        //<!cordova>
+        /// </cordova>
+        /// <!cordova>
         NavigatorPlugin.launchNavigator(dest, sourceLocation);
-        //</cordova>
+        /// </cordova>
     }
 
-    //<cordova>
+    /// <cordova>
     private static launchCordovaNavigator(destination: ILocation, source?: ILocation) {
         let options = null;
         if (source) {
@@ -28,14 +28,14 @@ export class NavigatorPlugin {
         }
         launchnavigator.navigate([destination.lat, destination.lng], options);
     }
-    //</cordova>
+    /// </cordova>
 
-    //<!cordova>
+    /// <!cordova>
     private static launchNavigator(destination: ILocation, source?: ILocation) {
         const baseUrl = "https://www.google.com/maps/dir/?api=1&";
         const sourceQuery = source ? `origin=${source.lat},${source.lng}&` : "";
         const link = `${baseUrl}${sourceQuery}destination=${destination.lat},${destination.lng}&travelmode=driving`;
         launchLink(link);
     }
-    //</cordova>
+    /// </cordova>
 }

@@ -18,7 +18,7 @@ interface INavbarProps extends RouteComponentProps<INavbarParams> {
 }
 
 class Navbar extends PureComponent<INavbarProps, null> {
-    //<android>
+    /// <android>
     private pathToExitApps = ["/"];
 
     public componentDidMount() {
@@ -28,7 +28,7 @@ class Navbar extends PureComponent<INavbarProps, null> {
     public componentWillUnmount() {
         DevicePlugin.getInstance().unregisterBackButtonHandler(this.goBack);
     }
-    //</android>
+    /// </android>
 
     public render() {
         const { title, className, backLink, showBurger, hide, backAction, mainButtonType } = this.props;
@@ -62,11 +62,11 @@ class Navbar extends PureComponent<INavbarProps, null> {
         }
         const { history, backLink } = this.props;
         if (backLink) { return history.replace(backLink); }
-        //<android>
+        /// <android>
         if (this.pathToExitApps.indexOf(this.props.location.pathname) >= 0) {
             return (navigator as any).app.exitApp();
         }
-        //</android>
+        /// </android>
         if (history.length) { return history.goBack(); }
         history.replace("/");
     }

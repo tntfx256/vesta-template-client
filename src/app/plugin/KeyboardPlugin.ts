@@ -13,10 +13,10 @@ export class KeyboardPlugin {
         window.addEventListener("keyboardDidHide", () => {
             document.body.classList.remove("shrink-view");
         });
-        //<android>
+        /// <android>
         if (Keyboard.hideKeyboardAccessoryBar) {
             Keyboard.hideKeyboardAccessoryBar();
         }
-        //</android>
+        /// </android>
     }
 }

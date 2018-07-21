@@ -34,9 +34,9 @@ Use `vesta gen --help` for more information.
 In order to use a section of code for specific target you can wrap that section like this:
 
 ```
-//<targetName>
+/// <targetName>
 your targetName specific code goes here...
-//</targetName>
+/// </targetName>
 ```
 
 Valid targets are:
@@ -49,25 +49,25 @@ Valid targets are:
 for example if you want to target both `android` or `ios`, you may wrap that section in `cordova` wrapper:
 
 ```
-//<cordova>
+/// <cordova>
 your cordova (android/ios) specific code goes here...
-//</cordova>
+/// </cordova>
 ```
 
 for android specific code you may use:
 
 ```
-//<android>
+/// <android>
 your android specific code goes here...
-//</android>
+/// </android>
 ```
 
 You may also use `!` operator to exclude a target:
 
 ```
-//<!cordova>
+/// <!cordova>
 your none cordova (web/electron) specific code goes here...
-//</cordova>
+/// </cordova>
 ```
 
 All these code eliminations occur at build time using `resources/gulp/plugins/eliminator` gulp plugin.

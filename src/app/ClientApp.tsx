@@ -34,10 +34,10 @@ export class ClientApp {
             .catch((error) => LogService.error(error, "init[notifPlugin.updateNotifToken]", "ClientApp"));
         // prevent splash from hiding after timeout; it must be hidden manually
         SplashPlugin.show();
-        //<cordova>
+        /// <cordova>
         KeyboardPlugin.setDefaultProperties();
         StatusbarPlugin.styleDefault();
-        //</cordova>
+        /// </cordova>
         this.registerServiceWorker();
         this.registerPushNotification();
         // auth event registration
@@ -90,17 +90,17 @@ export class ClientApp {
                     const installingWorker = reg.installing;
                     installingWorker.addEventListener("statechange", () => {
                         if (installingWorker.state == "installed" && navigator.serviceWorker.controller) {
-                            //<production>
+                            /// <production>
                             this.showAppUpdate = true;
                             this.run();
                             setTimeout(() => {
                                 LogService.info("Reloading for new version!", "registerServiceWorker", "ClientApp");
                                 window.location.reload();
                             }, splashTimeout);
-                            //</production>
-                            //<development>
+                            /// </production>
+                            /// <development>
                             LogService.info("New version available!", "registerServiceWorker", "ClientApp");
-                            //</development>
+                            /// </development>
                         }
                     });
                 });

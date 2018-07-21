@@ -1,3 +1,4 @@
+import { Promise } from "es6-promise";
 import { ILocation } from "../cmn/interfaces/GeoLocation";
 import { Config } from "../service/Config";
 import { StorageService } from "../service/StorageService";

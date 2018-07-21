@@ -1,4 +1,4 @@
-import { LogService } from "../service/LogService";
+import { Promise } from "es6-promise";
 import { FilePlugin } from "./FilePlugin";
 
 /**

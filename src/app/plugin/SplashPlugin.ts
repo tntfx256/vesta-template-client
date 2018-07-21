@@ -8,9 +8,9 @@ export class SplashPlugin {
     }
 
     public static hide() {
-        //<cordova>
+        /// <cordova>
         navigator.splashscreen.hide();
-        //</cordova>
+        /// </cordova>
         document.body.classList.remove("has-splash");
     }
 }

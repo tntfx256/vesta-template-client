@@ -1,5 +1,5 @@
+import { Promise } from "es6-promise";
 import { Err } from "../medium";
-import { LogService } from "../service/LogService";
 
 /**
  * cordova-plugin-file & cordova-plugin-file-transfer & cordova-plugin-filepath

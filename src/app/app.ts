@@ -15,26 +15,26 @@ Config.set("onesignal-id", "");
 // initiating locale
 Culture.register(IrLocale, IrVocabs, IrDate);
 
-//<cordova>
+/// <cordova>
 document.addEventListener("deviceready", checkScripts, false);
-//</cordova>
+/// </cordova>
 
-//<!cordova>
+/// <!cordova>
 window.addEventListener("DOMContentLoaded", checkScripts, false);
-//</cordova>
+/// </cordova>
 
 // checking whether or not the prerequisite scripts are loaded
 function checkScripts() {
     const OFFLINE_ASSUMPTION_DURATION = 30000;
     const SCRIPT_CHECK_INTERVAL = 300;
     const scriptsToCheck = [];
-    //<!cordova>
+    /// <!cordova>
     scriptsToCheck.push("OneSignal");
-    //</cordova>
-    //<development>
+    /// </cordova>
+    /// <development>
     // do not waste time in development
     scriptsToCheck.splice(0, scriptsToCheck.length);
-    //</development>
+    /// </development>
     let scriptCheckCounter = 0;
     (function check() {
         ++scriptCheckCounter;

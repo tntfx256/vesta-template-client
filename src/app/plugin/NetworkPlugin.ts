@@ -6,24 +6,24 @@ export class NetworkPlugin {
 
     public static getConnectionType(): string {
         let type = "";
-        //<cordova>
+        /// <cordova>
         type = navigator.connection && navigator.connection.type;
-        //</cordova>
-        //<web>
+        /// </cordova>
+        /// <web>
         type = navigator.onLine ? Connection.WIFI : Connection.NONE;
-        //</web>
+        /// </web>
         return type;
     }
 
     public static isOnline(): boolean {
         let isOnline = true;
-        //<web>
+        /// <web>
         isOnline = navigator.onLine;
-        //</web>
-        //<cordova>
+        /// </web>
+        /// <cordova>
         const connType = NetworkPlugin.getConnectionType();
         isOnline = connType != Connection.UNKNOWN && connType != Connection.NONE;
-        //</cordova>
+        /// </cordova>
         return isOnline;
     }
 

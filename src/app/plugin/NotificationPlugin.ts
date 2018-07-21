@@ -1,3 +1,4 @@
+import { Promise } from "es6-promise";
 import { IToken } from "../cmn/models/Token";
 import { IUser } from "../cmn/models/User";
 import { ApiService } from "../service/ApiService";
@@ -31,7 +32,7 @@ export class NotificationPlugin {
     private tokenKeyName = "push-token";
 
     private constructor() {
-        //<!cordova>
+        /// <!cordova>
         this.OneSignal = (window as any).OneSignal || [];
         this.OneSignal.push(["init", {
             allowLocalhostAsSecureOrigin: true,
@@ -42,9 +43,9 @@ export class NotificationPlugin {
             notifyButton: { enable: false },
         }]);
         this.OneSignal.push(["addListenerForNotificationOpened", this.callRegisterers]);
-        //</cordova>
+        /// </cordova>
 
-        //<cordova>
+        /// <cordova>
         (window.plugins as any).OneSignal
             .startInit(Config.get("onesignal-id"))
             .inFocusDisplaying((window.plugins as any).OneSignal.OSInFocusDisplayOption.None)
@@ -53,7 +54,7 @@ export class NotificationPlugin {
             // when app is in background and new notification arrives
             .handleNotificationOpened(this.callCordovaRegisteres)
             .endInit();
-        //</cordova>
+        /// </cordova>
     }
 
     public deleteToken(): Promise<string> {
@@ -79,12 +80,12 @@ export class NotificationPlugin {
         }
         // updating user token
         let getTokenPromise;
-        //<!cordova>
+        /// <!cordova>
         getTokenPromise = this.getWebToken();
-        //</cordova>
-        //<cordova>
+        /// </cordova>
+        /// <cordova>
         getTokenPromise = this.getDeviceToken();
-        //</cordova>
+        /// </cordova>
         return getTokenPromise.then((newToken) => {
             StorageService.set(this.tokenKeyName, newToken);
             if (!newToken) { return; }
@@ -110,7 +111,7 @@ export class NotificationPlugin {
         }
     }
 
-    //<!cordova>
+    /// <!cordova>
     private getWebToken(): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             this.OneSignal.push(() => {
@@ -128,9 +129,9 @@ export class NotificationPlugin {
         }
         this.OneSignal.push(["addListenerForNotificationOpened", this.callRegisterers]);
     }
-    //</cordova>
+    /// </cordova>
 
-    //<cordova>
+    /// <cordova>
     private getDeviceToken(): Promise<string> {
         return new Promise<string>((resolve, reject) => {
             (window.plugins as any).OneSignal.getPermissionSubscriptionState((status) => {
@@ -154,5 +155,5 @@ export class NotificationPlugin {
             this.cbs[i](payload, fromBackground);
         }
     }
-    //</cordova>
+    /// </cordova>
 }
