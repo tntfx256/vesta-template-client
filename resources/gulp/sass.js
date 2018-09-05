@@ -8,19 +8,18 @@ let mqpacker = require('css-mqpacker');
 let fs = require('fs');
 let eliminator = require('./plugins/eliminator');
 
-module.exports = function (setting) {
+module.exports = function(setting) {
     let dir = setting.dir;
 
     gulp.task('sass:preCompile', () => {
         let tmpDirectory = `${dir.build}/tmp/scss`;
         return gulp.src(`${dir.src}/scss/**/*.scss`)
             .pipe(eliminator(setting, setting.target))
-            .pipe(gulp.dest(tmpDirectory))
+            .pipe(gulp.dest(tmpDirectory));
     });
 
     gulp.task('sass:compile', ['sass:preCompile'], () => {
-        let target = setting.buildPath(setting.target);
-        let tmpDirectory = setting.production ? `${dir.build}/tmp/css` : `${dir.build}/${target}/css`;
+        let tmpDirectory = `${dir.build}/tmp/css`;
         let stream = gulp.src(getEntry()),
             genMap = !setting.production;
         if (genMap) stream = stream.pipe(sourcemaps.init());
@@ -39,16 +38,14 @@ module.exports = function (setting) {
 
     gulp.task('sass:postCss', ['sass:compile'], () => {
         let target = setting.buildPath(setting.target);
-        let tmpDirectory = setting.production ? `${dir.build}/tmp/css` : `${dir.build}/${target}/css`;
-        let preprocessors = [autoPrefixer({browsers: browsersToSupport})];
-        if (setting.production) {
-            preprocessors.push(mqpacker);
-            preprocessors.push(csswring);
-            return gulp.src(tmpDirectory + '/*.css')
-                .pipe(postCss(preprocessors))
-                .on('error', setting.error)
-                .pipe(gulp.dest(`${dir.build}/${target}/css`))
-        }
+        let tmpDirectory = `${dir.build}/tmp/css`;
+        let preprocessors = [autoPrefixer({ browsers: browsersToSupport })];
+        preprocessors.push(mqpacker);
+        preprocessors.push(csswring);
+        return gulp.src(tmpDirectory + '/*.css')
+            .pipe(postCss(preprocessors))
+            .on('error', setting.error)
+            .pipe(gulp.dest(`${dir.build}/${target}/css`));
     });
 
     gulp.task('sass:watch', () => {
@@ -63,13 +60,14 @@ module.exports = function (setting) {
     function getEntry() {
         let baseDirectory = `${dir.build}/tmp/scss`;
         let entry = `${baseDirectory}/${setting.target}-rtl.scss`;
-        if (fs.existsSync(entry)) return [entry, entry.replace('-rtl', '-ltr')];
+        let initEntry = `${baseDirectory}/app-init.scss`;
+        if (fs.existsSync(entry)) return [initEntry, entry, entry.replace('-rtl', '-ltr')];
         if (setting.is(setting.target, 'cordova')) {
             entry = `${baseDirectory}/cordova-rtl.scss`;
-            if (fs.existsSync(entry)) return [entry, entry.replace('-rtl', '-ltr')];
+            if (fs.existsSync(entry)) return [initEntry, entry, entry.replace('-rtl', '-ltr')];
         }
         entry = `${baseDirectory}/app-rtl.scss`;
-        if (fs.existsSync(entry)) return [entry, entry.replace('-rtl', '-ltr')];
+        if (fs.existsSync(entry)) return [initEntry, entry, entry.replace('-rtl', '-ltr')];
         process.stderr.write(`Entry not found ${entry}`);
         process.exit(1);
     }

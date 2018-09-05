@@ -1,9 +1,9 @@
 import React, { PureComponent } from "react";
-import { TranslateService } from "../../../service/TranslateService";
+import { Translate } from "../../../medium";
 import { IBaseComponentProps } from "../../BaseComponent";
 import { IFromControlProps } from "./FormWrapper";
 
-interface IFormMultichoiceProps extends IBaseComponentProps, IFromControlProps {
+interface IMultichoiceProps extends IBaseComponentProps, IFromControlProps {
     options: Array<{}>;
     showSelectAll?: boolean;
     titleKey?: string;
@@ -11,13 +11,13 @@ interface IFormMultichoiceProps extends IBaseComponentProps, IFromControlProps {
     valueKey?: string;
 }
 
-export class FormMultichoice extends PureComponent<IFormMultichoiceProps, null> {
+export class Multichoice extends PureComponent<IMultichoiceProps, null> {
     public static defaultProps = { valueKey: "id", titleKey: "title" };
     private selectAllText: string;
 
-    constructor(props: IFormMultichoiceProps) {
+    constructor(props: IMultichoiceProps) {
         super(props);
-        const tr = TranslateService.getInstance();
+        const tr = Translate.getInstance();
         this.selectAllText = tr.translate("select_all");
     }
 

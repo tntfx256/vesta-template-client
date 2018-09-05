@@ -13,7 +13,7 @@ module.exports = function(setting) {
     gulp.task('client:sw', () => {
         if (setting.is(setting.target, 'cordova')) return;
         let target = setting.buildPath(setting.target);
-        let serviceWorkers = ['service-worker.js', 'OneSignalSDKWorker.js', 'OneSignalSDKUpdaterWorker.js'];
+        let serviceWorkers = ['service-worker.js'];
         let timestamp = Date.now();
         const files = getFilesList(`${dir.build}/${target}`, '').join('","');
         for (let i = 0, il = serviceWorkers.length; i < il; ++i) {
@@ -114,6 +114,14 @@ module.exports = function(setting) {
             module: {
                 rules: [
                     { test: /\.tsx?$/, loader: `ts-loader` },
+                    {
+                        test: /\.js?$/,
+                        loader: `babel-loader`,
+                        options: {
+                            plugins: ["@babel/plugin-transform-object-assign"],
+                            presets: ["@babel/preset-env"] //Preset used for env setup
+                        }
+                    },
                     // { test: /\.js$/, loader: "source-map-loader", enforce: "pre" },
                 ]
             },
@@ -123,8 +131,8 @@ module.exports = function(setting) {
                 splitChunks: {
                     cacheGroups: {
                         commons: { test: /[\\/]node_modules[\\/]/, name: "lib", chunks: "all" }
-        }
-    }
+                    }
+                }
             }
         }
         if (!setting.production) {
@@ -150,6 +158,7 @@ module.exports = function(setting) {
         webConnect.server({
             root: [wwwRoot],
             livereload: true,
+            host:"0.0.0.0",
             port: setting.port.http
         });
 

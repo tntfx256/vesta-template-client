@@ -7,8 +7,8 @@ import { Logout } from "../components/root/Logout";
 import { Profile } from "../components/root/Profile";
 import { Register } from "../components/root/Register";
 import { Support } from "../components/root/Support";
+import { Translate } from "../medium";
 import { IPermissionCollection } from "../service/AuthService";
-import { TranslateService } from "../service/TranslateService";
 
 export interface IRouteItem {
     abstract?: boolean;
@@ -25,7 +25,7 @@ export interface IRouteItem {
 }
 
 export function getRoutes(isLoggedIn: boolean): IRouteItem[] {
-    const tr = TranslateService.getInstance().translate;
+    const tr = Translate.getInstance().translate;
     const commonRoutes = [
         { link: "about", title: tr("about"), component: About },
         { link: "contact", title: tr("contact_us"), component: Support },

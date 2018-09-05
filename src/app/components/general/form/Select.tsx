@@ -2,13 +2,13 @@ import React, { PureComponent } from "react";
 import { IBaseComponentProps } from "../../BaseComponent";
 import { IFromControlProps } from "./FormWrapper";
 
-interface IFormSelectProps extends IBaseComponentProps, IFromControlProps {
+interface ISelectProps extends IBaseComponentProps, IFromControlProps {
     options: Array<{}>;
     titleKey?: string;
     valueKey?: string;
 }
 
-export class FormSelect extends PureComponent<IFormSelectProps, null> {
+export class Select extends PureComponent<ISelectProps, null> {
     public static defaultProps = { valueKey: "id", titleKey: "title" };
 
     public render() {

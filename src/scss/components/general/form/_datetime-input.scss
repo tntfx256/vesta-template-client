@@ -5,8 +5,8 @@
     }
 
     .picker-btn {
+        #{$opposite-float}: 4px;
         position: absolute;
         top: 4px;
-        #{$opposite-float}: 4px;
     }
 }

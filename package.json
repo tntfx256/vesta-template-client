@@ -1,6 +1,6 @@
 {
   "name": "vesta-template-client",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Vesta boilerplate for client side application",
   "license": "Apache-2.0",
   "author": "hbtb <bishehsary@gmail.com>",
@@ -20,9 +20,9 @@
     "deploy:ios": "gulp deploy:ios"
   },
   "dependencies": {
-    "@vesta/core-es5": "^1.1.8",
+    "@vesta/core-es5": "^1.1.9",
     "@vesta/culture-ir": "^0.2.3",
-    "@vesta/culture-us": "^0.2.1",
+    "@vesta/culture-us": "^0.2.2",
     "core-js": "^2.5.7",
     "es6-promise": "^4.2.4",
     "md-font": "^2.2.3",
@@ -33,6 +33,9 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-transform-object-assign": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
     "@types/cordova": "0.0.34",
     "@types/cordova-plugin-camera": "0.0.3",
     "@types/cordova-plugin-file-transfer": "0.0.3",
@@ -47,10 +50,13 @@
     "@types/react-router": "^4.0.20",
     "@types/uk.co.workingedge.phonegap.plugin.launchnavigator": "^3.2.2",
     "autoprefixer": "^7.2.5",
+    "babel-loader": "^8.0.2",
     "css-mqpacker": "^6.0.2",
     "csswring": "^6.0.3",
+    "electron-connect": "^0.6.3",
     "fs-extra": "^6.0.1",
     "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0",
     "gulp-connect": "^5.5.0",
     "gulp-htmlmin": "^4.0.0",
     "gulp-postcss": "^7.0.1",

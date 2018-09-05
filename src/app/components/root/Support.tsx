@@ -3,10 +3,10 @@ import { IContext } from "../../cmn/models/Context";
 import { ISupport, Support as SupportModel } from "../../cmn/models/Support";
 import { IValidationError, sanitizePhoneNumber } from "../../medium";
 import { StorageService } from "../../service/StorageService";
-import { IFieldValidationMessage, IModelValidationMessage, validationMessage } from "../../util/Util";
-import { FormTextArea } from "../general/form/FormTextArea";
-import { FormTextInput } from "../general/form/FormTextInput";
+import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { FormWrapper } from "../general/form/FormWrapper";
+import { TextArea } from "../general/form/TextArea";
+import { TextInput } from "../general/form/TextInput";
 import { Icon } from "../general/Icon";
 import Navbar from "../general/Navbar";
 import { Preloader } from "../general/Preloader";
@@ -19,7 +19,6 @@ interface ISupportProps extends IPageComponentProps<ISupportParams> {
 }
 
 interface ISupportState {
-    showLoader?: boolean;
     supportInfo: ISupport;
     text: string;
     validationErrors?: IValidationError;
@@ -69,13 +68,12 @@ export class Support extends PageComponent<ISupportProps, ISupportState> {
         return (
             <div className="page contact-page has-navbar">
                 <Navbar title={this.tr("contact_us")} backLink="/" />
-                <Preloader show={this.state.showLoader} />
                 <FormWrapper name="contactForm" onSubmit={this.onSubmit}>
-                    <FormTextInput label={this.tr("fld_phone")} onChange={this.onChange} name="phone"
+                    <TextInput label={this.tr("fld_phone")} onChange={this.onChange} name="phone"
                         placeholder={true} value={supportInfo.phone} error={errors.phone} dir="ltr" />
-                    <FormTextInput label={this.tr("fld_title")} onChange={this.onChange} name="title"
+                    <TextInput label={this.tr("fld_title")} onChange={this.onChange} name="title"
                         placeholder={true} value={supportInfo.title} error={errors.title} />
-                    <FormTextArea label={this.tr("fld_desc")} onChange={this.onChange} name="content"
+                    <TextArea label={this.tr("fld_desc")} onChange={this.onChange} name="content"
                         value={supportInfo.content} error={errors.content} placeholder={true} />
                     <div className="btn-group">
                         <button className="btn btn-primary" type="submit">{this.tr("submit")}</button>
@@ -100,15 +98,17 @@ export class Support extends PageComponent<ISupportProps, ISupportState> {
         if (validationErrors) {
             return this.setState({ validationErrors });
         }
-        this.setState({ showLoader: true, validationErrors: null });
+        Preloader.show();
+        this.setState({ validationErrors: null });
         this.api.post<ISupport>("contact", contactInfo.getValues())
             .then((response) => {
-                this.setState({ showLoader: false });
+                Preloader.hide();
                 this.notif.success("msg_contact_us");
                 this.props.history.push("/");
             })
             .catch((error) => {
-                this.setState({ showLoader: false, validationErrors: error.violations });
+                Preloader.hide();
+                this.setState({ validationErrors: error.violations });
                 this.notif.error(error.message);
             });
     }

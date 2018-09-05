@@ -4,6 +4,7 @@ export {
     Dictionary,
     DateTime,
     Database,
+    Dispatcher,
     Err,
     FieldType,
     ILocale,
@@ -16,4 +17,5 @@ export {
     Model,
     sanitizePhoneNumber,
     Schema,
+    Translate,
 } from "@vesta/core-es5";

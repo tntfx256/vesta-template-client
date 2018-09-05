@@ -4,10 +4,8 @@
 node_modules
 npm-debug.log
 /src/app/config/variantConfig.ts
-/vesta/cordova/platforms/*
-!/vesta/cordova/platforms/platforms.json
-/vesta/cordova/plugins/*
-!/vesta/cordova/plugins/fetch.json
+/vesta/cordova/*
+!/vesta/cordova/config.xml
 /vesta/cordova/www
 /vesta/electron/www
 /vesta/web/www

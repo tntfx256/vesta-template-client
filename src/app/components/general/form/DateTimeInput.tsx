@@ -5,28 +5,28 @@ import { DatePicker } from "../DatePicker";
 import { Modal } from "../Modal";
 import { IFromControlProps } from "./FormWrapper";
 
-interface IFormDateTimeInputProps extends IBaseComponentProps, IFromControlProps {
+interface IDateTimeInputProps extends IBaseComponentProps, IFromControlProps {
     hasTime?: boolean;
     value?: number;
 }
 
-interface IFormDateTimeInputState {
+interface IDateTimeInputState {
     showPicker?: boolean;
     value: string;
 }
 
-export class FormDateTimeInput extends PureComponent<IFormDateTimeInputProps, IFormDateTimeInputState> {
+export class DateTimeInput extends PureComponent<IDateTimeInputProps, IDateTimeInputState> {
     private dateTime = Culture.getDateTimeInstance();
     private dateTimeFormat: string;
 
-    constructor(props: IFormDateTimeInputProps) {
+    constructor(props: IDateTimeInputProps) {
         super(props);
         const locale = Culture.getLocale();
         this.dateTimeFormat = this.props.hasTime ? locale.defaultDateTimeFormat : locale.defaultDateFormat;
         this.state = { value: props.value ? this.format(props.value) : "" };
     }
 
-    public componentWillReceiveProps(newProps: IFormDateTimeInputProps) {
+    public componentWillReceiveProps(newProps: IDateTimeInputProps) {
         const { value } = this.props;
         if (newProps.value !== value) {
             this.setState({ value: this.format(newProps.value) });

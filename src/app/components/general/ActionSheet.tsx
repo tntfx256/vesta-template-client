@@ -3,21 +3,21 @@ import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 import { Config } from "../../service/Config";
 import { IBaseComponentProps } from "../BaseComponent";
 
-export interface IActionSheetItem {
+export interface IActionsheetItem {
     onClick: () => void;
     title: string;
     value?: string;
 }
 
-interface IActionSheetProps extends IBaseComponentProps {
-    actions: IActionSheetItem[];
+interface IActionsheetProps extends IBaseComponentProps {
+    actions: IActionsheetItem[];
     show: boolean;
 }
 
-export class ActionSheet extends PureComponent<IActionSheetProps, null> {
+export class Actionsheet extends PureComponent<IActionsheetProps, null> {
     private transTime = Config.getConfig().transition;
 
-    constructor(props: IActionSheetProps) {
+    constructor(props: IActionsheetProps) {
         super(props);
     }
 

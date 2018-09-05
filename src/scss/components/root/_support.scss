@@ -3,11 +3,11 @@
     flex-direction: column;
 
     .content {
-        text-align: justify;
         background: $white;
-        padding: 3vh;
-        margin: $form-group-margin;
         border-radius: $form-control-border-radius;
+        margin: $form-group-margin;
+        padding: 3vh;
+        text-align: justify;
     }
 
     .contact-btns {

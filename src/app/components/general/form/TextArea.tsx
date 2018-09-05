@@ -2,11 +2,11 @@ import React, { PureComponent } from "react";
 import { IBaseComponentProps } from "../../BaseComponent";
 import { IFromControlProps } from "./FormWrapper";
 
-interface IFormTextAreaProps extends IBaseComponentProps, IFromControlProps {
+interface ITextAreaProps extends IBaseComponentProps, IFromControlProps {
     value?: string;
 }
 
-export class FormTextArea extends PureComponent<IFormTextAreaProps, null> {
+export class TextArea extends PureComponent<ITextAreaProps, null> {
 
     public render() {
         const { label, name, value, error, placeholder } = this.props;

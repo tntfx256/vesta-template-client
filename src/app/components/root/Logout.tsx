@@ -1,10 +1,7 @@
-import React from "react";
-import {PageComponent, IPageComponentProps} from "../PageComponent";
-import {IUser} from "../../cmn/models/User";
-import {AuthService} from "../../service/AuthService";
-import {NotificationPlugin} from "../../plugin/NotificationPlugin";
-import {Preloader} from "../general/Preloader";
-import {LogService} from "../../service/LogService";
+import { IUser } from "../../cmn/models/User";
+import { LogService } from "../../service/LogService";
+import { Preloader } from "../general/Preloader";
+import { IPageComponentProps, PageComponent } from "../PageComponent";
 
 interface ILogoutParams {
 }
@@ -16,16 +13,19 @@ interface ILogoutState {
 }
 
 export class Logout extends PageComponent<ILogoutProps, ILogoutState> {
-    private notifPlugin = NotificationPlugin.getInstance();
+
+    public constructor(props: ILogoutProps) {
+        super(props);
+        this.state = {};
+    }
 
     public componentDidMount() {
         if (this.auth.isGuest()) {
             return this.props.history.replace("/");
         }
-
-        this.notifPlugin.deleteToken()
-            .then(() => this.api.get<IUser>('account/logout'))
-            .then(response => {
+        Preloader.show();
+        this.api.get<IUser>("account/logout")
+            .then((response) => {
                 this.onAfterLogout(response.items[0]);
             })
             .catch((error) => {
@@ -34,8 +34,12 @@ export class Logout extends PageComponent<ILogoutProps, ILogoutState> {
             });
     }
 
+    public componentWillUnmount() {
+        Preloader.hide();
+    }
+
     public render() {
-        return <Preloader show={true} />;
+        return null;
     }
 
     private onAfterLogout(user: IUser) {

@@ -1,14 +1,17 @@
 $form-file-input-padding: 5px;
 $form-file-input-del-width: 24px;
+
 .file-input {
     input {
         opacity: 0.5;
         position: absolute;
     }
+
     .form-control {
         height: auto;
         min-height: $form-control-height;
         position: relative;
+
         label {
             color: $color-semidark;
             font-size: $font-size-xsmall;
@@ -16,58 +19,63 @@ $form-file-input-del-width: 24px;
             top: -$form-control-padding;
         }
     }
+
     .thumbnails {
-        overflow: hidden;
         display: flex;
+        overflow: hidden;
         padding: $form-file-input-padding;
     }
+
     .file-wrapper {
-        margin: $form-file-input-padding;
         flex: 1;
         justify-content: space-around;
-        text-align: end;
+        margin: $form-file-input-padding;
         position: relative;
+        text-align: end;
+
         .file-del {
-            position: absolute;
             #{$opposite-float}: -1 * floor($form-file-input-del-width / 3);
-            top: -1 * floor($form-file-input-del-width / 3);
-            border-radius: 50%;
-            text-align: center;
-            font-size: $font-size-base;
-            width: $form-file-input-del-width;
-            height: $form-file-input-del-width;
-            color: $color-error;
-            border: 1px solid $color-error;
-            line-height: $form-file-input-del-width;
-            cursor: pointer;
             background: $white;
+            border: 1px solid $color-error;
+            border-radius: 50%;
+            color: $color-error;
+            cursor: pointer;
+            font-size: $font-size-base;
+            height: $form-file-input-del-width;
+            line-height: $form-file-input-del-width;
+            position: absolute;
+            text-align: center;
+            top: -1 * floor($form-file-input-del-width / 3);
+            width: $form-file-input-del-width;
         }
-        img,
-        video {
+
+        img, video {
+            border: 2px solid $border-color;
+            border-radius: $border-radius;
             max-height: 15vh;
             max-width: 15vh;
+            overflow: hidden;
             width: 98%;
+        }
+
+        .file {
+            background: $color-semilight;
             border: 2px solid $border-color;
             border-radius: $border-radius;
-            overflow: hidden;
-        }
-        .file {
             display: inline-block;
             height: 10vh;
-            width: 15vh;
-            border: 2px solid $border-color;
-            background: $color-semilight;
-            border-radius: $border-radius;
             overflow: hidden;
             position: relative;
+            width: 15vh;
+
             &:after {
-                position: absolute;
-                left: 0;
                 bottom: 0;
-                width: 100%;
-                text-align: center;
                 color: $white;
-                content: "no preview";
+                content: 'no preview';
+                left: 0;
+                position: absolute;
+                text-align: center;
+                width: 100%;
             }
         }
     }

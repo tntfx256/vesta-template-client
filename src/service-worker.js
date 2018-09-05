@@ -54,7 +54,7 @@ self.addEventListener('fetch', function (event) {
                     return response;
                 });
             }).catch(function (error) {
-                console.error('[ServiceWorker] fetch', error);
+                // console.error('[ServiceWorker] fetch', error);
             });
         })
     );

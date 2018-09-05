@@ -1,57 +1,49 @@
 import React from "react";
 import { render } from "react-dom";
 import { Route, Switch } from "react-router";
-import { IVersion } from "./cmn/config/cmnConfig";
 import { AclPolicy } from "./cmn/enum/Acl";
 import { IUser } from "./cmn/models/User";
-import { Preloader } from "./components/general/Preloader";
 import Root from "./components/Root";
 import { NotFound } from "./components/root/NotFound";
 import { getRoutes, IRouteItem } from "./config/route";
-import { DynamicRouter } from "./medium";
+import { Dispatcher, DynamicRouter, Translate } from "./medium";
 import { KeyboardPlugin } from "./plugin/KeyboardPlugin";
 import { NotificationPlugin } from "./plugin/NotificationPlugin";
 import { SplashPlugin } from "./plugin/SplashPlugin";
 import { StatusbarPlugin } from "./plugin/StatusbarPlugin";
 import { AuthService } from "./service/AuthService";
 import { Config } from "./service/Config";
-import { Dispatcher } from "./service/Dispatcher";
 import { LogService } from "./service/LogService";
 import { TransitionService } from "./service/TransitionService";
-import { TranslateService } from "./service/TranslateService";
 
 export class ClientApp {
     private auth = AuthService.getInstance();
     private dispatcher = Dispatcher.getInstance();
     private showAppUpdate = false;
-    private tr = TranslateService.getInstance().translate;
+    private tr = Translate.getInstance().translate;
     private tz = TransitionService.getInstance().willTransitionTo;
 
     public init() {
         this.auth.setDefaultPolicy(AclPolicy.Deny);
         const notifPlugin = NotificationPlugin.getInstance();
-        notifPlugin.updateNotifToken(this.auth.getUser())
-            .catch((error) => LogService.error(error, "init[notifPlugin.updateNotifToken]", "ClientApp"));
         // prevent splash from hiding after timeout; it must be hidden manually
         SplashPlugin.show();
         /// <cordova>
         KeyboardPlugin.setDefaultProperties();
         StatusbarPlugin.styleDefault();
         /// </cordova>
+        /// <!cordova>
         this.registerServiceWorker();
+        /// </cordova>
         this.registerPushNotification();
         // auth event registration
         this.dispatcher.register<IUser>(AuthService.Events.Update, (user) => {
-            notifPlugin.updateNotifToken(user)
-                .catch((error) => LogService.error(error, "init[dispatcher::updateNotifToken]", "ClientApp"));
             this.run();
         });
     }
 
     public run() {
         const routeItems = getRoutes(!this.auth.isGuest());
-        const appName = Config.get<string>("name");
-        const version = Config.get<IVersion>("version").app;
         const splashTimeout = Config.get<number>("splashTimeout");
         const routes = this.renderRoutes(routeItems, "");
 
@@ -62,8 +54,6 @@ export class ClientApp {
                         {routes}
                         <Route component={NotFound} />
                     </Switch>
-                    <Preloader show={this.showAppUpdate} title={this.tr("app_update")}
-                        message={`${appName} v${version}`} />
                 </Root>
             </DynamicRouter>,
             document.getElementById("root"),
@@ -75,9 +65,7 @@ export class ClientApp {
     }
 
     private registerPushNotification() {
-        NotificationPlugin.getInstance().register((payload) => {
-            // push notification payload
-        });
+        // tslint
     }
 
     private registerServiceWorker() {

@@ -3,28 +3,28 @@ import { Mime } from "../../../medium";
 import { IBaseComponentProps } from "../../BaseComponent";
 import { IFromControlProps } from "./FormWrapper";
 
-interface IFormFileInputProps extends IBaseComponentProps, IFromControlProps {
+interface IFileInputProps extends IBaseComponentProps, IFromControlProps {
     accept?: string;
     multiple?: boolean;
     value?: string | File | Array<string | File>;
 }
 
-interface IFormFileInputState {
+interface IFileInputState {
     files: Array<string | File>;
     // this holds the base64 src of selected images | src of files already uploaded to server
     filesSrc: string[];
 }
 
-export class FormFileInput extends PureComponent<IFormFileInputProps, IFormFileInputState> {
+export class FileInput extends PureComponent<IFileInputProps, IFileInputState> {
     private hasStateChanged = false;
 
-    constructor(props: IFormFileInputProps) {
+    constructor(props: IFileInputProps) {
         super(props);
         this.state = { files: [], filesSrc: [] };
         this.extractInitialValues(props);
     }
 
-    public componentWillReceiveProps(nextProps: IFormFileInputProps) {
+    public componentWillReceiveProps(nextProps: IFileInputProps) {
         if (this.hasStateChanged) { return; }
         this.extractInitialValues(nextProps);
     }
@@ -47,7 +47,7 @@ export class FormFileInput extends PureComponent<IFormFileInputProps, IFormFileI
         );
     }
 
-    private extractInitialValues(props: IFormFileInputProps) {
+    private extractInitialValues(props: IFileInputProps) {
         const { multiple, value } = props;
         const { files, filesSrc } = this.state;
         if (value) {

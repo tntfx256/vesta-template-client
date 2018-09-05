@@ -2,13 +2,13 @@ import React, { PureComponent } from "react";
 import { IBaseComponentProps } from "../../BaseComponent";
 import { IFromControlProps } from "./FormWrapper";
 
-export interface IFormTextInputProps extends IBaseComponentProps, IFromControlProps {
+export interface ITextInputProps extends IBaseComponentProps, IFromControlProps {
     dir?: "ltr" | "rtl";
     type?: string;
     value?: string;
 }
 
-export class FormTextInput extends PureComponent<IFormTextInputProps, null> {
+export class TextInput extends PureComponent<ITextInputProps, null> {
 
     public render() {
         const { label, name, value, dir, error, placeholder, readonly } = this.props;

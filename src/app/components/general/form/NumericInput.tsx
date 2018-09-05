@@ -2,14 +2,14 @@ import React, { InputHTMLAttributes, PureComponent } from "react";
 import { IBaseComponentProps } from "../../BaseComponent";
 import { IFromControlProps } from "./FormWrapper";
 
-interface IFormNumericInputProps extends IBaseComponentProps, IFromControlProps {
+interface INumericInputProps extends IBaseComponentProps, IFromControlProps {
     format?: boolean;
     size?: number;
     step?: number;
     value?: number | string;
 }
 
-export class FormNumericInput extends PureComponent<IFormNumericInputProps, null> {
+export class NumericInput extends PureComponent<INumericInputProps, null> {
 
     public render() {
         const { label, name, value, step, error, placeholder, size } = this.props;
@@ -42,6 +42,7 @@ export class FormNumericInput extends PureComponent<IFormNumericInputProps, null
     }
 
     private onChange = (e) => {
-        this.props.onChange(this.props.name, +e.target.value);
+        const value = e.target.value;
+        this.props.onChange(this.props.name, isNaN(value) ? 0 : value);
     }
 }

@@ -5,11 +5,12 @@ const util = require('gulp-util');
 const PluginError = util.PluginError;
 const PLUGIN_NAME = 'eliminator';
 
-module.exports = function (config) {
+module.exports = function(config) {
     if (!config || !config.target) throw new PluginError(PLUGIN_NAME, `Invalid config`);
+    const isCordova = config.is(config.target, "cordova");
     let eliminationsArea = updateEliminationsArea(config.target);
 
-    return through.obj(function (file, encoding, cb) {
+    return through.obj(function(file, encoding, cb) {
         if (file.isNull()) {
             return cb(null, file);
         }
@@ -60,9 +61,15 @@ module.exports = function (config) {
     }
 
     function updateEliminationsArea(target) {
-        const eliminationsArea = {html: [], others: []};
+        const eliminationsArea = { html: [], others: [] };
         // removing production/development
         const envEliminationTag = config.production ? 'development' : 'production';
+        if (isCordova) {
+            eliminationsArea.others.push({
+                start: `/// <!cordova>`,
+                end: `/// </cordova>`
+            })
+        }
         eliminationsArea.html.push({
             start: `<!--${envEliminationTag}-->`,
             end: `<!--/${envEliminationTag}-->`
