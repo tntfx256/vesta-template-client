@@ -6,6 +6,7 @@ import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { Alert } from "../general/Alert";
 import { FormWrapper } from "../general/form/FormWrapper";
 import { TextInput } from "../general/form/TextInput";
+import Navbar from "../general/Navbar";
 import { Preloader } from "../general/Preloader";
 import { IPageComponentProps, PageComponent } from "../PageComponent";
 
@@ -45,6 +46,7 @@ export class Forget extends PageComponent<IForgetProps, IForgetState> {
 
         return (
             <div className="page forget-page has-navbar page-logo-form">
+                <Navbar className="navbar-transparent" showBurger={true} />
                 <div className="logo-wrapper">
                     <div className="logo-container">
                         <img src="img/icons/144x144.png" alt="Vesta Logo" />

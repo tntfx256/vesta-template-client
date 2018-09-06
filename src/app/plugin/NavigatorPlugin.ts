@@ -26,7 +26,7 @@ export class NavigatorPlugin {
         if (source) {
             options = { start: [source.lat, source.lng] };
         }
-        launchnavigator.navigate([destination.lat, destination.lng], options);
+        (window as any).launchnavigator.navigate([destination.lat, destination.lng], options);
     }
     /// </cordova>
 

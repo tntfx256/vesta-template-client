@@ -4,6 +4,6 @@
 export class StatusbarPlugin {
 
     public static styleDefault() {
-        StatusBar.styleDefault();
+        (window as any).StatusBar.styleDefault();
     }
 }
