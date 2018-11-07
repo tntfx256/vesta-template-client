@@ -8,12 +8,11 @@ $page-padding: 15px;
     margin: auto;
     max-width: $page-max-width;
     padding: $page-padding;
+    position: relative;
 
     &.has-navbar {
         padding-top: $header-height;
     }
-
-    position: relative;
 }
 
 .page-logo-form {

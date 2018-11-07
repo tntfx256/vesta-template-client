@@ -1,3 +1,5 @@
+import { isCordova } from "../util/Platform";
+
 /**
  * cordova-plugin-splashscreen
  */
@@ -8,9 +10,9 @@ export class SplashPlugin {
     }
 
     public static hide() {
-        /// <cordova>
-        (navigator as any).splashscreen.hide();
-        /// </cordova>
+        if (isCordova()) {
+            (navigator as any).splashscreen.hide();
+        }
         document.body.classList.remove("has-splash");
     }
 }

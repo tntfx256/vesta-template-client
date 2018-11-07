@@ -5,41 +5,38 @@ import { AclPolicy } from "./cmn/enum/Acl";
 import { IUser } from "./cmn/models/User";
 import Root from "./components/Root";
 import { NotFound } from "./components/root/NotFound";
+import { appConfig } from "./config/appConfig";
 import { getRoutes, IRouteItem } from "./config/route";
-import { Dispatcher, DynamicRouter, Translate } from "./medium";
+import { Dispatcher, DynamicRouter } from "./medium";
 import { KeyboardPlugin } from "./plugin/KeyboardPlugin";
-import { NotificationPlugin } from "./plugin/NotificationPlugin";
 import { SplashPlugin } from "./plugin/SplashPlugin";
 import { StatusbarPlugin } from "./plugin/StatusbarPlugin";
 import { AuthService } from "./service/AuthService";
 import { Config } from "./service/Config";
 import { LogService } from "./service/LogService";
 import { TransitionService } from "./service/TransitionService";
+import { isCordova } from "./util/Platform";
 
 export class ClientApp {
     private auth = AuthService.getInstance();
     private dispatcher = Dispatcher.getInstance();
     private showAppUpdate = false;
-    private tr = Translate.getInstance().translate;
+    // private tr = Translate.getInstance().translate;
     private tz = TransitionService.getInstance().willTransitionTo;
 
     public init() {
         this.auth.setDefaultPolicy(AclPolicy.Deny);
-        const notifPlugin = NotificationPlugin.getInstance();
         // prevent splash from hiding after timeout; it must be hidden manually
         SplashPlugin.show();
-        /// <cordova>
-        KeyboardPlugin.setDefaultProperties();
-        StatusbarPlugin.styleDefault();
-        /// </cordova>
-        /// <!cordova>
-        this.registerServiceWorker();
-        /// </cordova>
+        if (isCordova()) {
+            KeyboardPlugin.setDefaultProperties();
+            StatusbarPlugin.styleDefault();
+        } else {
+            this.registerServiceWorker();
+        }
         this.registerPushNotification();
         // auth event registration
-        this.dispatcher.register<IUser>(AuthService.Events.Update, (user) => {
-            this.run();
-        });
+        this.dispatcher.register<IUser>(AuthService.Events.Update, () => this.run());
     }
 
     public run() {
@@ -78,17 +75,16 @@ export class ClientApp {
                     const installingWorker = reg.installing;
                     installingWorker.addEventListener("statechange", () => {
                         if (installingWorker.state == "installed" && navigator.serviceWorker.controller) {
-                            /// <production>
-                            this.showAppUpdate = true;
-                            this.run();
-                            setTimeout(() => {
-                                LogService.info("Reloading for new version!", "registerServiceWorker", "ClientApp");
-                                window.location.reload();
-                            }, splashTimeout);
-                            /// </production>
-                            /// <development>
-                            LogService.info("New version available!", "registerServiceWorker", "ClientApp");
-                            /// </development>
+                            if (appConfig.env === "production") {
+                                this.showAppUpdate = true;
+                                this.run();
+                                setTimeout(() => {
+                                    LogService.info("Reloading for new version!", "registerServiceWorker", "ClientApp");
+                                    window.location.reload();
+                                }, splashTimeout);
+                            } else {
+                                LogService.info("New version available!", "registerServiceWorker", "ClientApp");
+                            }
                         }
                     });
                 });

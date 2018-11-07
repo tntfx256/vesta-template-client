@@ -66,7 +66,7 @@ export class Support extends PageComponent<ISupportProps, ISupportState> {
         const errors = validationErrors ? validationMessage(this.formErrorsMessages, validationErrors) : {};
 
         return (
-            <div className="page contact-page has-navbar">
+            <div className="page support-page has-navbar">
                 <Navbar title={this.tr("contact_us")} backLink="/" />
                 <FormWrapper name="contactForm" onSubmit={this.onSubmit}>
                     <TextInput label={this.tr("fld_phone")} onChange={this.onChange} name="phone"

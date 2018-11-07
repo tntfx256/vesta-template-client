@@ -1,9 +1,9 @@
 const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
-/// <development>
+
 const client = require("electron-connect").client;
-/// </development>
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let win;
@@ -17,10 +17,9 @@ function createWindow() {
         pathname: path.join(__dirname, 'www/index.html'),
         protocol: 'file:',
         slashes: true
-    }));
-    /// <development>
+    }));    
     client.create(win);
-    /// </development>
+
     // Open the DevTools.
     // win.webContents.openDevTools();
 

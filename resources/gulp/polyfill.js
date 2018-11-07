@@ -1,39 +1,13 @@
-const gulp = require('gulp');
-const webpack = require('webpack');
-const eliminator = require('./plugins/eliminator');
+const webpack = require("webpack");
+const { getWebpackConfig } = require("./config");
 
 module.exports = function(setting) {
-    let dir = setting.dir;
-    let tmpClient = `${setting.dir.build}/tmp`;
+    const dir = setting.dir;
 
-    gulp.task('polyfill:preBuild', () => {
-        return gulp.src(`${setting.dir.src}/app/polyfill.ts`)
-            .pipe(eliminator(setting))
-            .pipe(gulp.dest(tmpClient))
-    });
-
-    gulp.task('polyfill:build', ['polyfill:preBuild'], () => {
-        let target = setting.buildPath(setting.target);
-        const compiler = webpack({
-            entry: {
-                polyfill: `${setting.dir.src}/app/polyfill.ts`
-            },
-            output: {
-                filename: "[name].js",
-                path: `${dir.build}/${target}/js`
-            },
-            mode: "production",
-            resolve: {
-                extensions: [".ts", ".tsx", ".js", ".json"]
-            },
-            module: {
-                rules: [
-                    { test: /\.tsx?$/, loader: `ts-loader` }
-                ]
-            },
-            plugins: []
-        });
-
+    function compile() {
+        const wpConfig = getWebpackConfig(setting);
+        wpConfig.entry = { polyfill: `${dir.src}/app/polyfill.ts` };
+        const compiler = webpack(wpConfig);
         return new Promise((resolve, reject) => {
             compiler.run((err, stats) => {
                 if (err) {
@@ -42,15 +16,15 @@ module.exports = function(setting) {
                 }
                 const info = stats.toJson();
                 if (stats.hasErrors()) {
-                    process.stderr.write(info.errors.join('\n\n'));
+                    process.stderr.write(info.errors.join("\n\n"));
                 }
                 resolve(true);
             });
-        })
-    });
+        });
+    }
 
     return {
         watch: [],
-        tasks: ['polyfill:build']
+        tasks: compile
     };
 };

@@ -18,4 +18,5 @@ export {
     sanitizePhoneNumber,
     Schema,
     Translate,
+    ValidationError,
 } from "@vesta/core-es5";

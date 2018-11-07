@@ -1,6 +1,7 @@
 import React, { ComponentType, PureComponent } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { DevicePlugin } from "../../plugin/DevicePlugin";
+import { isAndroid, isCordova } from "../../util/Platform";
 import { Burger } from "./Burger";
 
 export enum NavBarMainButtonType { Burger = 1, Back, Close }
@@ -18,17 +19,21 @@ interface INavbarProps extends RouteComponentProps<INavbarParams> {
 }
 
 class Navbar extends PureComponent<INavbarProps, null> {
-    /// <android>
+
     private pathToExitApps = ["/"];
+    private hasBackBtn = isCordova() && isAndroid();
 
     public componentDidMount() {
-        DevicePlugin.getInstance().registerBackButtonHandler(this.goBack);
+        if (this.hasBackBtn) {
+            DevicePlugin.getInstance().registerBackButtonHandler(this.goBack);
+        }
     }
 
     public componentWillUnmount() {
-        DevicePlugin.getInstance().unregisterBackButtonHandler(this.goBack);
+        if (this.hasBackBtn) {
+            DevicePlugin.getInstance().unregisterBackButtonHandler(this.goBack);
+        }
     }
-    /// </android>
 
     public render() {
         const { title, className, backLink, showBurger, hide, backAction, mainButtonType } = this.props;
@@ -62,11 +67,11 @@ class Navbar extends PureComponent<INavbarProps, null> {
         }
         const { history, backLink } = this.props;
         if (backLink) { return history.replace(backLink); }
-        /// <android>
-        if (this.pathToExitApps.indexOf(this.props.location.pathname) >= 0) {
-            return (navigator as any).app.exitApp();
+        if (this.hasBackBtn) {
+            if (this.pathToExitApps.indexOf(this.props.location.pathname) >= 0) {
+                return (navigator as any).app.exitApp();
+            }
         }
-        /// </android>
         if (history.length) { return history.goBack(); }
         history.replace("/");
     }

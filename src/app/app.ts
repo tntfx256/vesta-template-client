@@ -8,6 +8,7 @@ import { appConfig } from "./config/appConfig";
 import { Culture } from "./medium";
 import { Config } from "./service/Config";
 import { LogService } from "./service/LogService";
+import { isCordova } from "./util/Platform";
 
 // initial configurations
 Config.init(appConfig);
@@ -19,26 +20,21 @@ Culture.register(IrLocale, IrVocabs, IrDate);
 Culture.register(UsLocale, UsVocabs, UsDate);
 loadLocale();
 
-/// <cordova>
-document.addEventListener("deviceready", checkScripts, false);
-/// </cordova>
-
-/// <!cordova>
-window.addEventListener("DOMContentLoaded", checkScripts, false);
-/// </cordova>
+if (isCordova()) {
+    document.addEventListener("deviceready", checkScripts, false);
+} else {
+    window.addEventListener("DOMContentLoaded", checkScripts, false);
+}
 
 // checking whether or not the prerequisite scripts are loaded
 function checkScripts() {
     const OFFLINE_ASSUMPTION_DURATION = 30000;
     const SCRIPT_CHECK_INTERVAL = 300;
     const scriptsToCheck = [];
-    /// <!cordova>
-    // scriptsToCheck.push();
-    /// </cordova>
-    /// <development>
-    // do not waste time in development
-    scriptsToCheck.splice(0, scriptsToCheck.length);
-    /// </development>
+    if (appConfig.env !== "production") {
+        // do not waste time in development
+        scriptsToCheck.splice(0, scriptsToCheck.length);
+    }
     let scriptCheckCounter = 0;
     (function check() {
         ++scriptCheckCounter;

@@ -1,8 +1,7 @@
-const path = require('path');
+const { parse } = require('path');
 const through = require('through2');
-const util = require('gulp-util');
+const { PluginError } = require('gulp-util');
 
-const PluginError = util.PluginError;
 const PLUGIN_NAME = 'eliminator';
 
 module.exports = function(config) {
@@ -36,6 +35,7 @@ module.exports = function(config) {
             throw e;
         }
         file.contents = Buffer.from(code);
+        // console.log(file.path);
         cb(null, file);
     }
 
@@ -56,7 +56,7 @@ module.exports = function(config) {
     }
 
     function getEliminationsArea(file) {
-        const isHtml = path.parse(file.path).ext.toLowerCase() === '.html';
+        const isHtml = parse(file.path).ext.toLowerCase() === '.html';
         return isHtml ? eliminationsArea.html : eliminationsArea.others;
     }
 
