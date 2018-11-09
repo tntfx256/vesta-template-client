@@ -29,7 +29,7 @@ export class ModelService<T> {
             });
     }
 
-    public fetchAll(query: IDataTableQueryOption<T>): Promise<T[]> {
+    public fetchAll(query?: IDataTableQueryOption<T>): Promise<T[]> {
         return this.api.get<T>(this.edge, query)
             .then((response) => response.items)
             .catch((error) => {
@@ -38,7 +38,7 @@ export class ModelService<T> {
             });
     }
 
-    public fetchCount(query: IDataTableQueryOption<T>): Promise<number> {
+    public fetchCount(query?: IDataTableQueryOption<T>): Promise<number> {
         return this.api.get<T>(`${this.edge}/count`, query)
             .then((response) => response.total)
             .catch((error) => {

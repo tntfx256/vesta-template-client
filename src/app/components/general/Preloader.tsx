@@ -14,14 +14,20 @@ interface IPreloaderState {
 
 export class Preloader extends PureComponent<IPreloaderProps, IPreloaderState> {
 
-    public static hide() {
+    public static hide(force?: boolean) {
         Dispatcher.getInstance().dispatch("preloader", { show: false });
+        Preloader.counter = force ? 0 : Preloader.counter - 1;
+        if (Preloader.counter < 0) {
+            Preloader.counter = 0;
+        }
     }
 
     public static show() {
+        Preloader.counter++;
         Dispatcher.getInstance().dispatch("preloader", { show: true });
     }
 
+    private static counter = 0;
     private waitMessage;
     private inProgressMessage;
     // private show;
@@ -56,7 +62,7 @@ export class Preloader extends PureComponent<IPreloaderProps, IPreloaderState> {
         // }
 
         return (
-            <Dialog show={show} modalClassName="preloader-modal">
+            <Dialog show={show && Preloader.counter > 0} modalClassName="preloader-modal">
                 <div className="preloader">
                     <div className="pl-wrapper">
                         <div className="pl-circular" />

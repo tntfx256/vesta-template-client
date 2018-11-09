@@ -64,7 +64,9 @@ function include(...includedTargets) {
 
 function findInFileAndReplace(file, search, replace, destinationDirectory) {
         let content = readFileSync(file, { encoding: "utf8" });
+    if (search && replace) {
         content = content.replace(search, replace);
+    }
         let fileName = parse(file).base;
         let destination = destinationDirectory ? `${destinationDirectory}/${fileName}` : file;
     try {
