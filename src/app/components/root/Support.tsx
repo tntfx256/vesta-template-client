@@ -1,7 +1,7 @@
+import { IValidationError, sanitizePhoneNumber } from "@vesta/core";
 import React from "react";
 import { IContext } from "../../cmn/models/Context";
 import { ISupport, Support as SupportModel } from "../../cmn/models/Support";
-import { IValidationError, sanitizePhoneNumber } from "../../medium";
 import { StorageService } from "../../service/StorageService";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { FormWrapper } from "../general/form/FormWrapper";

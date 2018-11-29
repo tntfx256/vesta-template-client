@@ -1,13 +1,14 @@
+import { Dispatcher } from "@vesta/core";
 import React from "react";
 import { render } from "react-dom";
 import { Route, Switch } from "react-router";
+import { HashRouter } from "react-router-dom";
 import { AclPolicy } from "./cmn/enum/Acl";
 import { IUser } from "./cmn/models/User";
 import Root from "./components/Root";
 import { NotFound } from "./components/root/NotFound";
 import { appConfig } from "./config/appConfig";
 import { getRoutes, IRouteItem } from "./config/route";
-import { Dispatcher, DynamicRouter } from "./medium";
 import { KeyboardPlugin } from "./plugin/KeyboardPlugin";
 import { SplashPlugin } from "./plugin/SplashPlugin";
 import { StatusbarPlugin } from "./plugin/StatusbarPlugin";
@@ -45,14 +46,14 @@ export class ClientApp {
         const routes = this.renderRoutes(routeItems, "");
 
         render(
-            <DynamicRouter>
+            <HashRouter>
                 <Root routeItems={routeItems}>
                     <Switch>
                         {routes}
                         <Route component={NotFound} />
                     </Switch>
                 </Root>
-            </DynamicRouter>,
+            </HashRouter>,
             document.getElementById("root"),
             () => {
                 // removing splash screen

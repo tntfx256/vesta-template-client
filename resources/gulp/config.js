@@ -1,4 +1,4 @@
-const { join, parse, normalize } = require("path");
+const { join, parse, normalize, resolve } = require("path");
 const { readFileSync, mkdirSync, writeFileSync } = require("fs");
 const webpack = require("webpack");
 const rimraf = require("rimraf");
@@ -63,20 +63,20 @@ function include(...includedTargets) {
 }
 
 function findInFileAndReplace(file, search, replace, destinationDirectory) {
-        let content = readFileSync(file, { encoding: "utf8" });
+    let content = readFileSync(file, { encoding: "utf8" });
     if (search && replace) {
         content = content.replace(search, replace);
     }
-        let fileName = parse(file).base;
-        let destination = destinationDirectory ? `${destinationDirectory}/${fileName}` : file;
+    let fileName = parse(file).base;
+    let destination = destinationDirectory ? `${destinationDirectory}/${fileName}` : file;
     try {
         if (destinationDirectory) {
             mkdirSync(destinationDirectory);
         }
     } catch (e) {
         if (e.code !== "EEXIST") {
-        console.error(`[gulp::config::findInFileAndReplace] ${e.message}`);
-    }
+            console.error(`[gulp::config::findInFileAndReplace] ${e.message}`);
+        }
     }
     try {
         writeFileSync(destination, content);
@@ -87,12 +87,7 @@ function findInFileAndReplace(file, search, replace, destinationDirectory) {
 
 function getWebpackConfig(setting) {
     const target = setting.buildPath(setting.target);
-    let plugins = [
-        new webpack.ProvidePlugin({
-            "__assign": ["tslib", "__assign"],
-            "__extends": ["tslib", "__extends"],
-        })
-    ];
+    let plugins = [];
 
     const wpConfig = {
         output: {
@@ -106,16 +101,17 @@ function getWebpackConfig(setting) {
         module: {
             rules: [
                 { test: /\.tsx?$/, loader: `ts-loader` },
-                // in case of using a es6 javascript file
-                // {
-                //     test: /\.js?$/,
-                //     loader: `babel-loader`,
-                //     options: {
-                //         plugins: ["@babel/plugin-transform-object-assign"],
-                //         presets: ["@babel/preset-env"] //Preset used for env setup
-                //     }
-                // },
-                // { test: /\.js$/, loader: "source-map-loader", enforce: "pre" },
+                // transpile es6 javascript file
+                {
+                    test: /\.js$/,
+                    loader: `babel-loader`,
+                    exclude: /node_modules\/(?!(@vesta)\/).*/,
+                    query: {
+                        presets: [
+                            ["@babel/env", { "modules": false }]
+                        ]
+                    }
+                },
             ]
         },
         plugins,

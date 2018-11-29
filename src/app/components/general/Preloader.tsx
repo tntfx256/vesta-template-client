@@ -1,5 +1,5 @@
+import { Culture, Dispatcher } from "@vesta/core";
 import React, { PureComponent } from "react";
-import { Dispatcher, Translate } from "../../medium";
 import { IBaseComponentProps } from "../BaseComponent";
 import { Dialog } from "./Dialog";
 
@@ -35,7 +35,7 @@ export class Preloader extends PureComponent<IPreloaderProps, IPreloaderState> {
     constructor(props: IPreloaderProps) {
         super(props);
         // translate messages
-        const tr = Translate.getInstance().translate;
+        const tr = Culture.getDictionary().translate;
         this.waitMessage = tr("msg_inprogress");
         this.inProgressMessage = tr("msg_wait");
         this.state = {};

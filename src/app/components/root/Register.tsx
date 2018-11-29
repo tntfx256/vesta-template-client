@@ -1,7 +1,7 @@
+import { IValidationError } from "@vesta/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
-import { IValidationError } from "../../medium";
 import { getFileUrl, IModelValidationMessage, shallowClone, validationMessage } from "../../util/Util";
 import { FormWrapper } from "../general/form/FormWrapper";
 import { TextInput } from "../general/form/TextInput";
