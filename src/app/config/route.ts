@@ -26,6 +26,7 @@ export interface IRouteItem {
 
 export function getRoutes(isLoggedIn: boolean): IRouteItem[] {
     const tr = Culture.getDictionary().translate;
+
     const commonRoutes = [
         { link: "about", title: tr("about"), component: About },
         { link: "contact", title: tr("contact_us"), component: Support },

@@ -1,7 +1,7 @@
+import { isAndroid, isCordova } from "@vesta/core/Platform";
 import React, { ComponentType, PureComponent } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { DevicePlugin } from "../../plugin/DevicePlugin";
-import { isAndroid, isCordova } from "../../util/Platform";
 import { Burger } from "./Burger";
 
 export enum NavBarMainButtonType { Burger = 1, Back, Close }

@@ -1,5 +1,5 @@
+import { isCordova } from "@vesta/core/Platform";
 import { ILocation } from "../cmn/interfaces/GeoLocation";
-import { isCordova } from "../util/Platform";
 import { launchLink } from "../util/Util";
 import { GeolocationPlugin } from "./GeolocationPlugin";
 

@@ -1,4 +1,5 @@
 import { Dispatcher } from "@vesta/core";
+import { isCordova } from "@vesta/core/Platform";
 import React from "react";
 import { render } from "react-dom";
 import { Route, Switch } from "react-router";
@@ -16,7 +17,6 @@ import { AuthService } from "./service/AuthService";
 import { Config } from "./service/Config";
 import { LogService } from "./service/LogService";
 import { TransitionService } from "./service/TransitionService";
-import { isCordova } from "./util/Platform";
 
 export class ClientApp {
     private auth = AuthService.getInstance();

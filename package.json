@@ -20,7 +20,7 @@
     "deploy:ios": "gulp deploy:ios"
   },
   "dependencies": {
-    "@vesta/core": "^2.0.3",
+    "@vesta/core": "^2.0.4",
     "@vesta/culture-ir": "^1.0.1",
     "@vesta/culture-us": "^1.0.0",
     "core-js": "^2.5.7",

@@ -1,4 +1,4 @@
-const { join, parse, normalize, resolve } = require("path");
+const { join, parse, normalize } = require("path");
 const { readFileSync, mkdirSync, writeFileSync } = require("fs");
 const webpack = require("webpack");
 const rimraf = require("rimraf");

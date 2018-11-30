@@ -1,4 +1,5 @@
 import { Culture } from "@vesta/core";
+import { isCordova } from "@vesta/core/Platform";
 import { IrDate, IrLocale } from "@vesta/culture-ir";
 import { UsDate, UsLocale } from "@vesta/culture-us";
 import { ClientApp } from "./ClientApp";
@@ -8,7 +9,6 @@ import { UsVocabs } from "./cmn/vocabs/UsVocabs";
 import { appConfig } from "./config/appConfig";
 import { Config } from "./service/Config";
 import { LogService } from "./service/LogService";
-import { isCordova } from "./util/Platform";
 
 // initial configurations
 Config.init(appConfig);

@@ -1,4 +1,4 @@
-import { isCordova } from "../util/Platform";
+import { isCordova } from "@vesta/core/Platform";
 
 /**
  * cordova-plugin-splashscreen
