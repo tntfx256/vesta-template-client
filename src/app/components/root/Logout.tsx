@@ -1,50 +1,45 @@
+import { FC, useEffect } from "react";
 import { IUser } from "../../cmn/models/User";
+import { ApiService } from "../../service/ApiService";
+import { AuthService } from "../../service/AuthService";
 import { LogService } from "../../service/LogService";
+import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { Preloader } from "../general/Preloader";
-import { IPageComponentProps, PageComponent } from "../PageComponent";
 
 interface ILogoutParams {
 }
 
-interface ILogoutProps extends IPageComponentProps<ILogoutParams> {
+interface ILogoutProps extends IBaseComponentWithRouteProps<ILogoutParams> {
 }
 
-interface ILogoutState {
-}
+export const Logout: FC<ILogoutProps> = function (props: ILogoutProps) {
+    const api = ApiService.getInstance();
+    const auth = AuthService.getInstance();
 
-export class Logout extends PageComponent<ILogoutProps, ILogoutState> {
 
-    public constructor(props: ILogoutProps) {
-        super(props);
-        this.state = {};
-    }
-
-    public componentDidMount() {
-        if (this.auth.isGuest()) {
-            return this.props.history.replace("/");
+    useEffect(() => {
+        if (auth.isGuest()) {
+            return props.history.replace("/");
         }
         Preloader.show();
-        this.api.get<IUser>("account/logout")
+        api.get<IUser>("account/logout")
             .then((response) => {
-                this.onAfterLogout(response.items[0]);
+                onAfterLogout(response.items[0]);
             })
             .catch((error) => {
                 LogService.error(error, "componentDidMount", "Logout");
-                this.onAfterLogout({});
+                onAfterLogout({});
             });
-    }
+        return Preloader.hide;
+    });
 
-    public componentWillUnmount() {
-        Preloader.hide();
-    }
 
-    public render() {
-        return null;
-    }
+    return null;
 
-    private onAfterLogout(user: IUser) {
-        this.auth.logout();
-        this.auth.login(user);
-        this.props.history.replace("/");
+
+    function onAfterLogout(user: IUser) {
+        auth.logout();
+        auth.login(user);
+        props.history.replace("/");
     }
 }

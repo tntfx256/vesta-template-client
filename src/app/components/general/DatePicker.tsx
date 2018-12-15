@@ -1,4 +1,5 @@
-import { Culture, DateTime } from "@vesta/core";
+import { Culture } from "@vesta/core";
+import { DateTime } from "@vesta/locale";
 import React, { Component } from "react";
 import { IBaseComponentProps } from "../BaseComponent";
 

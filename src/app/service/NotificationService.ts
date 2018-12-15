@@ -1,6 +1,5 @@
 import { Culture, Dispatcher } from "@vesta/core";
-
-export const enum MessageType { Info = 1, Success, Warning, Error }
+import { MessageType } from "../cmn/enum/MessageType";
 
 export interface IToastData {
     message: string;

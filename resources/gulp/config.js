@@ -1,12 +1,12 @@
 const { join, parse, normalize } = require("path");
 const { readFileSync, mkdirSync, writeFileSync } = require("fs");
-const webpack = require("webpack");
 const rimraf = require("rimraf");
 
 const root = normalize(join(__dirname, "../.."));
 
 const dir = {
     root: root,
+    public: join(root, "public"),
     npm: join(root, "node_modules"),
     resource: join(root, "resources"),
     docker: join(root, "resources/docker"),

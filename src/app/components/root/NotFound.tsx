@@ -1,21 +1,20 @@
-import React, { PureComponent } from "react";
-import { IPageComponentProps } from "../PageComponent";
+import React, { FC, useEffect } from "react";
+import { IBaseComponentWithRouteProps } from "../BaseComponent";
 
 interface INotFoundParams {
 }
 
-interface INotFoundProps extends IPageComponentProps<INotFoundParams> {
+interface INotFoundProps extends IBaseComponentWithRouteProps<INotFoundParams> {
 }
 
-export class NotFound extends PureComponent<INotFoundProps, null> {
+export const NotFound: FC<INotFoundProps> = function (props: INotFoundProps) {
 
-    public componentDidMount() {
-        this.props.history.replace("/");
-    }
+    useEffect(() => {
+        props.history.replace("/");
+    })
 
-    public render() {
-        return (
-            <div className="notFound-page page has-navbar" />
-        );
-    }
+
+    return (
+        <div className="notFound-page page has-navbar" />
+    );
 }

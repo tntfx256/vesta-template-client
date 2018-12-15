@@ -1,24 +1,19 @@
-import React, { PureComponent } from "react";
-import { IPageComponentProps } from "../PageComponent";
+import React, { FC, useEffect } from "react";
+import { IBaseComponentWithRouteProps } from "../BaseComponent";
 
 interface IForbiddenParams {
 }
 
-interface IForbiddenProps extends IPageComponentProps<IForbiddenParams> {
+interface IForbiddenProps extends IBaseComponentWithRouteProps<IForbiddenParams> {
 }
 
-interface IForbiddenState {
-}
+export const Forbidden: FC<IForbiddenProps> = function (props: IForbiddenProps) {
 
-export class Forbidden extends PureComponent<IForbiddenProps, IForbiddenState> {
-
-    public componentDidMount() {
+    useEffect(() => {
         this.props.history.replace("/");
-    }
+    })
 
-    public render() {
         return (
             <div className="forbidden-page page has-navbar" />
         );
-    }
 }

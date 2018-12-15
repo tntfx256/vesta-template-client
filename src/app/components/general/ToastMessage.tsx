@@ -1,6 +1,7 @@
 import { Dispatcher } from "@vesta/core";
 import React, { PureComponent } from "react";
-import { IToastData, MessageType } from "../../service/NotificationService";
+import { MessageType } from "../../cmn/enum/MessageType";
+import { IToastData } from "../../service/NotificationService";
 import { IBaseComponentProps } from "../BaseComponent";
 
 export interface IToastMessageProps extends IBaseComponentProps {

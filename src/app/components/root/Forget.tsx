@@ -1,91 +1,89 @@
-import { IValidationError } from "@vesta/core";
-import React from "react";
+import { Culture, IValidationError } from "@vesta/core";
+import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
+import { ApiService } from "../../service/ApiService";
+import { NotificationService } from "../../service/NotificationService";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
+import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { Alert } from "../general/Alert";
 import { FormWrapper } from "../general/form/FormWrapper";
 import { TextInput } from "../general/form/TextInput";
 import Navbar from "../general/Navbar";
 import { Preloader } from "../general/Preloader";
-import { IPageComponentProps, PageComponent } from "../PageComponent";
 
 interface IForgetParams {
 }
 
-interface IForgetProps extends IPageComponentProps<IForgetParams> {
+interface IForgetProps extends IBaseComponentWithRouteProps<IForgetParams> {
 }
 
-interface IForgetState {
-    message: string;
-    mobile: string;
-    validationErrors?: IValidationError;
-}
+export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
+    // init
+    const tr = Culture.getDictionary().translate;
+    const notif = NotificationService.getInstance();
+    const api = ApiService.getInstance();
+    const formErrorsMessages: IModelValidationMessage = {
+        mobile: {
+            invalid: tr("err_invalid_phone"),
+            maxLength: tr("err_max_length", 12),
+            minLength: tr("err_min_length", 9),
+            required: tr("err_required"),
+            type: tr("err_phone"),
+        },
+    };
+    // states
+    const [message, setMessage] = useState<string>("");
+    const [mobile, setMobile] = useState<string>("");
+    const [validationErrors, setErrors] = useState<IValidationError>(null);
 
-export class Forget extends PageComponent<IForgetProps, IForgetState> {
-    private formErrorsMessages: IModelValidationMessage;
+    const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
+    const alert = message ? <Alert type="info">{message}</Alert> : null;
 
-    constructor(props: IForgetProps) {
-        super(props);
-        this.state = { mobile: "", message: "" };
-        this.formErrorsMessages = {
-            mobile: {
-                invalid: this.tr("err_invalid_phone"),
-                maxLength: this.tr("err_max_length", 12),
-                minLength: this.tr("err_min_length", 9),
-                required: this.tr("err_required"),
-                type: this.tr("err_phone"),
-            },
-        };
-    }
-
-    public render() {
-        const { message, validationErrors, mobile } = this.state;
-        const errors = validationErrors ? validationMessage(this.formErrorsMessages, validationErrors) : {};
-        const alert = message ? <Alert type="info">{message}</Alert> : null;
-
-        return (
-            <div className="page forget-page has-navbar page-logo-form">
-                <Navbar className="navbar-transparent" showBurger={true} />
-                <div className="logo-wrapper">
-                    <div className="logo-container">
-                        <img src="img/icons/144x144.png" alt="Vesta Logo" />
-                    </div>
+    return (
+        <div className="page forget-page has-navbar page-logo-form">
+            <Navbar className="navbar-transparent" showBurger={true} />
+            <div className="logo-wrapper">
+                <div className="logo-container">
+                    <img src="img/icons/144x144.png" alt="Vesta Logo" />
                 </div>
-                <FormWrapper name="ForgetForm" onSubmit={this.onSubmit}>
-                    <TextInput name="mobile" label={this.tr("fld_mobile")} value={mobile} type="tel"
-                        error={errors.mobile} placeholder={true} onChange={this.onChange} />
-                    {alert}
-                    <div className="btn-group">
-                        <button type="submit" className="btn btn-primary">{this.tr("send_reset")}</button>
-                        <Link to="/" className="btn btn-outline">{this.tr("login")}</Link>
-                    </div>
-                </FormWrapper>
             </div>
-        );
+            <FormWrapper name="ForgetForm" onSubmit={onSubmit}>
+                {alert}
+                <TextInput name="mobile" value={mobile} error={errors.mobile} onChange={onChange} />
+                <div className="btn-group">
+                    <button className="btn btn-primary">{tr("send_reset")}</button>
+
+                    <button className="btn btn-outline" type="button">
+                        <Link to="/" className="btn btn-outline">{tr("login")}</Link>
+                    </button>
+                </div>
+            </FormWrapper>
+        </div>
+    );
+
+
+    function onChange(name: string, value: any) {
+        setMobile(value);
     }
 
-    private onChange = (name: string, value: string) => {
-        this.setState({ mobile: value });
-    }
-
-    private onSubmit = () => {
-        const user = new User({ mobile: this.state.mobile });
+    function onSubmit() {
+        const user = new User({ mobile });
         const validationErrors = user.validate("mobile");
         if (validationErrors) {
-            return this.setState({ validationErrors });
+            return setErrors(validationErrors);
         }
         Preloader.show();
-        this.setState({ validationErrors: null });
-        this.api.post<IUser>("account/forget", { mobile: this.state.mobile })
+        setErrors(null);
+        api.post<IUser>("account/forget", { mobile })
             .then((response) => {
                 Preloader.hide();
-                this.notif.success(this.tr("info_forget"));
-                this.props.history.push("/");
+                notif.success(tr("info_forget"));
+                props.history.push("/");
             })
             .catch((error) => {
                 Preloader.hide();
-                this.setState({ validationErrors: error.violations });
+                setErrors(error.violations);
             });
     }
 }
