@@ -1,4 +1,5 @@
-import { Culture, Dispatcher } from "@vesta/core";
+import { Dispatcher } from "@vesta/core";
+import { Culture } from "@vesta/culture";
 import { MessageType } from "../cmn/enum/MessageType";
 
 export interface IToastData {

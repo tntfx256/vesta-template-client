@@ -1,19 +1,16 @@
-import { Culture, IResponse, IValidationError } from "@vesta/core";
-import React, { FC, useState } from "react";
+
+import { Avatar, DateTimeInput, FormWrapper, IFormOption, Navbar, Preloader, Select, TextInput } from "@vesta/components";
+import { IResponse, IValidationError } from "@vesta/core";
+import { Culture } from "@vesta/culture";
+import React, { ComponentType, useState } from "react";
 import { RouteComponentProps } from "react-router";
+import { withTheme } from "theming";
 import { IRole } from "../../cmn/models/Role";
 import { IUser, User, UserGender } from "../../cmn/models/User";
 import { ApiService } from "../../service/ApiService";
 import { AuthService } from "../../service/AuthService";
 import { NotificationService } from "../../service/NotificationService";
 import { getFileUrl, IModelValidationMessage, validationMessage } from "../../util/Util";
-import { Avatar } from "../general/Avatar";
-import { DateTimeInput } from "../general/form/DateTimeInput";
-import { FormWrapper, IFormOption } from "../general/form/FormWrapper";
-import { Select } from "../general/form/Select";
-import { TextInput } from "../general/form/TextInput";
-import Navbar from "../general/Navbar";
-import { Preloader } from "../general/Preloader";
 
 interface IProfileParams {
 }
@@ -21,7 +18,7 @@ interface IProfileParams {
 interface IProfileProps extends RouteComponentProps<IProfileParams> {
 }
 
-export const Profile: FC<IProfileProps> = function (props: IProfileProps) {
+export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileProps) => {
     const tr = Culture.getDictionary().translate;
     const api = ApiService.getInstance();
     const auth = AuthService.getInstance();
@@ -185,4 +182,4 @@ export const Profile: FC<IProfileProps> = function (props: IProfileProps) {
         setUser(newUser);
         notif.success("msg_profile_update");
     }
-}
+});

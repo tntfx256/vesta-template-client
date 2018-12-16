@@ -1,4 +1,6 @@
-import { Culture, IValidationError } from "@vesta/core";
+import { Alert, FormWrapper, Preloader, TextInput } from "@vesta/components";
+import { IValidationError } from "@vesta/core";
+import { Culture } from "@vesta/culture";
 import React, { FC, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
@@ -7,11 +9,7 @@ import { AuthService } from "../../service/AuthService";
 import { NotificationService } from "../../service/NotificationService";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
-import { Alert } from "../general/Alert";
-import { FormWrapper } from "../general/form/FormWrapper";
-import { TextInput } from "../general/form/TextInput";
-import Navbar from "../general/Navbar";
-import { Preloader } from "../general/Preloader";
+
 
 interface ILoginParams {
 }
@@ -54,7 +52,7 @@ export const Login: FC<ILoginProps> = function (props: ILoginProps) {
 
     return (
         <div className="page login-page has-navbar page-logo-form">
-            <Navbar className="navbar-transparent" showBurger={true} />
+            {/* <Navbar className="navbar-transparent" showBurger={true} /> */}
             <div className="logo-wrapper">
                 <div className="logo-container">
                     <img src="img/icons/144x144.png" alt="Vesta Logo" />
@@ -63,9 +61,9 @@ export const Login: FC<ILoginProps> = function (props: ILoginProps) {
             <FormWrapper name="loginForm" onSubmit={onSubmit}>
                 {loginErr}
                 <TextInput name="username" label={tr("fld_username")} value={user.username}
-                    error={errors.username} onChange={onChange} placeholder={true} />
+                    error={errors.username} onChange={onChange} />
                 <TextInput name="password" label={tr("fld_password")} value={user.password} type="password"
-                    error={errors.password} onChange={onChange} placeholder={true} />
+                    error={errors.password} onChange={onChange} />
                 <p className="forget-link">
                     <Link to="forget">{tr("forget_pass")}</Link>
                 </p>

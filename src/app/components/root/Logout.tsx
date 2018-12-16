@@ -4,7 +4,7 @@ import { ApiService } from "../../service/ApiService";
 import { AuthService } from "../../service/AuthService";
 import { LogService } from "../../service/LogService";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
-import { Preloader } from "../general/Preloader";
+import { Preloader } from "@vesta/components";
 
 interface ILogoutParams {
 }

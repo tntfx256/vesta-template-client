@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import { Navbar } from "@vesta/components";
+import React, { ComponentType } from "react";
+import { withTheme } from "react-jss";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
-import Navbar from "../general/Navbar";
 
 interface IHomeParams {
 }
@@ -8,7 +9,7 @@ interface IHomeParams {
 interface IHomeProps extends IBaseComponentWithRouteProps<IHomeParams> {
 }
 
-export const Home: FC<IHomeProps> = function (props: IHomeProps) {
+export const Home: ComponentType<IHomeProps> = withTheme((props: IHomeProps) => {
 
     return (
         <div className="page home-page has-navbar">
@@ -16,4 +17,4 @@ export const Home: FC<IHomeProps> = function (props: IHomeProps) {
             <h1>Home Component</h1>
         </div>
     );
-}
+});

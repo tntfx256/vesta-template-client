@@ -1,4 +1,6 @@
-import { Culture, IValidationError } from "@vesta/core";
+import { Alert, FormWrapper, Navbar, Preloader, TextInput } from "@vesta/components";
+import { IValidationError } from "@vesta/core/Validator";
+import { Culture } from "@vesta/culture";
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
@@ -6,11 +8,6 @@ import { ApiService } from "../../service/ApiService";
 import { NotificationService } from "../../service/NotificationService";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
-import { Alert } from "../general/Alert";
-import { FormWrapper } from "../general/form/FormWrapper";
-import { TextInput } from "../general/form/TextInput";
-import Navbar from "../general/Navbar";
-import { Preloader } from "../general/Preloader";
 
 interface IForgetParams {
 }
@@ -19,7 +16,6 @@ interface IForgetProps extends IBaseComponentWithRouteProps<IForgetParams> {
 }
 
 export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
-    // init
     const tr = Culture.getDictionary().translate;
     const notif = NotificationService.getInstance();
     const api = ApiService.getInstance();

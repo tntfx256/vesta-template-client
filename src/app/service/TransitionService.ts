@@ -1,4 +1,4 @@
-import React, { Attributes, FC, ReactNode } from "react";
+import React, { Attributes, ComponentType, ReactNode } from "react";
 import { Forbidden } from "../components/root/Forbidden";
 import { AuthService, IPermissionCollection } from "./AuthService";
 
@@ -18,7 +18,7 @@ export class TransitionService {
     }
 
     // tslint:disable-next-line:max-line-length
-    public willTransitionTo = (componentClass: FC<any>, permissions?: IPermissionCollection, extraProps?: Attributes & any, children?: ReactNode[]) => {
+    public willTransitionTo = (componentClass: ComponentType, permissions?: IPermissionCollection, extraProps?: Attributes & any, children?: ReactNode[]) => {
         const id = this.idCounter++;
         this.auth.registerPermissions(id, permissions);
         extraProps = extraProps || {};

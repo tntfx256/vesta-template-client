@@ -1,5 +1,5 @@
-import { Culture } from "@vesta/core";
-import { FC } from "react";
+import { Culture } from "@vesta/culture";
+import { ComponentType } from "react";
 import { Forget } from "../components/root/Forget";
 import { Home } from "../components/root/Home";
 import { Login } from "../components/root/Login";
@@ -11,7 +11,7 @@ import { IPermissionCollection } from "../service/AuthService";
 export interface IRouteItem {
     abstract?: boolean;
     children?: IRouteItem[];
-    component?: FC<any>;
+    component?: ComponentType;
     exact?: boolean;
     // show/hide this item in menu list
     hidden?: boolean;

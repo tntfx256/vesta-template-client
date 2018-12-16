@@ -1,13 +1,12 @@
-import { Culture, Dispatcher } from "@vesta/core";
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { IUser } from "../../cmn/models/User";
 import { getFileUrl } from "../../util/Util";
 import { IBaseComponentProps } from "../BaseComponent";
-import { Avatar } from "./Avatar";
-import { Select } from "./form/Select";
-import { Icon } from "./Icon";
-import { IMenuItem, Menu } from "./Menu";
+import { IMenuItem, Icon, Avatar, Select, Menu } from "@vesta/components";
+import { Dispatcher } from "@vesta/core";
+import { Culture } from "@vesta/culture";
+
 
 interface ISidenavContentProps extends IBaseComponentProps {
     menuItems: IMenuItem[];
@@ -51,7 +50,7 @@ export class SidenavContent extends PureComponent<ISidenavContentProps, ISidenav
                     <div className="name-wrapper">
                         <h4>{user.username}</h4>
                         {editLink}
-                        <Select name="lng" label={this.tr("locale")} value={locale} placeholder={true}
+                        <Select name="lng" label={this.tr("locale")} value={locale}
                             options={this.localeOptions} onChange={this.onLocaleChange} />
                     </div>
                 </header>

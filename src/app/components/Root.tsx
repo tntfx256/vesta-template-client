@@ -1,4 +1,6 @@
-import { Culture, Dispatcher } from "@vesta/core";
+import { Html, Preloader, Sidenav, ToastMessage } from "@vesta/components";
+import { Dispatcher } from "@vesta/core";
+import { Culture } from "@vesta/culture";
 import React, { Component, ComponentType } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { IUser } from "../cmn/models/User";
@@ -8,11 +10,8 @@ import { AuthService } from "../service/AuthService";
 import { Config } from "../service/Config";
 import { LogService } from "../service/LogService";
 import { StorageService } from "../service/StorageService";
-import { Html } from "./general/Html";
-import { Preloader } from "./general/Preloader";
-import { Sidenav } from "./general/Sidenav";
 import { SidenavContent } from "./general/SidenavContent";
-import { ToastMessage } from "./general/ToastMessage";
+
 
 interface IRootParams { }
 
@@ -22,6 +21,7 @@ interface IRootProps extends RouteComponentProps<IRootParams> {
 
 interface IRootState {
     user: IUser;
+    toast: string;
 }
 
 class Root extends Component<IRootProps, IRootState> {
@@ -32,13 +32,16 @@ class Root extends Component<IRootProps, IRootState> {
 
     constructor(props: IRootProps) {
         super(props);
-        this.state = { user: this.auth.getUser() };
+        this.state = { user: this.auth.getUser(), toast: null };
     }
 
     public componentDidMount() {
         // registering for user auth status change event
         this.dispatcher.register<IUser>(AuthService.Events.Update, (user) => {
             this.setState({ user });
+        });
+        this.dispatcher.register<{ message: string }>("toast", (payload) => {
+            this.setState({ toast: payload.message });
         });
         // application in/out checking
         // window.addEventListener("load", this.onLoad);
@@ -57,9 +60,10 @@ class Root extends Component<IRootProps, IRootState> {
     }
 
     public render() {
-        const { user } = this.state;
+        const { user, toast } = this.state;
         const { routeItems } = this.props;
         const { code, dir } = Culture.getLocale();
+        const toastMsg = toast ? <ToastMessage message={toast} /> : null;
 
         return (
             <div id="main-wrapper" className="root-component">
@@ -67,11 +71,10 @@ class Root extends Component<IRootProps, IRootState> {
                 <div id="content-wrapper">
                     {this.props.children}
                 </div>
-                <Sidenav name="main-sidenav">
+                <Sidenav>
                     <SidenavContent name="main-sidenav" user={user} menuItems={routeItems} />
                 </Sidenav>
-                <ToastMessage />
-                <Preloader />
+                {toastMsg}
             </div>
         );
     }

@@ -1,8 +1,7 @@
-import { Culture } from "@vesta/core";
 import { isCordova } from "@vesta/core/Platform";
+import { Culture, ILocale } from "@vesta/culture";
 import { IrDate, IrLocale } from "@vesta/culture-ir";
 import { UsDate, UsLocale } from "@vesta/culture-us";
-import { ILocale } from '@vesta/locale';
 import { createTheme } from "@vesta/theme";
 //pollyfill
 import "core-js/es6/map";
@@ -19,12 +18,9 @@ import { appConfig } from './app/config/appConfig';
 import { SplashPlugin } from './app/plugin/SplashPlugin';
 import { Config } from './app/service/Config';
 import { LogService } from './app/service/LogService';
+import "./index.scss";
 import { register } from './serviceWorker';
 
-// pollyfill
-import "core-js/es6/map";
-import "core-js/es6/promise";
-import "core-js/es6/set";
 
 // initial configurations
 Config.init(appConfig);

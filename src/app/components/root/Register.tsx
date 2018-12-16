@@ -1,15 +1,15 @@
-import { Culture, IValidationError } from "@vesta/core";
-import React, { FC, useState } from "react";
+import { FormWrapper, Navbar, Preloader, TextInput } from "@vesta/components";
+import { IValidationError } from "@vesta/core";
+import { Culture } from "@vesta/culture";
+import React, { ComponentType, useState } from "react";
 import { Link } from "react-router-dom";
+import { withTheme } from "theming";
 import { IUser, User } from "../../cmn/models/User";
 import { ApiService } from "../../service/ApiService";
 import { NotificationService } from "../../service/NotificationService";
 import { getFileUrl, IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
-import { FormWrapper } from "../general/form/FormWrapper";
-import { TextInput } from "../general/form/TextInput";
-import Navbar from "../general/Navbar";
-import { Preloader } from "../general/Preloader";
+
 
 interface IRegisterParams {
 }
@@ -17,12 +17,7 @@ interface IRegisterParams {
 interface IRegisterProps extends IBaseComponentWithRouteProps<IRegisterParams> {
 }
 
-interface IRegisterState {
-    user: IUser;
-    validationErrors: IValidationError;
-}
-
-export const Register: FC<IRegisterProps> = function (props: IRegisterProps) {
+export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegisterProps) => {
     const tr = Culture.getDictionary().translate;
     const api = ApiService.getInstance();
     const notif = NotificationService.getInstance()
@@ -96,4 +91,4 @@ export const Register: FC<IRegisterProps> = function (props: IRegisterProps) {
                 notif.error(error.message);
             });
     }
-}
+});
