@@ -28,8 +28,8 @@ Config.set("sourceApp", SourceApp.EndUser);
 Config.set("splashTimeout", 2000);
 
 // initiating locale
-Culture.register(IrLocale, IrVocabs, IrDate);
 Culture.register(UsLocale, UsVocabs, UsDate);
+Culture.register(IrLocale, IrVocabs, IrDate);
 loadLocale();
 
 if (isCordova()) {
@@ -74,10 +74,10 @@ function loadLocale(code?: string, reload?: boolean): ILocale {
     } else {
         setTimeout(() => {
             document.querySelector("body").setAttribute("dir", locale.dir);
-            // const style = document.createElement("link");
-            // style.setAttribute("rel", "stylesheet");
-            // style.setAttribute("href", `css/app-${locale.dir}.css?v=${Date.now()}`);
-            // (document.querySelector("head") as HTMLHeadElement).appendChild(style);
+            const style = document.createElement("link");
+            style.setAttribute("rel", "stylesheet");
+            style.setAttribute("href", `css/app-${locale.dir}.css?v=${Date.now()}`);
+            (document.querySelector("head") as HTMLHeadElement).appendChild(style);
         }, 10);
     }
     return locale;

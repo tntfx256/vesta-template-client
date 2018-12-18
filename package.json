@@ -9,9 +9,9 @@
   ],
   "main": "./vesta/electron/main.js",
   "scripts": {
-    "start": "react-scripts start",
+    "start": "run-s gulp rs-start",
+    "gulp": "gulp",
     "rs-start": "react-scripts start",
-    "sass": "gulp dev:web",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

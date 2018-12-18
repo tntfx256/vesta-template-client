@@ -1,14 +1,16 @@
-import { Alert, FormWrapper, Preloader, TextInput } from "@vesta/components";
+import { Alert, Button, FormWrapper, Preloader, TextInput, Grid } from "@vesta/components";
 import { IValidationError } from "@vesta/core";
 import { Culture } from "@vesta/culture";
-import React, { FC, useEffect, useState } from "react";
+import React, { ComponentType, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { withTheme } from "theming";
 import { IUser, User } from "../../cmn/models/User";
 import { ApiService } from "../../service/ApiService";
 import { AuthService } from "../../service/AuthService";
 import { NotificationService } from "../../service/NotificationService";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
+import "./Login.scss";
 
 
 interface ILoginParams {
@@ -17,7 +19,7 @@ interface ILoginParams {
 interface ILoginProps extends IBaseComponentWithRouteProps<ILoginParams> {
 }
 
-export const Login: FC<ILoginProps> = function (props: ILoginProps) {
+export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) => {
     const tr = Culture.getDictionary().translate;
     const api = ApiService.getInstance();
     const auth = AuthService.getInstance();
@@ -60,16 +62,22 @@ export const Login: FC<ILoginProps> = function (props: ILoginProps) {
             </div>
             <FormWrapper name="loginForm" onSubmit={onSubmit}>
                 {loginErr}
-                <TextInput name="username" label={tr("fld_username")} value={user.username}
-                    error={errors.username} onChange={onChange} />
-                <TextInput name="password" label={tr("fld_password")} value={user.password} type="password"
-                    error={errors.password} onChange={onChange} />
-                <p className="forget-link">
+                <Grid>
+                    <TextInput name="username" label={tr("fld_username")} value={user.username}
+                        error={errors.username} onChange={onChange} />
+                </Grid>
+                <Grid>
+                    <TextInput name="password" label={tr("fld_password")} value={user.password} type="password"
+                        error={errors.password} onChange={onChange} />
+                </Grid>
+                <Grid>
                     <Link to="forget">{tr("forget_pass")}</Link>
-                </p>
+                </Grid>
                 <div className="btn-group">
-                    <button type="submit" className="btn btn-primary">{tr("login")}</button>
-                    <Link to="register" className="btn btn-outline">{tr("register")}</Link>
+                    <Button type="submit" color="primary">{tr("login")}</Button>
+                    <Button variant="outline">
+                        <Link to="register">{tr("register")}</Link>
+                    </Button>
                 </div>
             </FormWrapper>
         </div>
@@ -101,4 +109,4 @@ export const Login: FC<ILoginProps> = function (props: ILoginProps) {
                 notif.error(error.message);
             });
     }
-}
+});
