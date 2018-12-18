@@ -75,7 +75,7 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
                 </Grid>
                 <div className="btn-group">
                     <Button type="submit" color="primary">{tr("login")}</Button>
-                    <Button variant="outline">
+                    <Button variant="outlined">
                         <Link to="register">{tr("register")}</Link>
                     </Button>
                 </div>

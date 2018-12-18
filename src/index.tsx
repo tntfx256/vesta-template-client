@@ -38,18 +38,18 @@ if (isCordova()) {
     window.addEventListener("DOMContentLoaded", checkScripts, false);
 }
 
-function startApp() {
-    const splashTimeout = Config.get<number>("splashTimeout");
-    const theme = createTheme({});
-    render(
-        <ThemeProvider theme={theme}>
-            <App />
-        </ThemeProvider>,
-        document.getElementById("root"),
-        () => setTimeout(SplashPlugin.hide, splashTimeout),
-    );
-    register();
-}
+register();
+
+const splashTimeout = Config.get<number>("splashTimeout");
+const theme = createTheme({});
+render(
+    <ThemeProvider theme={theme}>
+        <App />
+    </ThemeProvider>,
+    document.getElementById("root"),
+    () => setTimeout(SplashPlugin.hide, splashTimeout),
+);
+
 
 (window as any).loadLocale = loadLocale;
 
