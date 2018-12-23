@@ -42,13 +42,7 @@ register();
 
 const splashTimeout = Config.get<number>("splashTimeout");
 const theme = createTheme({});
-render(
-    <ThemeProvider theme={theme}>
-        <App />
-    </ThemeProvider>,
-    document.getElementById("root"),
-    () => setTimeout(SplashPlugin.hide, splashTimeout),
-);
+
 
 
 (window as any).loadLocale = loadLocale;
@@ -106,4 +100,14 @@ function checkScripts() {
         }
         startApp();
     })();
+}
+
+function startApp() {
+    render(
+        <ThemeProvider theme={theme}>
+            <App />
+        </ThemeProvider>,
+        document.getElementById("root"),
+        () => setTimeout(SplashPlugin.hide, splashTimeout),
+    );
 }

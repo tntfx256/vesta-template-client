@@ -1,4 +1,4 @@
-import { Alert, FormWrapper, Navbar, Preloader, TextInput } from "@vesta/components";
+import { Alert, FormWrapper, Navbar, Preloader, TextInput, MessageType } from "@vesta/components";
 import { IValidationError } from "@vesta/core/Validator";
 import { Culture } from "@vesta/culture";
 import React, { FC, useState } from "react";
@@ -34,7 +34,7 @@ export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
     const [validationErrors, setErrors] = useState<IValidationError>(null);
 
     const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
-    const alert = message ? <Alert type="info">{message}</Alert> : null;
+    const alert = message ? <Alert type={MessageType.Info}>{message}</Alert> : null;
 
     return (
         <div className="page forget-page has-navbar page-logo-form">

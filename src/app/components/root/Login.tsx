@@ -1,4 +1,4 @@
-import { Alert, Button, FormWrapper, Preloader, TextInput, Grid } from "@vesta/components";
+import { Alert, Button, FormWrapper, Preloader, TextInput, Grid, MessageType } from "@vesta/components";
 import { IValidationError } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
@@ -50,7 +50,7 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
     })
 
     const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
-    const loginErr = loginError ? <Alert type="error">{tr("err_wrong_user_pass")}</Alert> : null;
+    const loginErr = loginError ? <Alert type={MessageType.Error}>{tr("err_wrong_user_pass")}</Alert> : null;
 
     return (
         <div className="page login-page has-navbar page-logo-form">
