@@ -73,7 +73,8 @@
     "typescript": "^3.2.2",
     "webpack": "^4.28.2",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.13"
+    "webpack-dev-server": "^3.1.13",
+    "webpack-stream": "^5.2.1"
   },
   "eslintConfig": {
     "extends": "react-app"

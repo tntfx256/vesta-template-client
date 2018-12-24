@@ -10,12 +10,6 @@ module.exports = (setting) => {
     const wpConfig = {}
     wpConfig.mode = setting.production ? "production" : "development";
     wpConfig.target = setting.target;
-    wpConfig.entry = {
-        index: "./src/app/index.tsx",
-        init: "./src/Index.scss",
-        ltr: "./src/ltr.scss",
-        rtl: "./src/rtl.scss",
-    };
     wpConfig.output = {
         filename: "[name].js",
         path: `${dir.build}/${target}/js`
@@ -25,17 +19,6 @@ module.exports = (setting) => {
     };
     wpConfig.module = {
         rules: [{
-                test: /\.scss$/,
-                use: ExtractTextPlugin.extract({
-                    fallback: 'style-loader',
-                    use: [
-                        { loader: 'css-loader' },
-                        { loader: 'sass-loader' },
-                    ]
-
-                })
-            },
-            {
                 test: /\.js$/,
                 loader: `babel-loader`,
                 exclude: /node_modules\/(?!(@vesta)\/).*/,
@@ -51,23 +34,7 @@ module.exports = (setting) => {
             },
         ]
     };
-    wpConfig.plugins = [
-        new CleanWebpackPlugin(dir.build),
-        // new CopyWebpackPlugin([{
-        //     from: `${dir.public}/**/*`,
-        //     to: `${dir.build}/`,
-        //     ignore: [`index.html`]
-        // }]),
-        new ExtractTextPlugin({
-            filename: `[name].css`,
-            // allChunks: true,
-        }),
-        // new HtmlWebpackPlugin({
-        //     title: "Testing Title",
-        //     template: "./public/index.html"
-        // }),
-        new webpack.HotModuleReplacementPlugin(),
-    ];
+    wpConfig.plugins = [];
     wpConfig.optimization = {
         minimize: false,
         splitChunks: {
