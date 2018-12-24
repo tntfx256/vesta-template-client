@@ -1,7 +1,7 @@
 const webpack = require("webpack");
 const { watch, parallel, series } = require("gulp");
 const { readdirSync, statSync } = require("fs");
-const { execSync } = require("child_process");
+const { exec } = require("child_process");
 
 module.exports = function(setting) {
     const dir = setting.dir;
@@ -74,7 +74,7 @@ module.exports = function(setting) {
 
     function runWebServer() {
         try {
-            execSync(`npx webpack-dev-server --content-base ${dir.build}/web/www --compress --hot --inline --overlay --disable-host-check --open`);
+            exec(`npx webpack-dev-server --content-base ${dir.build}/web/www --compress --hot --inline --overlay --disable-host-check --open`);
             Promise.resolve();
         } catch (e) {
             Promise.reject(e);

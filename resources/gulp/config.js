@@ -11,7 +11,6 @@ const dir = {
     resource: join(root, "resources"),
     docker: join(root, "resources/docker"),
     src: join(root, "src"),
-    app: join(root, "src"),
     public: join(root, "public"),
     gulp: join(root, "resources/gulp"),
     build: join(root, "vesta"),

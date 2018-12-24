@@ -1,18 +1,20 @@
-@import './misc/colors';
-@import './misc/variables';
-@import './misc/mixins';
-@import './misc/animation';
+@import './scss/misc/colors';
+@import './scss/misc/variables';
+@import './scss/misc/mixins';
+@import './scss/misc/animation';
 
-@import './fonts/material';
+@import './scss/fonts/material';
 
-@import "../app/index";
-@import "../app/components/BaseComponent";
-@import "../app/components/Root";
-@import '../app/components/root/Forbidden';
-@import '../app/components/root/Forget';
-@import '../app/components/root/Home';
-@import '../app/components/root/Login';
-@import '../app/components/root/Logout';
-@import '../app/components/root/NotFound';
-@import '../app/components/root/Profile';
-@import '../app/components/root/Register';
+@import "./App";
+
+@import "./components/BaseComponent";
+@import "./components/Root";
+
+@import './components/root/Forbidden';
+@import './components/root/Forget';
+@import './components/root/Home';
+@import './components/root/Login';
+@import './components/root/Logout';
+@import './components/root/NotFound';
+@import './components/root/Profile';
+@import './components/root/Register';

@@ -12,9 +12,9 @@ module.exports = (setting) => {
     wpConfig.target = setting.target;
     wpConfig.entry = {
         index: "./src/app/index.tsx",
-        app: "./src/app/App.scss",
-        ltr: "./src/scss/ltr.scss",
-        rtl: "./src/scss/rtl.scss",
+        init: "./src/Index.scss",
+        ltr: "./src/ltr.scss",
+        rtl: "./src/rtl.scss",
     };
     wpConfig.output = {
         filename: "[name].js",
@@ -62,10 +62,10 @@ module.exports = (setting) => {
             filename: `[name].css`,
             // allChunks: true,
         }),
-        new HtmlWebpackPlugin({
-            title: "Testing Title",
-            template: "./public/index.html"
-        }),
+        // new HtmlWebpackPlugin({
+        //     title: "Testing Title",
+        //     template: "./public/index.html"
+        // }),
         new webpack.HotModuleReplacementPlugin(),
     ];
     wpConfig.optimization = {
