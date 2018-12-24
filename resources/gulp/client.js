@@ -1,5 +1,7 @@
 const webpack = require("webpack");
-const { watch, parallel, series } = require("gulp");
+const WebpackDevServer = require("webpack-dev-server");
+const { watch, parallel, series, src } = require("gulp");
+const { copyFileSync } = require("fs-extra");
 const { readdirSync, statSync } = require("fs");
 const { exec } = require("child_process");
 
@@ -17,16 +19,15 @@ module.exports = function(setting) {
     }
 
     function compileTs() {
-        const wpConfig = require("./webpack.config")(setting);
+        const wpConfig = setting.getWebpackConfig(setting);
         if (setting.production || setting.is(setting.target, "cordova")) {
-            setting.findInFileAndReplace(`${dir.resource}/gitignore/variantConfig.ts`, "", "", `${dir.src}/app/config`);
+            copyFileSync(`${dir.resource}/gitignore/variantConfig.ts`, `${dir.src}/app/config`);
         }
-        const compiler = webpack(wpConfig);
+        wpConfig.entry = { app: `${dir.src}/index` };
         return new Promise((resolve, reject) => {
-            compiler.run((err, stats) => {
+            webpack(wpConfig).run((err, stats) => {
                 if (err) {
-                    console.error(err);
-                    return reject(false);
+                    return reject(err);
                 }
                 const info = stats.toJson();
                 if (stats.hasErrors()) {
@@ -37,19 +38,18 @@ module.exports = function(setting) {
         });
     }
 
-    function runServer(cb) {
+    function runServer() {
         if (setting.production) {
             return Promise.resolve();
         }
 
         switch (setting.target) {
             case "web":
-                runWebServer();
-                break;
+                return runWebServer();
             default:
                 process.stderr.write(`${setting.target} Develop server is not supported`);
         }
-        cb();
+        return Promise.resolve();
     }
 
     function watches() {
@@ -73,12 +73,26 @@ module.exports = function(setting) {
     }
 
     function runWebServer() {
-        try {
-            exec(`npx webpack-dev-server --content-base ${dir.build}/web/www --compress --hot --inline --overlay --disable-host-check --open`);
-            Promise.resolve();
-        } catch (e) {
-            Promise.reject(e);
+        const wpConfig = setting.getWebpackConfig(setting);
+        if (setting.production || setting.is(setting.target, "cordova")) {
+            copyFileSync(`${dir.resource}/gitignore/variantConfig.ts`, `${dir.src}/app/config`);
         }
+        wpConfig.dev
+        return new Promise((resolve, reject) => {
+            const server = new WebpackDevServer(webpack(wpConfig), {
+                contentBase: `${dir.build}/web/www`,
+                // publicPath: `/`,
+                stats: {
+                    colors: true
+                }
+            });
+            server.listen(8080, "localhost", function(err) {
+                if (err) {
+                    return reject(err);
+                }
+                resolve();
+            });
+        })
     }
 
     return {

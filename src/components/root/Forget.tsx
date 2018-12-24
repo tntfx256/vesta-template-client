@@ -1,4 +1,4 @@
-import { Alert, FormWrapper, Navbar, Preloader, TextInput, MessageType } from "@vesta/components";
+import { Alert, FormWrapper, Navbar, Preloader, TextInput, MessageType, Button } from "@vesta/components";
 import { IValidationError } from "@vesta/core/Validator";
 import { Culture } from "@vesta/culture";
 import React, { FC, useState } from "react";
@@ -41,18 +41,18 @@ export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
             <Navbar className="navbar-transparent" showBurger={true} />
             <div className="logo-wrapper">
                 <div className="logo-container">
-                    <img src="img/icons/144x144.png" alt="Vesta Logo" />
+                    <img src="images/icons/144x144.png" alt="Vesta Logo" />
                 </div>
             </div>
             <FormWrapper name="ForgetForm" onSubmit={onSubmit}>
                 {alert}
-                <TextInput name="mobile" value={mobile} error={errors.mobile} onChange={onChange} />
+                <TextInput name="mobile" label={tr("fld_mobile")} value={mobile} error={errors.mobile} onChange={onChange} />
                 <div className="btn-group">
-                    <button className="btn btn-primary">{tr("send_reset")}</button>
+                    <Button color="primary" variant="outlined">{tr("send_reset")}</Button>
 
-                    <button className="btn btn-outline" type="button">
-                        <Link to="/" className="btn btn-outline">{tr("login")}</Link>
-                    </button>
+                    <Button type="button" color="primary" variant="outlined">
+                        <Link to="/">{tr("login")}</Link>
+                    </Button>
                 </div>
             </FormWrapper>
         </div>

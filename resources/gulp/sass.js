@@ -32,8 +32,7 @@ module.exports = function(setting) {
         if (genMap) {
             stream = stream.pipe(sourcemaps.write());
         }
-        return stream.pipe(dest(`${dir.build}/${target}/css`))
-            .pipe(dest(`${dir.public}/css`));
+        return stream.pipe(dest(`${dir.build}/${target}/css`));
     }
 
     function watches() {
@@ -42,7 +41,7 @@ module.exports = function(setting) {
 
     function getEntries() {
         return [
-            `${dir.src}/Index.scss`,
+            `${dir.src}/index.scss`,
             `${dir.src}/rtl.scss`,
             `${dir.src}/ltr.scss`,
         ];

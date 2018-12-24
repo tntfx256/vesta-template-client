@@ -6,18 +6,14 @@ module.exports = function(setting) {
     const buildPath = `${dir.build}/tmp`;
 
     function compileCmn() {
-        return compile(`${dir.src}/cmn/**/*.ts`, `${buildPath}/cmn`);
-    }
-
-    function compile(files, destination) {
-        let tsFiles = [files];
-        let stream = src(tsFiles);
+        let stream = src(`${dir.src}/cmn/**/*.ts`);
         let tsResult = stream.pipe(ts({
             target: "es5",
             noEmitHelpers: false,
+            lib: ["esnext", "dom"],
             module: "commonjs"
         }));
-        return tsResult.js.pipe(dest(destination));
+        return tsResult.js.pipe(dest(`${buildPath}/cmn`));
     }
 
     series(compileCmn);

@@ -2,7 +2,7 @@ html, body {
     color: $color-primary-text;
     direction: $direction;
     font-family: $base-font-family;
-    font-size: $font-size-base;
+    font-size: $font-size-small;
     text-overflow: clip;
 }
 
@@ -16,7 +16,7 @@ input, textarea, select, button {
 }
 
 a {
-    color: $color-primary-text;
+    color: $color-primary;
     text-decoration: none;
 }
 
@@ -88,7 +88,7 @@ body {
 }
 
 #content-wrapper {
-    //padding-top: $header-height;
+    //padding-top: $appbar-height;
     display: flex;
     flex: 1;
     flex-direction: column;

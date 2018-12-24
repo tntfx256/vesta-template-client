@@ -14,7 +14,7 @@ html, body {
 }
 
 html {
-    background: url('images/bg-main.jpg') no-repeat fixed center $white;
+    background: url('../images/bg-main.jpg') no-repeat fixed center $white;
     background-size: cover;
     overflow-x: hidden;
     overflow-y: auto;
@@ -26,7 +26,7 @@ body {
     overflow: visible;
 
     .splash-wrapper {
-        background: url('images/splash/768x1024.jpg') no-repeat center $white;
+        background: url('../images/splash/768x1024.jpg') no-repeat center $white;
         background-size: cover;
         bottom: 0;
         display: none;

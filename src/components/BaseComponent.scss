@@ -11,7 +11,7 @@ $page-padding: 15px;
     position: relative;
 
     &.has-navbar {
-        padding-top: $header-height;
+        padding-top: $appbar-height;
     }
 }
 
@@ -56,13 +56,12 @@ $page-padding: 15px;
 
     .btn-group {
         margin-top: 30px;
+        display: flex;
+        justify-content: space-evenly;
     }
 
     .btn {
-        height: $btn-height-large;
-    }
-
-    .form-error {
-        top: floor($form-control-height / 2);
+        height: $element-height-large;
+        width: 40%;
     }
 }

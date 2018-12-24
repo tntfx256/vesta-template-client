@@ -56,25 +56,25 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
             {/* <Navbar className="navbar-transparent" showBurger={true} /> */}
             <div className="logo-wrapper">
                 <div className="logo-container">
-                    <img src="img/icons/144x144.png" alt="Vesta Logo" />
+                    <img src="images/icons/144x144.png" alt="Vesta Logo" />
                 </div>
             </div>
             <FormWrapper name="loginForm" onSubmit={onSubmit}>
                 {loginErr}
-                <Grid>
-                    <TextInput name="username" label={tr("fld_username")} value={user.username}
-                        error={errors.username} onChange={onChange} />
-                </Grid>
-                <Grid>
-                    <TextInput name="password" label={tr("fld_password")} value={user.password} type="password"
-                        error={errors.password} onChange={onChange} />
-                </Grid>
-                <Grid>
+
+                <TextInput name="username" label={tr("fld_username")} value={user.username}
+                    error={errors.username} onChange={onChange} />
+
+                <TextInput name="password" label={tr("fld_password")} value={user.password} type="password"
+                    error={errors.password} onChange={onChange} />
+
+                <p style={{ textAlign: "end" }}>
                     <Link to="forget">{tr("forget_pass")}</Link>
-                </Grid>
+                </p>
+
                 <div className="btn-group">
-                    <Button type="submit" color="primary">{tr("login")}</Button>
-                    <Button variant="outlined">
+                    <Button type="submit" color="primary" variant="contained">{tr("login")}</Button>
+                    <Button color="primary" variant="outlined">
                         <Link to="register">{tr("register")}</Link>
                     </Button>
                 </div>

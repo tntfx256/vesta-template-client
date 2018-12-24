@@ -8,13 +8,13 @@ $layout-large-max: 1024px;
 $layout-xlarge-min: $layout-large-max;
 
 // font
-$font-size-xsmall: font-size(.65);
-$font-size-small: font-size(.85);
-$font-size-base: font-size(1);
-$font-size-medium: font-size(1.25);
-$font-size-large: font-size(1.5);
-$font-size-xlarge: font-size(2);
-$font-size-xxlarge: font-size(4);
+$font-size-base: 16px;
+$font-size-xsmall: floor(.65 * $font-size-base);
+$font-size-small: floor(.85 * $font-size-base);
+$font-size-medium: floor(1.25 * $font-size-base);
+$font-size-large: floor(1.5 * $font-size-base);
+$font-size-xlarge: floor(2 * $font-size-base);
+$font-size-xxlarge: floor(4 * $font-size-base);
 
 // timing
 $transition-duration-short: 150ms;
@@ -38,23 +38,24 @@ $z-index-splash: 90;
 $z-index-notification: 99;
 
 // sizes
-$border-radius: 5px;
-$header-height: 56px; // from google
-$header-padding: 16px; // from google
-$breadcrumb-height: 45px;
-$footer-height: 32px;
-$sidenav-width: 300px;
+$unit: 2px;
+$border-radius: floor(2 * $unit);
+$header-padding: floor(8 * $unit);
+$breadcrumb-height: floor(22 * $unit);
+$footer-height: floor(16 * $unit);
 $page-max-width: $layout-medium-max;
 
 // colors
 $color-primary: #519af7;
-$color-primary-text: $black;
+$color-primary-text: $white;
 $color-primary-light: #a9d4ff;
 $color-primary-light: $black;
 $color-primary-dark: #4375ac;
 $color-primary-dark-text: $white;
-$color-secondary: $white;
+$color-secondary: #eb522e;
+$color-secondary-text: $white;
 $color-default: $grey;
+$color-default-text: $black;
 $color-success: #3db366;
 $color-error: #f15b44;
 $color-info: $blue;
@@ -68,12 +69,36 @@ $color-classes: primary success error warning info;
 
 //shadow
 $shadow-color: $color-dark;
-$shadow-horizontal-offset: 1px;
-$shadow-vertical-offset: 1px;
-$shadow-radius: 3px;
+$shadow-horizontal-offset: $unit;
+$shadow-vertical-offset: $unit;
+$shadow-radius: floor(2 * $unit);
 $shadow-default: $shadow-horizontal-offset $shadow-vertical-offset $shadow-radius $shadow-color;
 
 // element colors
 $body-background-color: rgba(250, 250, 250, .85);
 $border-color: $color-default;
 $box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .16), 0 2px 10px 0 rgba(0, 0, 0, .12);
+
+// basic element
+$element-height: floor(18 * $unit);
+$element-height-large: floor(1.5 * 18 * $unit);
+$element-height-xlarge: floor(2 * 18 * $unit);
+$element-padding: floor(4 * $unit);
+$element-margin: floor(2 * $unit);
+$element-min-width: floor(32 * $unit);
+$element-background: $white;
+$element-color: $color-dark;
+
+// form
+$form-components-height: $element-height;
+$form-components-height-large: $element-height-large;
+$form-group-padding: $element-padding;
+$form-group-margin: $element-margin;
+$form-control-padding: $element-padding;
+$form-control-background: $white;
+$form-control-border-radius: $border-radius;
+
+// appbar
+$appbar-height: floor(28 * $unit);
+$appbar-padding: floor(8 * $unit);
+$appbar-icon-size: floor(12 * $unit);

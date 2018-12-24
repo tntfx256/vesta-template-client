@@ -60,7 +60,7 @@ function loadLocale(code?: string, reload?: boolean): ILocale {
             document.querySelector("body").setAttribute("dir", locale.dir);
             const style = document.createElement("link");
             style.setAttribute("rel", "stylesheet");
-            style.setAttribute("href", `css/app-${locale.dir}.css?v=${Date.now()}`);
+            style.setAttribute("href", `css/${locale.dir}.css?v=${Date.now()}`);
             (document.querySelector("head") as HTMLHeadElement).appendChild(style);
         }, 10);
     }

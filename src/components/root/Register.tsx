@@ -1,4 +1,4 @@
-import { FormWrapper, Navbar, Preloader, TextInput } from "@vesta/components";
+import { Button, FormWrapper, Navbar, Preloader, TextInput } from "@vesta/components";
 import { IValidationError } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useState } from "react";
@@ -45,7 +45,7 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
             <Navbar className="navbar-transparent" showBurger={true} />
             <div className="logo-wrapper">
                 <div className="logo-container">
-                    <img src="img/icons/144x144.png" alt="Vesta Logo" />
+                    <img src="images/icons/144x144.png" alt="Vesta Logo" />
                 </div>
             </div>
             <FormWrapper onSubmit={onSubmit}>
@@ -59,8 +59,10 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
                         <a href="https://vesta.bz" target="_blank">{tr("privacy")}</a>)
                     </div>
                 <div className="btn-group">
-                    <button type="submit" className="btn btn-primary">{tr("register")}</button>
-                    <Link className="btn btn-outline" to="/">{tr("login")}</Link>
+                    <Button type="submit" color="primary" variant="contained">{tr("register")}</Button>
+                    <Button type="button" color="primary" variant="outlined">
+                        <Link to="/">{tr("login")}</Link>
+                    </Button>
                 </div>
             </FormWrapper>
         </div>

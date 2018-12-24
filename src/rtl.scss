@@ -6,3 +6,6 @@ $direction-eq: -1;
 $font-path: '../fonts';
 
 $base-font-family: IRANSans, Tahoma, Verdana, Geneva, sans-serif;
+
+@import '../node_modules/@vesta/components/src/index-rtl.scss';
+@import 'scss/common';
