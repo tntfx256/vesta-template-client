@@ -1,7 +1,6 @@
 import { History, Location } from "history";
 import { ReactNode } from "react";
 import { match } from "react-router";
-import "./BaseComponent.scss";
 
 export interface IBaseComponentProps {
     children?: ReactNode;

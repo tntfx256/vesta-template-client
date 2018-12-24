@@ -18,7 +18,6 @@ import { appConfig } from './app/config/appConfig';
 import { SplashPlugin } from './app/plugin/SplashPlugin';
 import { Config } from './app/service/Config';
 import { LogService } from './app/service/LogService';
-import "./index.scss";
 import { register } from './serviceWorker';
 
 
@@ -39,11 +38,6 @@ if (isCordova()) {
 }
 
 register();
-
-const splashTimeout = Config.get<number>("splashTimeout");
-const theme = createTheme({});
-
-
 
 (window as any).loadLocale = loadLocale;
 
@@ -103,6 +97,8 @@ function checkScripts() {
 }
 
 function startApp() {
+    const splashTimeout = Config.get<number>("splashTimeout");
+    const theme = createTheme({});
     render(
         <ThemeProvider theme={theme}>
             <App />

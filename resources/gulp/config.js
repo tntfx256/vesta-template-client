@@ -1,6 +1,11 @@
 const { join, parse, normalize } = require("path");
 const { readFileSync, mkdirSync, writeFileSync } = require("fs");
 const rimraf = require("rimraf");
+const webpack = require("webpack");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const root = normalize(join(__dirname, "../.."));
 
@@ -90,18 +95,28 @@ function getWebpackConfig(setting) {
     let plugins = [];
 
     const wpConfig = {
+        target: "web",
+        mode: setting.production ? "production" : "development",
         output: {
             filename: "[name].js",
             path: `${dir.build}/${target}/js`
         },
-        mode: setting.production ? "production" : "development",
         resolve: {
             extensions: [".ts", ".tsx", ".js", ".json"]
         },
         module: {
-            rules: [
-                { test: /\.tsx?$/, loader: `ts-loader` },
-                // transpile es6 javascript file
+            rules: [{
+                    test: /\.scss$/,
+                    use: ExtractTextPlugin.extract({
+                        fallback: 'style-loader',
+                        use: [
+                            { loader: 'css-loader' },
+                            { loader: 'sass-loader' },
+                            // { loader: 'postcss-loader', options: { parser: 'sugarss', exec: true } }
+                        ]
+
+                    })
+                },
                 {
                     test: /\.js$/,
                     loader: `babel-loader`,
@@ -112,13 +127,57 @@ function getWebpackConfig(setting) {
                         ]
                     }
                 },
+                {
+                    test: /\.tsx?$/,
+                    use: ["ts-loader"]
+                },
             ]
         },
-        plugins,
+        plugins: [
+            new CleanWebpackPlugin(dir.build),
+            new CopyWebpackPlugin([{
+                from: `${dir.public}/**/*`,
+                to: `${dir.build}/`,
+                ignore: [`index.html`]
+            }]),
+            new ExtractTextPlugin({
+                filename: `[name].css`,
+                // allChunks: true,
+            }),
+            new HtmlWebpackPlugin({
+                title: "Testing Title",
+                template: "./public/index.html"
+            }),
+            new webpack.HotModuleReplacementPlugin(),
+        ],
         externals: {},
-        optimization: {}
+        optimization: {
+            minimize: setting.production,
+            splitChunks: {
+                chunks: 'async',
+                minSize: 30000,
+                minChunks: 1,
+                name: true,
+                cacheGroups: {
+                    commons: { test: /[\\/]node_modules[\\/]/, name: "lib", chunks: "all" }
+                }
+            },
+        }
     }
     if (!setting.production) {
+        wpConfig.devServer = {
+            contentBase: `${dir.build}/${target}`,
+            publicPath: '/',
+            compress: true,
+            disableHostCheck: true,
+            historyApiFallback: true,
+            host: "localhost",
+            hot: true,
+            https: false,
+            inline: true,
+            overlay: true,
+            watchContentBase: true,
+        }
         wpConfig.devtool = "inline-source-map";
     }
     return wpConfig;

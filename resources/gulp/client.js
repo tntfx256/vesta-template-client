@@ -1,5 +1,4 @@
 const webpack = require("webpack");
-const webConnect = require("gulp-connect");
 const { src, watch, parallel, series } = require("gulp");
 const { readdirSync, statSync } = require("fs");
 const { getWebpackConfig } = require("./config");
@@ -21,13 +20,8 @@ module.exports = function(setting) {
     }
 
     function compileTs() {
-        const wpConfig = getWebpackConfig(setting);
+        const wpConfig = require("../../webpack.config")(setting);
         wpConfig.entry = { app: `${dir.src}/app/app.ts` };
-        wpConfig.optimization.splitChunks = {
-            cacheGroups: {
-                commons: { test: /[\\/]node_modules[\\/]/, name: "lib", chunks: "all" }
-            }
-        };
         if (setting.production || setting.is(setting.target, "cordova")) {
             setting.findInFileAndReplace(`${dir.resource}/gitignore/variantConfig.ts`, "", "", `${dir.src}/app/config`);
         }
@@ -47,42 +41,9 @@ module.exports = function(setting) {
         });
     }
 
-    function runServer(cb) {
-        if (setting.production) {
-            return Promise.resolve();
-        }
-        const target = setting.buildPath(setting.target);
-        const root = `${dir.build}/${target}`;
-        switch (setting.target) {
-            case "web":
-                runWebServer(root);
-                break;
-            default:
-                process.stderr.write(`${setting.target} Develop server is not supported`);
-        }
-        cb();
-    }
-
     function watches() {
         watch([`${dir.src}/**/*.ts*`], compileTs);
         watch([`${dir.src}/*.js`], serviceWorkers);
-    }
-
-    function runWebServer(wwwRoot) {
-        let assets = `${wwwRoot}/**/*`;
-
-        webConnect.server({
-            root: wwwRoot,
-            livereload: true,
-            host: "0.0.0.0",
-            port: setting.port.http
-        });
-
-        watch([assets], reloadServer);
-
-        function reloadServer() {
-            return src(assets).pipe(webConnect.reload());
-        }
     }
 
     function getFilesList(dir, base) {
@@ -101,7 +62,7 @@ module.exports = function(setting) {
     }
 
     return {
-        tasks: parallel(serviceWorkers, series(compileTs, runServer)),
+        tasks: parallel(serviceWorkers, series(compileTs)), //runServer
         watch: watches,
     };
 };
