@@ -5,12 +5,8 @@ module.exports = function(setting) {
     const dir = setting.dir;
     const buildPath = `${dir.build}/tmp`;
 
-    function compileMedium() {
-        return compile(`${dir.src}/app/medium.ts`, buildPath);
-    }
-
     function compileCmn() {
-        return compile(`${dir.src}/app/cmn/**/*.ts`, `${buildPath}/cmn`);
+        return compile(`${dir.src}/cmn/**/*.ts`, `${buildPath}/cmn`);
     }
 
     function compile(files, destination) {
@@ -24,7 +20,7 @@ module.exports = function(setting) {
         return tsResult.js.pipe(dest(destination));
     }
 
-    series(compileMedium, compileCmn);
+    series(compileCmn);
 
     return {};
 };

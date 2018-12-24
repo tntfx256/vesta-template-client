@@ -11,10 +11,10 @@ module.exports = (setting) => {
     wpConfig.mode = setting.production ? "production" : "development";
     wpConfig.target = setting.target;
     wpConfig.entry = {
-        index: "./src/index.tsx",
-        app: "./src/app/app-init.scss",
-        ltr: "./src/index-ltr.scss",
-        rtl: "./src/index-rtl.scss",
+        index: "./src/app/index.tsx",
+        app: "./src/app/App.scss",
+        ltr: "./src/scss/ltr.scss",
+        rtl: "./src/scss/rtl.scss",
     };
     wpConfig.output = {
         filename: "[name].js",
@@ -53,11 +53,11 @@ module.exports = (setting) => {
     };
     wpConfig.plugins = [
         new CleanWebpackPlugin(dir.build),
-        new CopyWebpackPlugin([{
-            from: `${dir.public}/**/*`,
-            to: `${dir.build}/`,
-            ignore: [`index.html`]
-        }]),
+        // new CopyWebpackPlugin([{
+        //     from: `${dir.public}/**/*`,
+        //     to: `${dir.build}/`,
+        //     ignore: [`index.html`]
+        // }]),
         new ExtractTextPlugin({
             filename: `[name].css`,
             // allChunks: true,
@@ -80,19 +80,19 @@ module.exports = (setting) => {
             }
         },
     };
-    wpConfig.devServer = {
-        contentBase: dir.build,
-        publicPath: '/',
-        compress: true,
-        disableHostCheck: true,
-        historyApiFallback: true,
-        host: "localhost",
-        hot: true,
-        https: false,
-        inline: true,
-        overlay: true,
-        watchContentBase: true,
-    };
+    // wpConfig.devServer = {
+    //     contentBase: dir.build,
+    //     publicPath: '/',
+    //     compress: true,
+    //     disableHostCheck: true,
+    //     historyApiFallback: true,
+    //     host: "localhost",
+    //     hot: true,
+    //     https: false,
+    //     inline: true,
+    //     overlay: true,
+    //     watchContentBase: true,
+    // };
 
     return wpConfig;
 }

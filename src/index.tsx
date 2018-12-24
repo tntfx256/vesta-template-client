@@ -3,22 +3,20 @@ import { Culture, ILocale } from "@vesta/culture";
 import { IrDate, IrLocale } from "@vesta/culture-ir";
 import { UsDate, UsLocale } from "@vesta/culture-us";
 import { createTheme } from "@vesta/theme";
-//pollyfill
 import "core-js/es6/map";
 import "core-js/es6/promise";
 import "core-js/es6/set";
 import React from 'react';
 import { render } from 'react-dom';
 import { ThemeProvider } from "react-jss";
-import { App } from './app/App';
-import { SourceApp } from './app/cmn/models/User';
-import { IrVocabs } from './app/cmn/vocabs/IrVocabs';
-import { UsVocabs } from './app/cmn/vocabs/UsVocabs';
-import { appConfig } from './app/config/appConfig';
-import { SplashPlugin } from './app/plugin/SplashPlugin';
-import { Config } from './app/service/Config';
-import { LogService } from './app/service/LogService';
-import { register } from './serviceWorker';
+import { App } from './App';
+import { SourceApp } from "./cmn/models/User";
+import { IrVocabs } from "./cmn/vocabs/IrVocabs";
+import { UsVocabs } from "./cmn/vocabs/UsVocabs";
+import { appConfig } from "./config/appConfig";
+import { SplashPlugin } from "./plugin/SplashPlugin";
+import { Config } from "./service/Config";
+import { LogService } from "./service/LogService";
 
 
 // initial configurations
@@ -36,8 +34,6 @@ if (isCordova()) {
 } else {
     window.addEventListener("DOMContentLoaded", checkScripts, false);
 }
-
-register();
 
 (window as any).loadLocale = loadLocale;
 

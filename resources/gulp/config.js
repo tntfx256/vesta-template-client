@@ -1,11 +1,6 @@
 const { join, parse, normalize } = require("path");
 const { readFileSync, mkdirSync, writeFileSync } = require("fs");
 const rimraf = require("rimraf");
-const webpack = require("webpack");
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const root = normalize(join(__dirname, "../.."));
 
@@ -16,6 +11,8 @@ const dir = {
     resource: join(root, "resources"),
     docker: join(root, "resources/docker"),
     src: join(root, "src"),
+    app: join(root, "src"),
+    public: join(root, "public"),
     gulp: join(root, "resources/gulp"),
     build: join(root, "vesta"),
 };
@@ -35,7 +32,6 @@ targets.ios.elimination = include("cordova", "ios");
 module.exports = {
     dir,
     targets,
-    getWebpackConfig,
     findInFileAndReplace,
     port: { http: 8088, api: 3000 },
     clean: (dir) => {
@@ -88,97 +84,4 @@ function findInFileAndReplace(file, search, replace, destinationDirectory) {
     } catch (e) {
         console.error(`[gulp::config::findInFileAndReplace::write] ${e.message}`);
     }
-}
-
-function getWebpackConfig(setting) {
-    const target = setting.buildPath(setting.target);
-    let plugins = [];
-
-    const wpConfig = {
-        target: "web",
-        mode: setting.production ? "production" : "development",
-        output: {
-            filename: "[name].js",
-            path: `${dir.build}/${target}/js`
-        },
-        resolve: {
-            extensions: [".ts", ".tsx", ".js", ".json"]
-        },
-        module: {
-            rules: [{
-                    test: /\.scss$/,
-                    use: ExtractTextPlugin.extract({
-                        fallback: 'style-loader',
-                        use: [
-                            { loader: 'css-loader' },
-                            { loader: 'sass-loader' },
-                            // { loader: 'postcss-loader', options: { parser: 'sugarss', exec: true } }
-                        ]
-
-                    })
-                },
-                {
-                    test: /\.js$/,
-                    loader: `babel-loader`,
-                    exclude: /node_modules\/(?!(@vesta)\/).*/,
-                    query: {
-                        presets: [
-                            ["@babel/env", { "modules": false }]
-                        ]
-                    }
-                },
-                {
-                    test: /\.tsx?$/,
-                    use: ["ts-loader"]
-                },
-            ]
-        },
-        plugins: [
-            new CleanWebpackPlugin(dir.build),
-            new CopyWebpackPlugin([{
-                from: `${dir.public}/**/*`,
-                to: `${dir.build}/`,
-                ignore: [`index.html`]
-            }]),
-            new ExtractTextPlugin({
-                filename: `[name].css`,
-                // allChunks: true,
-            }),
-            new HtmlWebpackPlugin({
-                title: "Testing Title",
-                template: "./public/index.html"
-            }),
-            new webpack.HotModuleReplacementPlugin(),
-        ],
-        externals: {},
-        optimization: {
-            minimize: setting.production,
-            splitChunks: {
-                chunks: 'async',
-                minSize: 30000,
-                minChunks: 1,
-                name: true,
-                cacheGroups: {
-                    commons: { test: /[\\/]node_modules[\\/]/, name: "lib", chunks: "all" }
-                }
-            },
-        }
-    }
-    if (!setting.production) {
-        wpConfig.devServer = {
-            contentBase: `${dir.build}/${target}`,
-            publicPath: '/',
-            compress: true,
-            disableHostCheck: true,
-            historyApiFallback: true,
-            host: "localhost",
-            hot: true,
-            https: false,
-            inline: true,
-            overlay: true,
-            watchContentBase: true,
-        }
-        wpConfig.devtool = "inline-source-map";
-    }
-    return wpConfig;
 }

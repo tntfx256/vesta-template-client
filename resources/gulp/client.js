@@ -1,27 +1,23 @@
 const webpack = require("webpack");
-const { src, watch, parallel, series } = require("gulp");
+const { watch, parallel, series } = require("gulp");
 const { readdirSync, statSync } = require("fs");
-const { getWebpackConfig } = require("./config");
+const { execSync } = require("child_process");
 
 module.exports = function(setting) {
     const dir = setting.dir;
 
-    function serviceWorkers(cb) {
+    function serviceWorkers() {
         if (setting.is(setting.target, "cordova")) return;
         let target = setting.buildPath(setting.target);
-        let serviceWorkers = ["service-worker.js"];
         let timestamp = Date.now();
         const files = getFilesList(`${dir.build}/${target}`, "").join('","');
-        for (let i = 0, il = serviceWorkers.length; i < il; ++i) {
-            setting.findInFileAndReplace(`${dir.src}/${serviceWorkers[i]}`, /__TIMESTAMP__/g, timestamp, `${dir.build}/${target}`);
-            setting.findInFileAndReplace(`${dir.build}/${target}/${serviceWorkers[i]}`, "__FILES__", `"${files}"`, `${dir.build}/${target}`);
-        }
-        cb();
+        setting.findInFileAndReplace(`${dir.public}/service-worker.js`, /__TIMESTAMP__/g, timestamp, `${dir.build}/${target}`);
+        setting.findInFileAndReplace(`${dir.build}/${target}/service-worker.js`, "__FILES__", files, `${dir.build}/${target}`);
+        return Promise.resolve();
     }
 
     function compileTs() {
-        const wpConfig = require("../../webpack.config")(setting);
-        wpConfig.entry = { app: `${dir.src}/app/app.ts` };
+        const wpConfig = require("./webpack.config")(setting);
         if (setting.production || setting.is(setting.target, "cordova")) {
             setting.findInFileAndReplace(`${dir.resource}/gitignore/variantConfig.ts`, "", "", `${dir.src}/app/config`);
         }
@@ -39,6 +35,21 @@ module.exports = function(setting) {
                 resolve(true);
             });
         });
+    }
+
+    function runServer(cb) {
+        if (setting.production) {
+            return Promise.resolve();
+        }
+
+        switch (setting.target) {
+            case "web":
+                runWebServer();
+                break;
+            default:
+                process.stderr.write(`${setting.target} Develop server is not supported`);
+        }
+        cb();
     }
 
     function watches() {
@@ -61,8 +72,17 @@ module.exports = function(setting) {
         return files;
     }
 
+    function runWebServer() {
+        try {
+            execSync(`npx webpack-dev-server --content-base ${dir.build}/web/www --compress --hot --inline --overlay --disable-host-check --open`);
+            Promise.resolve();
+        } catch (e) {
+            Promise.reject(e);
+        }
+    }
+
     return {
-        tasks: parallel(serviceWorkers, series(compileTs)), //runServer
+        tasks: parallel(serviceWorkers, series(compileTs, runServer)),
         watch: watches,
     };
 };

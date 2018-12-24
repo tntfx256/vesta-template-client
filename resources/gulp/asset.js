@@ -9,7 +9,7 @@ module.exports = function(setting) {
     function index() {
         const target = setting.buildPath(setting.target);
         const timestamp = Date.now();
-        let stream = src(`${dir.src}/index.html`)
+        let stream = src(`${dir.public}/index.html`)
             .pipe(eliminator(setting))
             .pipe(replace("__TIMESTAMP__", timestamp));
         if (setting.production) {
@@ -20,7 +20,7 @@ module.exports = function(setting) {
 
     function root() {
         const target = setting.buildPath(setting.target);
-        return src([`${dir.src}/*`, `!${dir.src}/index.html`, `!${dir.src}/*.js`])
+        return src([`${dir.public}/*`, `!${dir.public}/index.html`, `!${dir.src}/*.js`])
             .pipe(dest(`${dir.build}/${target}`));
     }
 
@@ -28,14 +28,14 @@ module.exports = function(setting) {
         const target = setting.buildPath(setting.target);
         src([`${dir.npm}/md-font/*.{eot,ijmap,svg,ttf,woff,woff2}`])
             .pipe(dest(`${dir.build}/${target}/fonts/material-icon`));
-        return src([`${dir.src}/fonts/**/*`])
+        return src([`${dir.public}/fonts/**/*`])
             .pipe(dest(`${dir.build}/${target}/fonts`));
     }
 
     function images() {
         const target = setting.buildPath(setting.target);
-        let stream = src(`${dir.src}/images/**/*`);
-        return stream.pipe(dest(`${dir.build}/${target}/img`));
+        let stream = src(`${dir.public}/images/**/*`);
+        return stream.pipe(dest(`${dir.build}/${target}/images`));
     }
 
     function watches() {

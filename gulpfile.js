@@ -13,7 +13,7 @@ Object.keys(targets).forEach(target => {
     });
 });
 
-createTasks(...loadTasks(["asset", "sass", "client", "model"]));
+createTasks(...loadTasks(["asset", "client", "model"]));
 
 function loadTasks(modules) {
     let tasks = [];

@@ -10,7 +10,6 @@ import { AuthService } from "../../service/AuthService";
 import { NotificationService } from "../../service/NotificationService";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
-import "./Login.scss";
 
 
 interface ILoginParams {
