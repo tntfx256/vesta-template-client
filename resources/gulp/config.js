@@ -18,20 +18,19 @@ const dir = {
 
 const targets = {
     web: { build: "web/www" },
-    electron: { build: "electron/www" },
+    // electron: { build: "electron/www" },
     cordova: { build: "cordova/www" },
     android: { build: "cordova/www" },
     ios: { build: "cordova/www" }
 };
 targets.web.elimination = include("web");
-targets.electron.elimination = include("electron");
+// targets.electron.elimination = include("electron");
 targets.android.elimination = include("cordova", "android");
 targets.ios.elimination = include("cordova", "ios");
 
 module.exports = {
     dir,
     targets,
-    port: { http: 8088, api: 3000 },
     clean: (dir) => {
         rimraf.sync(dir);
     },
@@ -49,7 +48,6 @@ module.exports = {
         if (group === "cordova") return ["android", "ios", "cordova"].indexOf(target) >= 0;
         return false;
     },
-    getWebpackConfig,
     findInFileAndReplace(file, search, replace, destinationDirectory) {
         let content = readFileSync(file, { encoding: "utf8" });
         if (search && replace) {
@@ -72,6 +70,58 @@ module.exports = {
             console.error(`[gulp::config::findInFileAndReplace::write] ${e.message}`);
         }
     },
+    getWebpackConfig(setting) {
+        const { dir } = setting;
+        const target = setting.buildPath(setting.target);
+        const wpConfig = {};
+
+        wpConfig.mode = setting.production ? "production" : "development";
+        wpConfig.target = setting.target;
+        wpConfig.devtool = setting.production ? false : "inline-source-map";
+
+        wpConfig.output = {
+            filename: "[name].js",
+            path: `${dir.build}/${target}/js`
+        };
+        wpConfig.resolve = {
+            extensions: [".ts", ".tsx", ".js", ".scss"]
+        };
+        wpConfig.module = {
+            rules: [{
+                    test: /\.js$/,
+                    loader: `babel-loader`,
+                    exclude: /node_modules\/(?!(@vesta)\/).*/,
+                    query: {
+                        presets: [
+                            ["@babel/env", { "modules": false }]
+                        ]
+                    }
+                },
+                {
+                    test: /\.tsx?$/,
+                    use: ["ts-loader"]
+                },
+            ]
+        };
+        wpConfig.plugins = [];
+        if (setting.production) {
+            wpConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
+        }
+        wpConfig.optimization = {
+            minimize: false,
+            splitChunks: {
+                chunks: 'async',
+                minSize: 30000,
+                minChunks: 1,
+                name: true,
+                cacheGroups: {
+                    commons: { test: /[\\/]node_modules[\\/]/, name: "lib", chunks: "all" }
+                }
+            },
+        };
+
+        return wpConfig;
+    }
 };
 
 function include(...includedTargets) {
@@ -82,65 +132,4 @@ function include(...includedTargets) {
         }
     });
     return elimination;
-}
-
-function getWebpackConfig(setting) {
-    const { dir } = setting;
-    const target = setting.buildPath(setting.target);
-    const wpConfig = {}
-    wpConfig.mode = setting.production ? "production" : "development";
-    wpConfig.target = setting.target;
-    wpConfig.output = {
-        filename: "[name].js",
-        path: `${dir.build}/${target}/js`
-    };
-    wpConfig.resolve = {
-        extensions: [".ts", ".tsx", ".js", ".scss"]
-    };
-    wpConfig.module = {
-        rules: [{
-                test: /\.js$/,
-                loader: `babel-loader`,
-                exclude: /node_modules\/(?!(@vesta)\/).*/,
-                query: {
-                    presets: [
-                        ["@babel/env", { "modules": false }]
-                    ]
-                }
-            },
-            {
-                test: /\.tsx?$/,
-                use: ["ts-loader"]
-            },
-        ]
-    };
-    wpConfig.plugins = [];
-    wpConfig.optimization = {
-        minimize: false,
-        splitChunks: {
-            chunks: 'async',
-            minSize: 30000,
-            minChunks: 1,
-            name: true,
-            cacheGroups: {
-                commons: { test: /[\\/]node_modules[\\/]/, name: "lib", chunks: "all" }
-            }
-        },
-    };
-    wpConfig.devServer = {
-        contentBase: dir.build,
-        publicPath: '/',
-        compress: true,
-        disableHostCheck: true,
-        historyApiFallback: true,
-        host: "localhost",
-        hot: true,
-        https: false,
-        inline: true,
-        open: true,
-        overlay: true,
-        watchContentBase: true,
-    };
-
-    return wpConfig;
 }

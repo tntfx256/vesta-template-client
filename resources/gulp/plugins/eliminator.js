@@ -1,6 +1,5 @@
 const { parse } = require('path');
 const through = require('through2');
-const { PluginError } = require('gulp-util');
 
 const PLUGIN_NAME = 'eliminator';
 
@@ -14,7 +13,7 @@ module.exports = function(config) {
             return cb(null, file);
         }
         if (file.isStream()) {
-            throw new PluginError(PLUGIN_NAME, 'Streams are not supported');
+            throw new Error(`[${PLUGIN_NAME}] Streams are not supported`);
         }
         if (file.isBuffer()) {
             return buildFor(file, cb);

@@ -1,4 +1,4 @@
-const { parallel, series, task } = require("gulp");
+const { series, task } = require("gulp");
 const path = require("path");
 const config = require("./resources/gulp/config");
 
@@ -13,7 +13,7 @@ Object.keys(targets).forEach(target => {
     });
 });
 
-createTasks(...loadTasks(["asset", "client", "sass", "model"]));
+createTasks(...loadTasks(["asset", "client", "sass", "server", "model"]));
 
 function loadTasks(modules) {
     let tasks = [];

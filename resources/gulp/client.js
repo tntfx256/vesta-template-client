@@ -1,9 +1,7 @@
 const webpack = require("webpack");
-const WebpackDevServer = require("webpack-dev-server");
-const { watch, parallel, series, src } = require("gulp");
+const { watch, parallel } = require("gulp");
 const { copyFileSync } = require("fs-extra");
 const { readdirSync, statSync } = require("fs");
-const { exec } = require("child_process");
 
 module.exports = function(setting) {
     const dir = setting.dir;
@@ -38,20 +36,6 @@ module.exports = function(setting) {
         });
     }
 
-    function runServer() {
-        if (setting.production) {
-            return Promise.resolve();
-        }
-
-        switch (setting.target) {
-            case "web":
-                return runWebServer();
-            default:
-                process.stderr.write(`${setting.target} Develop server is not supported`);
-        }
-        return Promise.resolve();
-    }
-
     function watches() {
         watch([`${dir.src}/**/*.ts*`], compileTs);
         watch([`${dir.src}/*.js`], serviceWorkers);
@@ -72,31 +56,8 @@ module.exports = function(setting) {
         return files;
     }
 
-    function runWebServer() {
-        const wpConfig = setting.getWebpackConfig(setting);
-        if (setting.production || setting.is(setting.target, "cordova")) {
-            copyFileSync(`${dir.resource}/gitignore/variantConfig.ts`, `${dir.src}/app/config`);
-        }
-        wpConfig.dev
-        return new Promise((resolve, reject) => {
-            const server = new WebpackDevServer(webpack(wpConfig), {
-                contentBase: `${dir.build}/web/www`,
-                // publicPath: `/`,
-                stats: {
-                    colors: true
-                }
-            });
-            server.listen(8080, "localhost", function(err) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve();
-            });
-        })
-    }
-
     return {
-        tasks: parallel(serviceWorkers, series(compileTs, runServer)),
+        tasks: parallel(serviceWorkers, compileTs),
         watch: watches,
     };
 };
