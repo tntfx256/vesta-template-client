@@ -1,10 +1,12 @@
-import { Html, Preloader, Sidenav, ToastMessage } from "@vesta/components";
+import { Html, Navbar, Sidenav, ToastMessage } from "@vesta/components";
 import { Dispatcher } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { Component, ComponentType } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { IUser } from "../cmn/models/User";
 import { IRouteItem } from "../config/route";
+import { IAppState } from "../misc/AppState";
+import { appStore } from "../misc/appStore";
 import { ApiService } from "../service/ApiService";
 import { AuthService } from "../service/AuthService";
 import { Config } from "../service/Config";
@@ -19,9 +21,7 @@ interface IRootProps extends RouteComponentProps<IRootParams> {
     routeItems: IRouteItem[];
 }
 
-interface IRootState {
-    user: IUser;
-    toast: string;
+interface IRootState extends IAppState {
 }
 
 class Root extends Component<IRootProps, IRootState> {
@@ -32,7 +32,7 @@ class Root extends Component<IRootProps, IRootState> {
 
     constructor(props: IRootProps) {
         super(props);
-        this.state = { user: this.auth.getUser(), toast: null };
+        this.state = appStore.getState();
     }
 
     public componentDidMount() {
@@ -40,9 +40,9 @@ class Root extends Component<IRootProps, IRootState> {
         this.dispatcher.register<IUser>(AuthService.Events.Update, (user) => {
             this.setState({ user });
         });
-        this.dispatcher.register<{ message: string }>("toast", (payload) => {
-            this.setState({ toast: payload.message });
-        });
+        // this.dispatcher.register<{ message: string }>("toast", (payload) => {
+        //     this.setState({ toast: payload.message });
+        // });
         // application in/out checking
         // window.addEventListener("load", this.onLoad);
         // window.addEventListener("focus", this.toForeground);
@@ -57,13 +57,17 @@ class Root extends Component<IRootProps, IRootState> {
         this.api.get<IUser>("me")
             .then((response) => this.auth.login(response.items[0]))
             .catch((err) => LogService.error(err, "componentDidMount", "Root"));
+        // redux
+        appStore.subscribe(() => {
+            this.setState({ ...appStore.getState() });
+        })
     }
 
     public render() {
         const { user, toast } = this.state;
         const { routeItems } = this.props;
         const { code, dir } = Culture.getLocale();
-        const toastMsg = toast ? <ToastMessage message={toast} /> : null;
+        const toastMsg = toast ? <ToastMessage message={toast.message} type={toast.type} /> : null;
 
         return (
             <div id="main-wrapper" className="root-component">

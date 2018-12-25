@@ -30,8 +30,7 @@ export function getRoutes(isLoggedIn: boolean): IRouteItem[] {
         { link: "logout", title: tr("logout"), component: Logout },
     ];
     const guestRoutes = [
-        { link: "", title: tr("home"), component: Home, exact: true },
-        { link: "login", title: tr("login"), component: Login },
+        { link: "", title: tr("login"), component: Login, exact: true },
         { link: "forget", title: tr("forget_pass"), component: Forget, hidden: true },
         { link: "register", title: tr("register"), component: Register },
     ];

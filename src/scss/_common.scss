@@ -5,16 +5,19 @@
 
 @import './scss/fonts/material';
 
-@import "./App";
+@import "../App";
 
-@import "./components/BaseComponent";
-@import "./components/Root";
+@import "../components/BaseComponent";
+@import "../components/Root";
 
-@import './components/root/Forbidden';
-@import './components/root/Forget';
-@import './components/root/Home';
-@import './components/root/Login';
-@import './components/root/Logout';
-@import './components/root/NotFound';
-@import './components/root/Profile';
-@import './components/root/Register';
+@import '../components/root/Forbidden';
+@import '../components/root/Forget';
+@import '../components/root/Home';
+@import '../components/root/Log';
+@import '../components/root/Login';
+@import '../components/root/Logout';
+@import '../components/root/NotFound';
+@import '../components/root/Profile';
+@import '../components/root/Register';
+@import '../components/root/Role';
+@import '../components/root/User';

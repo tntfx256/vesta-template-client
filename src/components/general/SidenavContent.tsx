@@ -46,7 +46,7 @@ export class SidenavContent extends PureComponent<ISidenavContentProps, ISidenav
         return (
             <div className="sidenav-content">
                 <header>
-                    <Avatar src={userImage} defaultSrc="img/icons/192x192.png" />
+                    <Avatar src={userImage} defaultSrc="images/icons/192x192.png" />
                     <div className="name-wrapper">
                         <h4>{user.username}</h4>
                         {editLink}

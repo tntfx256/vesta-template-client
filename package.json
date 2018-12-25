@@ -34,7 +34,8 @@
     "react-dom": "^16.7.0-alpha.2",
     "react-jss": "^8.6.1",
     "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1"
+    "react-router-dom": "^4.3.1",
+    "redux": "^4.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
@@ -67,14 +68,5 @@
     "typescript": "^3.2.2",
     "webpack": "^4.28.2",
     "webpack-cli": "^3.1.2"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  }
 }

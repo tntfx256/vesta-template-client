@@ -28,13 +28,13 @@
         <preference name="FullScreen" value="false" />
         <preference name="AndroidPersistentFileLocation" value="Internal" />
         <preference name="AndroidExtraFilesystems" value="files,files-external,documents,sdcard,cache,cache-external,root" />
-        <icon density="ldpi" src="www/img/icons/36x36.png" />
-        <icon density="mdpi" src="www/img/icons/48x48.png" />
-        <icon density="hdpi" src="www/img/icons/72x72.png" />
-        <icon density="xhdpi" src="www/img/icons/96x96.png" />
-        <icon density="xxhdpi" src="www/img/icons/144x144.png" />
-        <icon density="xxxhdpi" src="www/img/icons/192x192.png" />
-        <splash density="port-xhdpi" src="www/img/splash/768x1024.png" />
+        <icon density="ldpi" src="www/images/icons/36x36.png" />
+        <icon density="mdpi" src="www/images/icons/48x48.png" />
+        <icon density="hdpi" src="www/images/icons/72x72.png" />
+        <icon density="xhdpi" src="www/images/icons/96x96.png" />
+        <icon density="xxhdpi" src="www/images/icons/144x144.png" />
+        <icon density="xxxhdpi" src="www/images/icons/192x192.png" />
+        <splash density="port-xhdpi" src="www/images/splash/768x1024.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -42,9 +42,9 @@
         <preference name="KeyboardDisplayRequiresUserAction" value="false" />
         <preference name="iosPersistentFileLocation" value="Library" />
         <preference name="iosExtraFilesystems" value="library,library-nosync,documents,documents-nosync,cache,bundle,root" />
-        <icon height="72" src="www/img/icons/72x72.png" width="72" />
-        <icon height="144" src="www/img/icons/144x144.png" width="144" />
-        <splash height="1024" src="www/img/splash/768x1024.png" width="768" />
+        <icon height="72" src="www/images/icons/72x72.png" width="72" />
+        <icon height="144" src="www/images/icons/144x144.png" width="144" />
+        <splash height="1024" src="www/images/splash/768x1024.png" width="768" />
     </platform>
     <plugin name="cordova-plugin-whitelist" spec="^1.3.2" />
     <plugin name="cordova-plugin-geolocation" spec="^2.4.3" />
