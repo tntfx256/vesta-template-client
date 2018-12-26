@@ -39,7 +39,6 @@ export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
 
     return (
         <div className="page forget-page has-navbar page-logo-form">
-            <Navbar className="navbar-transparent" showBurger={true} />
             <div className="logo-wrapper">
                 <div className="logo-container">
                     <img src="images/icons/144x144.png" alt="Vesta Logo" />
@@ -49,11 +48,10 @@ export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
                 {alert}
                 <TextInput name="mobile" label={tr("fld_mobile")} value={mobile} error={errors.mobile} onChange={onChange} />
                 <div className="btn-group">
-                    <Button color="primary" variant="outlined">{tr("send_reset")}</Button>
-
-                    <Button type="button" color="primary" variant="outlined">
+                    <Button type="button" color="primary">
                         <Link to="/">{tr("login")}</Link>
                     </Button>
+                    <Button color="primary" variant="outlined">{tr("send_reset")}</Button>
                 </div>
             </FormWrapper>
         </div>

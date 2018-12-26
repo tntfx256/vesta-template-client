@@ -42,7 +42,6 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
 
     return (
         <div className="page register-page has-navbar page-logo-form">
-            <Navbar className="navbar-transparent" showBurger={true} />
             <div className="logo-wrapper">
                 <div className="logo-container">
                     <img src="images/icons/144x144.png" alt="Vesta Logo" />
@@ -59,10 +58,10 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
                         <a href="https://vesta.bz" target="_blank">{tr("privacy")}</a>)
                     </div>
                 <div className="btn-group">
-                    <Button color="primary" variant="contained">{tr("register")}</Button>
-                    <Button color="primary" variant="outlined" type="button">
+                    <Button color="primary" type="button">
                         <Link to="/">{tr("login")}</Link>
                     </Button>
+                    <Button color="primary" variant="contained">{tr("register")}</Button>
                 </div>
             </FormWrapper>
         </div>

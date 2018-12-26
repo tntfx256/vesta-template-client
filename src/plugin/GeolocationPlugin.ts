@@ -1,4 +1,3 @@
-import { Registry } from "@vesta/core";
 import { SyncStorage } from "@vesta/services";
 import { ILocation } from "../cmn/interfaces/GeoLocation";
 import { shallowClone } from "../util/Util";
@@ -20,7 +19,7 @@ export class GeolocationPlugin {
     }
 
     public static getLatestLocation(): ILocation {
-        const defaultLocation = Registry.get<ILocation>("defaultLocation");
+        const defaultLocation = SyncStorage.get<ILocation>("defaultLocation");
         let lastLocation = SyncStorage.get<ILocation>(GeolocationPlugin.LocationKey);
         if (!lastLocation || !lastLocation.lat) {
             lastLocation = defaultLocation;
@@ -97,7 +96,7 @@ export class GeolocationPlugin {
                     positionOptions.enableHighAccuracy = false;
                 } else {
                     // checking app activity
-                    if (Registry.get<boolean>("isAppInBackground")) {
+                    if (SyncStorage.get<boolean>("isAppInBackground")) {
                         // super extend timeout if app in background
                         // console.log("app in bg; extending timeout even more");
                         positionOptions.timeout = Math.floor(3 * positionOptions.timeout / 2);

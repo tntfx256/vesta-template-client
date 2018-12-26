@@ -3,17 +3,12 @@ import { Culture } from "@vesta/culture";
 import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IUser } from "../../../cmn/models/User";
-import { Crud } from "../../../service/Crud";
 import { getAcl } from "../../../service/Acl";
+import { Crud } from "../../../service/Crud";
 import { IBaseComponentProps } from "../../BaseComponent";
 
 interface IUserListProps extends IBaseComponentProps {
     access: IAccess;
-}
-
-interface IUserListState {
-    queryOption: IDataTableQueryOption<IUser>;
-    users: IUser[];
 }
 
 export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) => {

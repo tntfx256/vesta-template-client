@@ -53,7 +53,6 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
 
     return (
         <div className="page login-page has-navbar page-logo-form">
-            {/* <Navbar className="navbar-transparent" showBurger={true} /> */}
             <div className="logo-wrapper">
                 <div className="logo-container">
                     <img src="images/icons/144x144.png" alt="Vesta Logo" />
@@ -61,22 +60,18 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
             </div>
             <FormWrapper name="loginForm" onSubmit={onSubmit}>
                 {loginErr}
-
                 <TextInput name="username" label={tr("fld_username")} value={user.username}
                     error={errors.username} onChange={onChange} />
-
                 <TextInput name="password" label={tr("fld_password")} value={user.password} type="password"
                     error={errors.password} onChange={onChange} />
-
                 <p style={{ textAlign: "end" }}>
                     <Link to="forget">{tr("forget_pass")}</Link>
                 </p>
-
                 <div className="btn-group">
-                    <Button color="primary" variant="contained">{tr("login")}</Button>
-                    <Button color="primary" variant="outlined" type="button">
+                    <Button color="primary" type="button">
                         <Link to="register">{tr("register")}</Link>
                     </Button>
+                    <Button color="primary" variant="contained">{tr("login")}</Button>
                 </div>
             </FormWrapper>
         </div>
