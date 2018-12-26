@@ -3,8 +3,8 @@ import { Culture } from "@vesta/culture";
 import React, { Component } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
-import { AuthService } from "../../service/getAuth";
-import { TransitionService } from "../../service/transitionTo";
+import { getAcl } from "../../service/Acl";
+import { transitionTo } from "../../service/transitionTo";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { UserAdd } from "./user/UserAdd";
 import { UserDetail } from "./user/UserDetail";
@@ -22,8 +22,7 @@ interface IUserState {
 
 export class User extends Component<IUserProps, IUserState> {
 
-    private access = AuthService.getInstance().getAccessList("user");;
-    private tz = TransitionService.getInstance().transitionTo;
+    private access = getAcl().getAccessList("user");;
     private tr = Culture.getDictionary().translate;
 
 
@@ -35,9 +34,9 @@ export class User extends Component<IUserProps, IUserState> {
     public render() {
         const { add, edit } = this.access;
         const addUser = add ?
-            <Route path="/user/add" render={this.tz(UserAdd, { user: ["add"] })} /> : null;
+            <Route path="/user/add" render={transitionTo(UserAdd, { user: ["add"] })} /> : null;
         const editUser = edit ?
-            <Route path="/user/edit/:id" render={this.tz(UserEdit, { user: ["edit"] })} /> : null;
+            <Route path="/user/edit/:id" render={transitionTo(UserEdit, { user: ["edit"] })} /> : null;
 
         return (
             <div className="page user-page has-navbar">
@@ -51,7 +50,7 @@ export class User extends Component<IUserProps, IUserState> {
                         <Switch>
                             {addUser}
                             {editUser}
-                            <Route path="/user/detail/:id" render={this.tz(UserDetail, { user: ["read"] })} />
+                            <Route path="/user/detail/:id" render={transitionTo(UserDetail, { user: ["read"] })} />
                         </Switch>
                     </HashRouter>
                     <UserList access={this.access} />

@@ -1,12 +1,12 @@
-import { Alert, Button, FormWrapper, Preloader, TextInput, Grid, MessageType } from "@vesta/components";
-import { IValidationError } from "@vesta/core";
+import { Alert, Button, FormWrapper, MessageType, Preloader, TextInput } from "@vesta/components";
+import { IResponse, IValidationError } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { withTheme } from "theming";
 import { IUser, User } from "../../cmn/models/User";
-import { ApiService } from "../../service/getApi";
-import { AuthService } from "../../service/getAuth";
+import { getApi } from "../../service/Api";
+import { getAuth, isGuest } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
@@ -20,8 +20,8 @@ interface ILoginProps extends IBaseComponentWithRouteProps<ILoginParams> {
 
 export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) => {
     const tr = Culture.getDictionary().translate;
-    const api = ApiService.getInstance();
-    const auth = AuthService.getInstance();
+    const api = getApi();
+    const auth = getAuth();
     const notif = Notif.getInstance();
     const formErrorsMessages: IModelValidationMessage = {
         password: {
@@ -42,7 +42,7 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
 
 
     useEffect(() => {
-        if (!auth.isGuest()) {
+        if (!isGuest()) {
             // if it's a user logout first
             props.history.push("/logout");
         }
@@ -73,8 +73,8 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
                 </p>
 
                 <div className="btn-group">
-                    <Button type="submit" color="primary" variant="contained">{tr("login")}</Button>
-                    <Button color="primary" variant="outlined">
+                    <Button color="primary" variant="contained">{tr("login")}</Button>
+                    <Button color="primary" variant="outlined" type="button">
                         <Link to="register">{tr("register")}</Link>
                     </Button>
                 </div>
@@ -96,7 +96,7 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
         }
         Preloader.show();
         setErrors(null);
-        api.post<IUser>("account/login", userInstance.getValues("username", "password"))
+        api.post<IUser, IResponse<IUser>>("account/login", userInstance.getValues("username", "password"))
             .then((response) => {
                 Preloader.hide();
                 auth.login(response.items[0]);

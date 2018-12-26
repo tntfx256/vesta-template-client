@@ -1,4 +1,5 @@
 import { Culture } from "@vesta/culture";
+import { IPermissions } from "@vesta/services";
 import { ComponentType } from "react";
 import { Forget } from "../components/root/Forget";
 import { Home } from "../components/root/Home";
@@ -6,7 +7,6 @@ import { Login } from "../components/root/Login";
 import { Logout } from "../components/root/Logout";
 import { Profile } from "../components/root/Profile";
 import { Register } from "../components/root/Register";
-import { IPermissionCollection } from "../service/getAuth";
 
 export interface IRouteItem {
     abstract?: boolean;
@@ -18,7 +18,7 @@ export interface IRouteItem {
     // show icon on menu
     icon?: string;
     link: string;
-    permissions?: IPermissionCollection;
+    permissions?: IPermissions;
     title: string;
 }
 

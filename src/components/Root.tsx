@@ -1,17 +1,15 @@
-import { Html, Navbar, Sidenav, ToastMessage } from "@vesta/components";
+import { Html, Preloader, Sidenav, ToastMessage } from "@vesta/components";
 import { Dispatcher } from "@vesta/core";
 import { Culture } from "@vesta/culture";
+import { SyncStorage } from "@vesta/services";
 import React, { Component, ComponentType } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { IUser } from "../cmn/models/User";
 import { IRouteItem } from "../config/route";
 import { IAppState } from "../misc/AppState";
 import { appStore } from "../misc/appStore";
-import { ApiService } from "../service/getApi";
-import { AuthService } from "../service/getAuth";
-import { Config } from "../service/Config";
-import { Log } from "../service/Log";
-import { StorageService } from "../service/StorageService";
+import { getApi } from "../service/Api";
+import { AuthEvents, getAuth } from "../service/Auth";
 import { SidenavContent } from "./general/SidenavContent";
 
 
@@ -25,8 +23,8 @@ interface IRootState extends IAppState {
 }
 
 class Root extends Component<IRootProps, IRootState> {
-    private api = ApiService.getInstance();
-    private auth = AuthService.getInstance();
+    private api = getApi()
+    private auth = getAuth();
     private dispatcher = Dispatcher.getInstance();
     private lastPathKey = "last-path";
 
@@ -37,7 +35,7 @@ class Root extends Component<IRootProps, IRootState> {
 
     public componentDidMount() {
         // registering for user auth status change event
-        this.dispatcher.register<IUser>(AuthService.Events.Update, (user) => {
+        this.dispatcher.register<IUser>(AuthEvents.Update, (user) => {
             this.setState({ user });
         });
         // this.dispatcher.register<{ message: string }>("toast", (payload) => {
@@ -52,11 +50,6 @@ class Root extends Component<IRootProps, IRootState> {
         window.onblur = this.toBackground;
         document.addEventListener("pause", this.toBackground);
         window.onunload = this.onExit;
-        // updating user information from API
-        // updating user information from API
-        this.api.get<IUser>("me")
-            .then((response) => this.auth.login(response.items[0]))
-            .catch((err) => Log.error(err, "componentDidMount", "Root"));
         // redux
         appStore.subscribe(() => {
             this.setState({ ...appStore.getState() });
@@ -79,20 +72,21 @@ class Root extends Component<IRootProps, IRootState> {
                     <SidenavContent name="main-sidenav" user={user} menuItems={routeItems} />
                 </Sidenav>
                 {toastMsg}
+                <Preloader />
             </div>
         );
     }
 
     private onExit = () => {
-        StorageService.set(this.lastPathKey, this.props.location.pathname);
+        SyncStorage.set(this.lastPathKey, this.props.location.pathname);
     }
 
     private toBackground = () => {
-        Config.set("isAppInBackground", true);
+        SyncStorage.set("isAppInBackground", true);
     }
 
     private toForeground = () => {
-        Config.set("isAppInBackground", false);
+        SyncStorage.set("isAppInBackground", false);
     }
 }
 

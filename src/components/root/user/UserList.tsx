@@ -1,10 +1,11 @@
 import { DataTable, DataTableOperations, IColumn, IDataTableQueryOption } from "@vesta/components";
-import React, { ComponentType, useState, useEffect } from "react";
-import { IUser } from "../../../cmn/models/User";
-import { IAccess, AuthService } from "../../../service/getAuth";
-import { Crud } from "../../../service/Crud";
-import { IBaseComponentProps } from "../../BaseComponent";
 import { Culture } from "@vesta/culture";
+import { IAccess } from "@vesta/services";
+import React, { ComponentType, useEffect, useState } from "react";
+import { IUser } from "../../../cmn/models/User";
+import { Crud } from "../../../service/Crud";
+import { getAcl } from "../../../service/Acl";
+import { IBaseComponentProps } from "../../BaseComponent";
 
 interface IUserListProps extends IBaseComponentProps {
     access: IAccess;
@@ -17,7 +18,7 @@ interface IUserListState {
 
 export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) => {
 
-    const access = AuthService.getInstance().getAccessList("user");
+    const access = getAcl().getAccessList("user");
     const tr = Culture.getDictionary().translate;
     const userService = Crud.getService<IUser>("user");
     let initiated = false;

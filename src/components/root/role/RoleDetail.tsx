@@ -1,8 +1,8 @@
 import { Culture } from "@vesta/culture";
+import { IPermissions } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IPermission } from "../../../cmn/models/Permission";
 import { IRole } from "../../../cmn/models/Role";
-import { IPermissionCollection } from "../../../service/getAuth";
 import { Crud } from "../../../service/Crud";
 import { IBaseComponentWithRouteProps } from "../../BaseComponent";
 
@@ -28,7 +28,7 @@ export const RoleDetail: ComponentType<IRoleDetailProps> = (props: IRoleDetailPr
 
 
     if (!role) { return null; }
-    const permissions: IPermissionCollection = {};
+    const permissions: IPermissions = {};
     for (let i = 0, il = role.permissions.length; i < il; ++i) {
         const p: IPermission = role.permissions[i] as IPermission;
         if (!permissions[p.resource]) {

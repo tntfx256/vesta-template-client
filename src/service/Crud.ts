@@ -1,7 +1,7 @@
 import { IDataTableQueryOption, Preloader } from "@vesta/components";
 import { Err, IRequest, IResponse, Model, ValidationError } from "@vesta/core";
 import { Culture } from "@vesta/culture";
-import { getApi } from "./getApi";
+import { getApi } from "./Api";
 import { Notif } from "./Notif";
 
 export class Crud<T> {

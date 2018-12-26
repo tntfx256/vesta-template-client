@@ -1,6 +1,6 @@
 import { MessageType } from "@vesta/components";
 import { IUser } from "../cmn/models/User";
-import { AuthService } from "../service/getAuth";
+import { getAuth } from "../service/Auth";
 
 export interface IMessage {
     message: string;
@@ -14,7 +14,7 @@ export interface IAppState {
 
 export function getInitialState(): IAppState {
     return {
-        user: AuthService.getInstance().getUser(),
+        user: getAuth().getUser(),
         toast: null,
     }
 }

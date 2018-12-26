@@ -1,11 +1,11 @@
 import { Button, FormWrapper, Navbar, Preloader, TextInput } from "@vesta/components";
-import { IValidationError } from "@vesta/core";
+import { IResponse, IValidationError } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useState } from "react";
 import { Link } from "react-router-dom";
 import { withTheme } from "theming";
 import { IUser, User } from "../../cmn/models/User";
-import { ApiService } from "../../service/getApi";
+import { getApi } from "../../service/Api";
 import { Notif } from "../../service/Notif";
 import { getFileUrl, IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
@@ -19,7 +19,7 @@ interface IRegisterProps extends IBaseComponentWithRouteProps<IRegisterParams> {
 
 export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegisterProps) => {
     const tr = Culture.getDictionary().translate;
-    const api = ApiService.getInstance();
+    const api = getApi();
     const notif = Notif.getInstance()
     const formErrorsMessages: IModelValidationMessage = {
         password: {
@@ -59,8 +59,8 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
                         <a href="https://vesta.bz" target="_blank">{tr("privacy")}</a>)
                     </div>
                 <div className="btn-group">
-                    <Button type="submit" color="primary" variant="contained">{tr("register")}</Button>
-                    <Button type="button" color="primary" variant="outlined">
+                    <Button color="primary" variant="contained">{tr("register")}</Button>
+                    <Button color="primary" variant="outlined" type="button">
                         <Link to="/">{tr("login")}</Link>
                     </Button>
                 </div>
@@ -82,7 +82,7 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
         }
         Preloader.show();
         setErrors(null);
-        api.post<IUser>("account", userModel.getValues("username", "password"))
+        api.post<IUser, IResponse<IUser>>("account", userModel.getValues("username", "password"))
             .then((response) => {
                 Preloader.hide();
                 notif.success("msg_register_ok");

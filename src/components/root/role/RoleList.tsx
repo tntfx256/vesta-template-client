@@ -1,9 +1,10 @@
 import { DataTable, DataTableOperations, IColumn, IDataTableQueryOption } from "@vesta/components";
 import { Culture } from "@vesta/culture";
+import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IRole } from "../../../cmn/models/Role";
-import { AuthService, IAccess } from "../../../service/getAuth";
 import { Crud } from "../../../service/Crud";
+import { getAcl } from "../../../service/Acl";
 import { Notif } from "../../../service/Notif";
 import { IBaseComponentProps } from "../../BaseComponent";
 
@@ -12,7 +13,7 @@ interface IRoleListProps extends IBaseComponentProps {
 }
 
 export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) => {
-    const access = AuthService.getInstance().getAccessList("role");
+    const access = getAcl().getAccessList("role");
     const service = Crud.getService<IRole>("acl/role");
     const tr = Culture.getDictionary().translate;
     let initialized = false;

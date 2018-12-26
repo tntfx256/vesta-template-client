@@ -10,10 +10,10 @@ interface IForbiddenProps extends IBaseComponentWithRouteProps<IForbiddenParams>
 export const Forbidden: FC<IForbiddenProps> = function (props: IForbiddenProps) {
 
     useEffect(() => {
-        this.props.history.replace("/");
+        props.history.replace("/");
     })
 
-        return (
-            <div className="forbidden-page page has-navbar" />
-        );
+    return (
+        <div className="forbidden-page page has-navbar" />
+    );
 }

@@ -1,10 +1,11 @@
+import { Preloader } from "@vesta/components";
+import { IResponse } from "@vesta/core";
 import { FC, useEffect } from "react";
 import { IUser } from "../../cmn/models/User";
-import { ApiService } from "../../service/getApi";
-import { AuthService } from "../../service/getAuth";
+import { getApi } from "../../service/Api";
+import { getAuth, isGuest } from "../../service/Auth";
 import { Log } from "../../service/Log";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
-import { Preloader } from "@vesta/components";
 
 interface ILogoutParams {
 }
@@ -13,16 +14,16 @@ interface ILogoutProps extends IBaseComponentWithRouteProps<ILogoutParams> {
 }
 
 export const Logout: FC<ILogoutProps> = function (props: ILogoutProps) {
-    const api = ApiService.getInstance();
-    const auth = AuthService.getInstance();
+    const api = getApi();
+    const auth = getAuth();
 
 
     useEffect(() => {
-        if (auth.isGuest()) {
+        if (isGuest()) {
             return props.history.replace("/");
         }
         Preloader.show();
-        api.get<IUser>("account/logout")
+        api.get<IUser, IResponse<IUser>>("account/logout")
             .then((response) => {
                 onAfterLogout(response.items[0]);
             })

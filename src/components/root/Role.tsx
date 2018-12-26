@@ -1,15 +1,15 @@
+import { CrudMenu, Navbar, PageTitle } from "@vesta/components";
+import { Culture } from "@vesta/culture";
 import React, { Component } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
-import { IAccess, AuthService } from "../../service/getAuth";
+import { getAcl } from "../../service/Acl";
+import { transitionTo } from "../../service/transitionTo";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { RoleAdd } from "./role/RoleAdd";
 import { RoleDetail } from "./role/RoleDetail";
 import { RoleEdit } from "./role/RoleEdit";
 import { RoleList } from "./role/RoleList";
-import { CrudMenu, PageTitle, Navbar } from "@vesta/components";
-import { Culture } from "@vesta/culture";
-import { TransitionService } from "../../service/transitionTo";
 
 export interface IAction {
     action?: string;
@@ -30,9 +30,8 @@ interface IRoleState {
 }
 
 export class Role extends Component<IRoleProps, IRoleState> {
-    private access = AuthService.getInstance().getAccessList("role");
+    private access = getAcl().getAccessList("role");
     private tr = Culture.getDictionary().translate;
-    private tz = TransitionService.getInstance().transitionTo;
 
     constructor(props: IRoleProps) {
         super(props);
@@ -41,9 +40,9 @@ export class Role extends Component<IRoleProps, IRoleState> {
 
     public render() {
         const add = this.access.add ?
-            <Route path="/role/add" render={this.tz(RoleAdd, { role: ["add"] })} /> : null;
+            <Route path="/role/add" render={transitionTo(RoleAdd, { role: ["add"] })} /> : null;
         const edit = this.access.edit ?
-            <Route path="/role/edit/:id" render={this.tz(RoleEdit, { role: ["edit"] })} /> : null;
+            <Route path="/role/edit/:id" render={transitionTo(RoleEdit, { role: ["edit"] })} /> : null;
 
         return (
             <div className="page role-page has-navbar">
@@ -56,7 +55,7 @@ export class Role extends Component<IRoleProps, IRoleState> {
                         <Switch>
                             {add}
                             {edit}
-                            <Route path="/role/detail/:id" render={this.tz(RoleDetail, { role: ["read"] })} />
+                            <Route path="/role/detail/:id" render={transitionTo(RoleDetail, { role: ["read"] })} />
                         </Switch>
                     </HashRouter>
                     <RoleList access={this.access} />

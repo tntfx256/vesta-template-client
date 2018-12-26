@@ -24,7 +24,7 @@
     "@vesta/culture": "^0.1.0",
     "@vesta/culture-ir": "^1.0.4",
     "@vesta/culture-us": "^1.0.4",
-    "@vesta/services": "^0.1.2",
+    "@vesta/services": "^0.1.3",
     "@vesta/theme": "^0.1.3",
     "autoprefixer": "^9.4.3",
     "core-js": "^2.6.1",

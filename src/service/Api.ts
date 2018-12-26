@@ -1,16 +1,18 @@
-import { Api, IApiOption, IRequestHeader } from "@vesta/services";
+import { Registry } from "@vesta/core";
+import { Api, IApiOption, IRequestHeader, SyncStorage } from "@vesta/services";
 import { SourceApp } from "../cmn/models/User";
-import { Config } from "./Config";
+import { appConfig } from "../config/appConfig";
+
 
 let instance: Api;
 
 export function getApi(): Api {
-    
-    const sourceApp = Config.get<SourceApp>("sourceApp");
+
+    const sourceApp = Registry.get<SourceApp>("sourceApp");
+    const { api, version } = appConfig;
 
     if (!instance) {
-        const cfg = Config.getConfig();
-        const endPoint = `${cfg.api}/api/${cfg.version.api}`;
+        const endPoint = `${api}/api/${version.api}`;
         const option: IApiOption = {
             hooks: { afterReceive, beforeSend }
         };
@@ -31,9 +33,9 @@ export function getApi(): Api {
         if (method !== "UPLOAD") {
             headers["Content-Type"] = "application/json";
         }
-        const token = this.authService.getToken();
+        const token = SyncStorage.get<string>("auth-token");
         if (token) {
-            headers[this.tokenHeaderKeyName] = token;
+            headers["X-AUTH-TOKEN"] = token;
         }
     }
 

@@ -7,8 +7,8 @@ import { RouteComponentProps } from "react-router";
 import { withTheme } from "theming";
 import { IRole } from "../../cmn/models/Role";
 import { IUser, User, UserGender } from "../../cmn/models/User";
-import { ApiService } from "../../service/getApi";
-import { AuthService } from "../../service/getAuth";
+import { getApi } from "../../service/Api";
+import { getAuth } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
 import { getFileUrl, IModelValidationMessage, validationMessage } from "../../util/Util";
 
@@ -20,8 +20,8 @@ interface IProfileProps extends RouteComponentProps<IProfileParams> {
 
 export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileProps) => {
     const tr = Culture.getDictionary().translate;
-    const api = ApiService.getInstance();
-    const auth = AuthService.getInstance();
+    const auth = getAuth();
+    const api = getApi();
     const notif = Notif.getInstance();
     const genderOptions: IFormOption[] = [
         { id: UserGender.Male, title: tr("enum_male") },
@@ -140,13 +140,13 @@ export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileP
         }
         Preloader.show();
         setErrors(null);
-        api.put<IUser>("user", userModel.getValues())
+        api.put<IUser, IResponse<IUser>>("user", userModel.getValues())
             .then((response) => {
                 if (!hasImage) {
                     Preloader.hide();
                     return updateUser(response);
                 }
-                return api.upload<IUser>(`user/file/${userModel.id}`, userImage)
+                return api.upload<IUser, IResponse<IUser>>(`user/file/${userModel.id}`, userImage)
                     .then((uplResponse) => {
                         Preloader.hide();
                         updateUser(uplResponse);

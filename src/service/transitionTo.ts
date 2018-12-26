@@ -1,7 +1,7 @@
-import { Acl, IPermissions } from "@vesta/services";
+import { IPermissions } from "@vesta/services";
 import React, { Attributes, Component, ComponentType, ReactNode } from "react";
 import { Forbidden } from "../components/root/Forbidden";
-import { getAcl } from "./getAcl";
+import { getAcl } from "./Acl";
 
 let idCounter = 1;
 let acl = getAcl();
@@ -9,11 +9,11 @@ let acl = getAcl();
 
 // tslint:disable-next-line:max-line-length
 export function transitionTo(componentClass: ComponentType | Component, permissions?: IPermissions, extraProps?: Attributes & any, children?: ReactNode[]) {
-    const id = this.idCounter++;
-    this.acl.registerPermisions(id.toString(), permissions);
+    const id = idCounter++;
+    acl.registerPermisions(id.toString(), permissions);
     extraProps = extraProps || {};
     return (props) => {
-        return this.acl.hasAccessToState(id) ?
+        return acl.hasAccessToState(id.toString()) ?
             React.createElement(componentClass as any, { ...props, ...extraProps }, children) :
             React.createElement(Forbidden, props);
     };

@@ -1,5 +1,5 @@
 import { IValidationError } from "@vesta/core";
-import { Config } from "../service/Config";
+import { appConfig } from "../config/appConfig";
 
 export interface IModelValidationMessage {
     // {fieldName: {ruleName: error message}}
@@ -46,6 +46,5 @@ export function launchLink(link: string, target: string = "_blank") {
 }
 
 export function getFileUrl(address: string) {
-    const api = Config.getConfig().api;
-    return `${api}/upl/${address || ""}`;
+    return `${appConfig.api}/upl/${address || ""}`;
 }

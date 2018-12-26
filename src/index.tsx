@@ -10,18 +10,11 @@ import React from 'react';
 import { render } from 'react-dom';
 import { ThemeProvider } from "react-jss";
 import { App } from './App';
-import { SourceApp } from "./cmn/models/User";
 import { IrVocabs } from "./cmn/vocabs/IrVocabs";
 import { UsVocabs } from "./cmn/vocabs/UsVocabs";
 import { appConfig } from "./config/appConfig";
 import { SplashPlugin } from "./plugin/SplashPlugin";
-import { Config } from "./service/Config";
 import { Log } from "./service/Log";
-
-
-// initial configurations
-Config.init(appConfig);
-Config.set("splashTimeout", 2000);
 
 // initiating locale
 Culture.register(UsLocale, UsVocabs, UsDate);
@@ -92,13 +85,13 @@ function checkScripts() {
 }
 
 function startApp() {
-    const splashTimeout = Config.get<number>("splashTimeout");
+
     const theme = createTheme({});
     render(
         <ThemeProvider theme={theme}>
             <App />
         </ThemeProvider>,
         document.getElementById("root"),
-        () => setTimeout(SplashPlugin.hide, splashTimeout),
+        () => setTimeout(SplashPlugin.hide, 1500),
     );
 }

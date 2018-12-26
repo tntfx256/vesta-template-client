@@ -1,14 +1,14 @@
 import { CrudMenu, DataTable, DataTableOperations, IColumn, IDataTableQueryOption, Navbar, PageTitle, Preloader } from "@vesta/components";
 import { Culture } from "@vesta/culture";
-import { access } from "fs";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { ILog } from "../../cmn/models/Log";
 import { IUser, SourceApp } from "../../cmn/models/User";
 import { Crud } from "../../service/Crud";
+import { getAcl } from "../../service/Acl";
 import { Notif } from "../../service/Notif";
-import { TransitionService } from "../../service/transitionTo";
+import { transitionTo } from "../../service/transitionTo";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { LogDetail } from "./log/LogDetail";
 
@@ -28,10 +28,9 @@ interface ILogProps extends IBaseComponentWithRouteProps<ILogParams> {
 }
 
 export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
-    // const access = AuthService.getInstance().getAccessList("log");
+    const access = getAcl().getAccessList("log");
     const service = Crud.getService<string>("log");
     const tr = Culture.getDictionary().translate;
-    const tz = TransitionService.getInstance().transitionTo;
     let initiated = false;
 
     const [logs, setLogs] = useState<ILog[]>([]);
@@ -58,7 +57,7 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
         {
             render: (r) => {
                 const timestamp = +(/^\d+/.exec(r)[0]);
-                return <DataTableOperations id={timestamp} onDelete={onDelete} path="log" />;
+                return <DataTableOperations access={access} id={timestamp} onDelete={onDelete} path="log" />;
             },
             title: tr("operations"),
         },
@@ -73,11 +72,11 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
             <div className="crud-wrapper">
                 <HashRouter>
                     <Switch>
-                        <Route path="/log/detail/:id" render={tz(LogDetail, { log: ["read"] })} />
+                        <Route path="/log/detail/:id" render={transitionTo(LogDetail, { log: ["read"] })} />
                     </Switch>
                 </HashRouter>
                 <div className="crud-page">
-                    <DataTable columns={columns} records={logs} queryOption={queryOption} />
+                    <DataTable columns={columns} records={logs as any} queryOption={queryOption} />
                 </div>
             </div>
         </div>
@@ -89,7 +88,7 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
         service.fetchAll(queryOption)
             .then((items) => {
                 Preloader.hide();
-                setLogs(items);
+                setLogs(items as any);
             })
             .catch((error) => {
                 Preloader.hide();

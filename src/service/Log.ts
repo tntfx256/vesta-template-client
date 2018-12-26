@@ -1,7 +1,7 @@
 import { IResponse } from "@vesta/core";
 import { ILog, LogLevel } from "../cmn/models/Log";
 import { appConfig } from "../config/appConfig";
-import { getApi } from "./getApi";
+import { getApi } from "./Api";
 
 export class Log {
 

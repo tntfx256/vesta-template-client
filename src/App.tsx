@@ -1,28 +1,27 @@
 import { isCordova } from '@vesta/core';
+import { AclPolicy } from '@vesta/services';
 import React, { FC } from 'react';
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
-import { AclPolicy } from './cmn/enum/Acl';
 import Root from './components/Root';
 import { NotFound } from './components/root/NotFound';
 import { getRoutes, IRouteItem } from './config/route';
 import { KeyboardPlugin } from './plugin/KeyboardPlugin';
 import { SplashPlugin } from './plugin/SplashPlugin';
 import { StatusbarPlugin } from './plugin/StatusbarPlugin';
-import { AuthService } from './service/getAuth';
-import { TransitionService } from './service/transitionTo';
+import { getAcl } from './service/Acl';
+import { isGuest } from './service/Auth';
+import { transitionTo } from './service/transitionTo';
 
 interface IAppProps { }
 
 export const App: FC = function (props: IAppProps) {
-  const tz = TransitionService.getInstance().transitionTo;
-  const auth = AuthService.getInstance();
   // const dispatcher = Dispatcher.getInstance();
-  const routeItems = getRoutes(!auth.getUser().id);
+  const routeItems = getRoutes(!isGuest());
   const routes = renderRoutes(routeItems, "");
 
   // initiation
-  AuthService.getInstance().setDefaultPolicy(AclPolicy.Deny);
+  getAcl().setDefaultPolicy(AclPolicy.Allow);
   // prevent splash from hiding after timeout; it must be hidden manually
   SplashPlugin.show();
   if (isCordova()) {
@@ -57,7 +56,7 @@ export const App: FC = function (props: IAppProps) {
         const basePath = prefix ? `/${prefix}` : "";
         links.push((
           <Route path={`${basePath}/${item.link}`} key={i} exact={item.exact}
-            render={tz(item.component, item.permissions)} />
+            render={transitionTo(item.component, item.permissions)} />
         ));
       }
       if (item.children) {

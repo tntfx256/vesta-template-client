@@ -1,10 +1,11 @@
-import { Alert, FormWrapper, Navbar, Preloader, TextInput, MessageType, Button } from "@vesta/components";
+import { Alert, Button, FormWrapper, MessageType, Navbar, Preloader, TextInput } from "@vesta/components";
+import { IResponse } from "@vesta/core";
 import { IValidationError } from "@vesta/core/Validator";
 import { Culture } from "@vesta/culture";
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
-import { ApiService } from "../../service/getApi";
+import { getApi } from "../../service/Api";
 import { Notif } from "../../service/Notif";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
@@ -18,7 +19,7 @@ interface IForgetProps extends IBaseComponentWithRouteProps<IForgetParams> {
 export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
     const tr = Culture.getDictionary().translate;
     const notif = Notif.getInstance();
-    const api = ApiService.getInstance();
+    const api = getApi();
     const formErrorsMessages: IModelValidationMessage = {
         mobile: {
             invalid: tr("err_invalid_phone"),
@@ -71,7 +72,7 @@ export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
         }
         Preloader.show();
         setErrors(null);
-        api.post<IUser>("account/forget", { mobile })
+        api.post<IUser, IResponse<IUser>>("account/forget", { mobile })
             .then((response) => {
                 Preloader.hide();
                 notif.success(tr("info_forget"));
