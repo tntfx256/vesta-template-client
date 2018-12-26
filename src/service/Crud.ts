@@ -1,27 +1,27 @@
 import { IDataTableQueryOption, Preloader } from "@vesta/components";
-import { Err, IResponse, Model, ValidationError } from "@vesta/core";
+import { Err, IRequest, IResponse, Model, ValidationError } from "@vesta/core";
 import { Culture } from "@vesta/culture";
-import { ApiService } from "./ApiService";
-import { NotificationService } from "./NotificationService";
+import { getApi } from "./getApi";
+import { Notif } from "./Notif";
 
-export class ModelService<T> {
+export class Crud<T> {
 
-    public static getService<T>(modelName, edge?: string): ModelService<T> {
-        if (!(modelName in ModelService.instances)) {
-            ModelService.instances[modelName] = new this(edge || modelName);
+    public static getService<T>(modelName, edge?: string): Crud<T> {
+        if (!(modelName in Crud.instances)) {
+            Crud.instances[modelName] = new this(edge || modelName);
         }
-        return ModelService.instances[modelName];
+        return Crud.instances[modelName];
     }
 
-    private static instances: { [name: string]: ModelService<any> } = {};
+    private static instances: { [name: string]: Crud<any> } = {};
     protected tr = Culture.getDictionary().translate;
-    protected api = ApiService.getInstance();
-    protected notif = NotificationService.getInstance();
+    protected api = getApi();
+    protected notif = Notif.getInstance();
 
     protected constructor(protected edge: string) { }
 
     public fetch(id: number): Promise<T> {
-        return this.api.get<T>(`${this.edge}/${id}`)
+        return this.api.get<T, IResponse<T>>(`${this.edge}/${id}`)
             .then((result) => result.items[0])
             .catch((error) => {
                 this.handleError(error);
@@ -30,7 +30,7 @@ export class ModelService<T> {
     }
 
     public fetchAll(query?: IDataTableQueryOption<T>): Promise<T[]> {
-        return this.api.get<T>(this.edge, query)
+        return this.api.get<IRequest<T>, IResponse<T>>(this.edge, query)
             .then((response) => response.items)
             .catch((error) => {
                 this.handleError(error);
@@ -39,7 +39,7 @@ export class ModelService<T> {
     }
 
     public fetchCount(query?: IDataTableQueryOption<T>): Promise<number> {
-        return this.api.get<T>(`${this.edge}/count`, query)
+        return this.api.get<IRequest<T>, IResponse<T>>(`${this.edge}/count`, query)
             .then((response) => response.total)
             .catch((error) => {
                 this.handleError(error);
@@ -48,11 +48,11 @@ export class ModelService<T> {
     }
 
     public insert(data: T, files?: T): Promise<T> {
-        return this.api.post<T>(this.edge, data)
+        return this.api.post<T, IResponse<T>>(this.edge, data)
             .then((response) => {
                 if (files) {
                     const id = (response.items[0] as any).id;
-                    return this.api.upload<T>(`${this.edge}/file/${id}`, files);
+                    return this.api.upload<T, IResponse<T>>(`${this.edge}/file/${id}`, files);
                 }
                 return response;
             })
@@ -64,7 +64,7 @@ export class ModelService<T> {
     }
 
     public remove(id: number): Promise<boolean> {
-        return this.api.del<IResponse<number>>(`${this.edge}/${id}`)
+        return this.api.delete<IRequest<T>, IResponse<number>>(`${this.edge}/${id}`)
             .then((response) => {
                 this.notif.success(this.tr("info_delete_record", response.items[0]));
                 return true;
@@ -103,11 +103,11 @@ export class ModelService<T> {
     }
 
     public update(data: T, files?: T): Promise<T> {
-        return this.api.put<T>(this.edge, data)
+        return this.api.put<T, IResponse<T>>(this.edge, data)
             .then((response) => {
                 if (files) {
                     const id = (response.items[0] as any).id;
-                    return this.api.upload<T>(`${this.edge}/file/${id}`, files);
+                    return this.api.upload<T, IResponse<T>>(`${this.edge}/file/${id}`, files);
                 }
                 return response;
             })

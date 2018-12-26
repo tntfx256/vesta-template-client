@@ -3,8 +3,8 @@ import { Culture } from "@vesta/culture";
 import React, { Component } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
-import { AuthService } from "../../service/AuthService";
-import { TransitionService } from "../../service/TransitionService";
+import { AuthService } from "../../service/getAuth";
+import { TransitionService } from "../../service/transitionTo";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { UserAdd } from "./user/UserAdd";
 import { UserDetail } from "./user/UserDetail";
@@ -23,7 +23,7 @@ interface IUserState {
 export class User extends Component<IUserProps, IUserState> {
 
     private access = AuthService.getInstance().getAccessList("user");;
-    private tz = TransitionService.getInstance().willTransitionTo;
+    private tz = TransitionService.getInstance().transitionTo;
     private tr = Culture.getDictionary().translate;
 
 

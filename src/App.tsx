@@ -9,16 +9,16 @@ import { getRoutes, IRouteItem } from './config/route';
 import { KeyboardPlugin } from './plugin/KeyboardPlugin';
 import { SplashPlugin } from './plugin/SplashPlugin';
 import { StatusbarPlugin } from './plugin/StatusbarPlugin';
-import { AuthService } from './service/AuthService';
-import { TransitionService } from './service/TransitionService';
+import { AuthService } from './service/getAuth';
+import { TransitionService } from './service/transitionTo';
 
 interface IAppProps { }
 
 export const App: FC = function (props: IAppProps) {
-  const tz = TransitionService.getInstance().willTransitionTo;
+  const tz = TransitionService.getInstance().transitionTo;
   const auth = AuthService.getInstance();
   // const dispatcher = Dispatcher.getInstance();
-  const routeItems = getRoutes(!auth.isGuest());
+  const routeItems = getRoutes(!auth.getUser().id);
   const routes = renderRoutes(routeItems, "");
 
   // initiation

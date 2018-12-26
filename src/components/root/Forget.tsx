@@ -4,8 +4,8 @@ import { Culture } from "@vesta/culture";
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
-import { ApiService } from "../../service/ApiService";
-import { NotificationService } from "../../service/NotificationService";
+import { ApiService } from "../../service/getApi";
+import { Notif } from "../../service/Notif";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 
@@ -17,7 +17,7 @@ interface IForgetProps extends IBaseComponentWithRouteProps<IForgetParams> {
 
 export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
     const tr = Culture.getDictionary().translate;
-    const notif = NotificationService.getInstance();
+    const notif = Notif.getInstance();
     const api = ApiService.getInstance();
     const formErrorsMessages: IModelValidationMessage = {
         mobile: {

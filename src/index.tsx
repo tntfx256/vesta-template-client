@@ -16,12 +16,11 @@ import { UsVocabs } from "./cmn/vocabs/UsVocabs";
 import { appConfig } from "./config/appConfig";
 import { SplashPlugin } from "./plugin/SplashPlugin";
 import { Config } from "./service/Config";
-import { LogService } from "./service/LogService";
+import { Log } from "./service/Log";
 
 
 // initial configurations
 Config.init(appConfig);
-Config.set("sourceApp", SourceApp.EndUser);
 Config.set("splashTimeout", 2000);
 
 // initiating locale
@@ -43,7 +42,7 @@ function loadLocale(code?: string, reload?: boolean): ILocale {
     try {
         locale = Culture.getLocale(selectedCode);
     } catch (e) {
-        LogService.error(e.message, "loadLocale", "app.ts");
+        Log.error(e.message, "loadLocale", "app.ts");
     }
     if (!locale) {
         locale = Culture.getLocale();

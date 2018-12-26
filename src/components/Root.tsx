@@ -7,10 +7,10 @@ import { IUser } from "../cmn/models/User";
 import { IRouteItem } from "../config/route";
 import { IAppState } from "../misc/AppState";
 import { appStore } from "../misc/appStore";
-import { ApiService } from "../service/ApiService";
-import { AuthService } from "../service/AuthService";
+import { ApiService } from "../service/getApi";
+import { AuthService } from "../service/getAuth";
 import { Config } from "../service/Config";
-import { LogService } from "../service/LogService";
+import { Log } from "../service/Log";
 import { StorageService } from "../service/StorageService";
 import { SidenavContent } from "./general/SidenavContent";
 
@@ -56,7 +56,7 @@ class Root extends Component<IRootProps, IRootState> {
         // updating user information from API
         this.api.get<IUser>("me")
             .then((response) => this.auth.login(response.items[0]))
-            .catch((err) => LogService.error(err, "componentDidMount", "Root"));
+            .catch((err) => Log.error(err, "componentDidMount", "Root"));
         // redux
         appStore.subscribe(() => {
             this.setState({ ...appStore.getState() });

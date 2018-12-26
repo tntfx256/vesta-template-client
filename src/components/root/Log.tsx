@@ -6,9 +6,9 @@ import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { ILog } from "../../cmn/models/Log";
 import { IUser, SourceApp } from "../../cmn/models/User";
-import { ModelService } from "../../service/ModelService";
-import { NotificationService } from "../../service/NotificationService";
-import { TransitionService } from "../../service/TransitionService";
+import { Crud } from "../../service/Crud";
+import { Notif } from "../../service/Notif";
+import { TransitionService } from "../../service/transitionTo";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { LogDetail } from "./log/LogDetail";
 
@@ -29,9 +29,9 @@ interface ILogProps extends IBaseComponentWithRouteProps<ILogParams> {
 
 export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
     // const access = AuthService.getInstance().getAccessList("log");
-    const service = ModelService.getService<string>("log");
+    const service = Crud.getService<string>("log");
     const tr = Culture.getDictionary().translate;
-    const tz = TransitionService.getInstance().willTransitionTo;
+    const tz = TransitionService.getInstance().transitionTo;
     let initiated = false;
 
     const [logs, setLogs] = useState<ILog[]>([]);
@@ -93,7 +93,7 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
             })
             .catch((error) => {
                 Preloader.hide();
-                NotificationService.getInstance().error(error.message);
+                Notif.getInstance().error(error.message);
             });
     }
 

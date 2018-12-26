@@ -1,7 +1,7 @@
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IUser } from "../../../cmn/models/User";
-import { ModelService } from "../../../service/ModelService";
+import { Crud } from "../../../service/Crud";
 import { IBaseComponentWithRouteProps } from "../../BaseComponent";
 import { ILogger } from "../Log";
 
@@ -14,7 +14,7 @@ interface ILogDetailProps extends IBaseComponentWithRouteProps<ILogDetailParams>
 }
 
 export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps) => {
-    const service = ModelService.getService<string>("log");
+    const service = Crud.getService<string>("log");
 
     let initiated = false;
     const [log, setLog] = useState("");

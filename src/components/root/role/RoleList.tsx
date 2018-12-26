@@ -2,9 +2,9 @@ import { DataTable, DataTableOperations, IColumn, IDataTableQueryOption } from "
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IRole } from "../../../cmn/models/Role";
-import { AuthService, IAccess } from "../../../service/AuthService";
-import { ModelService } from "../../../service/ModelService";
-import { NotificationService } from "../../../service/NotificationService";
+import { AuthService, IAccess } from "../../../service/getAuth";
+import { Crud } from "../../../service/Crud";
+import { Notif } from "../../../service/Notif";
 import { IBaseComponentProps } from "../../BaseComponent";
 
 interface IRoleListProps extends IBaseComponentProps {
@@ -13,7 +13,7 @@ interface IRoleListProps extends IBaseComponentProps {
 
 export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) => {
     const access = AuthService.getInstance().getAccessList("role");
-    const service = ModelService.getService<IRole>("acl/role");
+    const service = Crud.getService<IRole>("acl/role");
     const tr = Culture.getDictionary().translate;
     let initialized = false;
 
@@ -55,11 +55,11 @@ export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) =
     function onDelete(id) {
         service.remove(id)
             .then((response) => {
-                NotificationService.getInstance().success(tr("info_delete_record"));
+                Notif.getInstance().success(tr("info_delete_record"));
                 fetchAll(queryOption);
             })
             .catch((error) => {
-                NotificationService.getInstance().error(tr(error.message));
+                Notif.getInstance().error(tr(error.message));
             });
     }
 }

@@ -5,7 +5,7 @@ import React, { ComponentType, useEffect, useState } from "react";
 import { Status } from "../../../cmn/enum/Status";
 import { IRole } from "../../../cmn/models/Role";
 import { IUser, User, UserGender, UserType } from "../../../cmn/models/User";
-import { ModelService } from "../../../service/ModelService";
+import { Crud } from "../../../service/Crud";
 import { getFileUrl, validationMessage } from "../../../util/Util";
 import { IBaseComponentProps } from "../../BaseComponent";
 
@@ -16,7 +16,7 @@ interface IUserFormProps extends IBaseComponentProps {
 export const UserForm: ComponentType<IUserFormProps> = (props: IUserFormProps) => {
 
     const tr = Culture.getDictionary().translate;
-    const service = ModelService.getService<IUser>("user");
+    const service = Crud.getService<IUser>("user");
     const genderOptions: IFormOption[] = [
         { id: UserGender.Male, title: tr("enum_male") },
         { id: UserGender.Female, title: tr("enum_female") }];

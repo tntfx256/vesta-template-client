@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
-import { IAccess, AuthService } from "../../service/AuthService";
+import { IAccess, AuthService } from "../../service/getAuth";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { RoleAdd } from "./role/RoleAdd";
 import { RoleDetail } from "./role/RoleDetail";
@@ -9,7 +9,7 @@ import { RoleEdit } from "./role/RoleEdit";
 import { RoleList } from "./role/RoleList";
 import { CrudMenu, PageTitle, Navbar } from "@vesta/components";
 import { Culture } from "@vesta/culture";
-import { TransitionService } from "../../service/TransitionService";
+import { TransitionService } from "../../service/transitionTo";
 
 export interface IAction {
     action?: string;
@@ -32,7 +32,7 @@ interface IRoleState {
 export class Role extends Component<IRoleProps, IRoleState> {
     private access = AuthService.getInstance().getAccessList("role");
     private tr = Culture.getDictionary().translate;
-    private tz = TransitionService.getInstance().willTransitionTo;
+    private tz = TransitionService.getInstance().transitionTo;
 
     constructor(props: IRoleProps) {
         super(props);

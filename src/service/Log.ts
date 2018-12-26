@@ -1,21 +1,22 @@
-import { ILog, Log, LogLevel } from "../cmn/models/Log";
-import { ApiService } from "./ApiService";
+import { IResponse } from "@vesta/core";
+import { ILog, LogLevel } from "../cmn/models/Log";
 import { appConfig } from "../config/appConfig";
+import { getApi } from "./getApi";
 
-export class LogService {
+export class Log {
 
     public static info(info: ILog | string, method?: string, file?: string) {
-        LogService.log("log", method, file, info);
+        Log.log("log", method, file, info);
     }
 
     public static warn(warning: ILog | string, method?: string, file?: string) {
-        LogService.log("warn", method, file, warning);
-        LogService.save(LogLevel.Warn, warning, method, file);
+        Log.log("warn", method, file, warning);
+        Log.save(LogLevel.Warn, warning, method, file);
     }
 
     public static error(error: ILog | string, method?: string, file?: string) {
-        LogService.log("error", method, file, error);
-        LogService.save(LogLevel.Error, error, method, file);
+        Log.log("error", method, file, error);
+        Log.save(LogLevel.Error, error, method, file);
     }
 
     private static log(logType: string, method: string, file: string, log: any) {
@@ -25,9 +26,8 @@ export class LogService {
     private static save(level: LogLevel, log: ILog | string, method?: string, file?: string) {
         if (appConfig.env !== "production") { return; }
         const message = "string" === typeof log ? log : log.message;
-        const logModel = new Log({ level, message, method, file });
         // saving log to api server
-        ApiService.getInstance().post<ILog>("log", logModel.getValues())
+        getApi().post<ILog, IResponse<ILog>>("log", { level, message, method, file })
             // tslint:disable-next-line:no-console
             .catch((error) => console.error("[LogService::save]", error));
     }

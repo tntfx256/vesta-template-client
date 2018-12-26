@@ -2,8 +2,8 @@ import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IPermission } from "../../../cmn/models/Permission";
 import { IRole } from "../../../cmn/models/Role";
-import { IPermissionCollection } from "../../../service/AuthService";
-import { ModelService } from "../../../service/ModelService";
+import { IPermissionCollection } from "../../../service/getAuth";
+import { Crud } from "../../../service/Crud";
 import { IBaseComponentWithRouteProps } from "../../BaseComponent";
 
 interface IRoleDetailParams {
@@ -14,7 +14,7 @@ interface IRoleDetailProps extends IBaseComponentWithRouteProps<IRoleDetailParam
 }
 
 export const RoleDetail: ComponentType<IRoleDetailProps> = (props: IRoleDetailProps) => {
-    const service = ModelService.getService<IRole>("role", "acl/role");
+    const service = Crud.getService<IRole>("role", "acl/role");
     const tr = Culture.getDictionary().translate;
     let initiated = false;
 

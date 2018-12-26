@@ -5,7 +5,7 @@ import React, { ComponentType, useEffect, useState } from "react";
 import { Status } from "../../../cmn/enum/Status";
 import { IPermission } from "../../../cmn/models/Permission";
 import { IRole, Role } from "../../../cmn/models/Role";
-import { ModelService } from "../../../service/ModelService";
+import { Crud } from "../../../service/Crud";
 import { validationMessage } from "../../../util/Util";
 import { IBaseComponentProps } from "../../BaseComponent";
 import { IAction } from "../Role";
@@ -21,8 +21,8 @@ interface IRoleFormProps extends IBaseComponentProps {
 
 export const RoleForm: ComponentType<IRoleFormProps> = (props: IRoleFormProps) => {
     const tr = Culture.getDictionary().translate;
-    const roleService = ModelService.getService<IRole>("acl/role");
-    const permissionService = ModelService.getService<IPermission>("acl/permission");
+    const roleService = Crud.getService<IRole>("acl/role");
+    const permissionService = Crud.getService<IPermission>("acl/permission");
     let initiated = false;
     const statusOptions: IFormOption[] = [
         { id: Status.Active, title: tr("enum_active") },

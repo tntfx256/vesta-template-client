@@ -7,16 +7,16 @@ export interface IToastData {
     type: MessageType;
 }
 
-export class NotificationService {
+export class Notif {
 
-    public static getInstance(dispatcher: Dispatcher = Dispatcher.getInstance()): NotificationService {
-        if (!NotificationService.instance) {
-            NotificationService.instance = new NotificationService(dispatcher);
+    public static getInstance(dispatcher: Dispatcher = Dispatcher.getInstance()): Notif {
+        if (!Notif.instance) {
+            Notif.instance = new Notif(dispatcher);
         }
-        return NotificationService.instance;
+        return Notif.instance;
     }
 
-    private static instance: NotificationService;
+    private static instance: Notif;
     private tr = Culture.getDictionary().translate;
 
     private constructor(private dispatcher: Dispatcher) {

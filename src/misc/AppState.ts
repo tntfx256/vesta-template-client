@@ -1,6 +1,6 @@
 import { MessageType } from "@vesta/components";
 import { IUser } from "../cmn/models/User";
-import { AuthService } from "../service/AuthService";
+import { AuthService } from "../service/getAuth";
 
 export interface IMessage {
     message: string;

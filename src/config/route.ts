@@ -6,7 +6,7 @@ import { Login } from "../components/root/Login";
 import { Logout } from "../components/root/Logout";
 import { Profile } from "../components/root/Profile";
 import { Register } from "../components/root/Register";
-import { IPermissionCollection } from "../service/AuthService";
+import { IPermissionCollection } from "../service/getAuth";
 
 export interface IRouteItem {
     abstract?: boolean;

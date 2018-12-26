@@ -5,8 +5,8 @@ import React, { ComponentType, useState } from "react";
 import { Link } from "react-router-dom";
 import { withTheme } from "theming";
 import { IUser, User } from "../../cmn/models/User";
-import { ApiService } from "../../service/ApiService";
-import { NotificationService } from "../../service/NotificationService";
+import { ApiService } from "../../service/getApi";
+import { Notif } from "../../service/Notif";
 import { getFileUrl, IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 
@@ -20,7 +20,7 @@ interface IRegisterProps extends IBaseComponentWithRouteProps<IRegisterParams> {
 export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegisterProps) => {
     const tr = Culture.getDictionary().translate;
     const api = ApiService.getInstance();
-    const notif = NotificationService.getInstance()
+    const notif = Notif.getInstance()
     const formErrorsMessages: IModelValidationMessage = {
         password: {
             assert: tr("err_max_length", 16),

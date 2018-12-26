@@ -1,8 +1,8 @@
 import { FC, useEffect } from "react";
 import { IUser } from "../../cmn/models/User";
-import { ApiService } from "../../service/ApiService";
-import { AuthService } from "../../service/AuthService";
-import { LogService } from "../../service/LogService";
+import { ApiService } from "../../service/getApi";
+import { AuthService } from "../../service/getAuth";
+import { Log } from "../../service/Log";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { Preloader } from "@vesta/components";
 
@@ -27,7 +27,7 @@ export const Logout: FC<ILogoutProps> = function (props: ILogoutProps) {
                 onAfterLogout(response.items[0]);
             })
             .catch((error) => {
-                LogService.error(error, "componentDidMount", "Logout");
+                Log.error(error, "componentDidMount", "Logout");
                 onAfterLogout({});
             });
         return Preloader.hide;

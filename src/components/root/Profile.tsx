@@ -7,9 +7,9 @@ import { RouteComponentProps } from "react-router";
 import { withTheme } from "theming";
 import { IRole } from "../../cmn/models/Role";
 import { IUser, User, UserGender } from "../../cmn/models/User";
-import { ApiService } from "../../service/ApiService";
-import { AuthService } from "../../service/AuthService";
-import { NotificationService } from "../../service/NotificationService";
+import { ApiService } from "../../service/getApi";
+import { AuthService } from "../../service/getAuth";
+import { Notif } from "../../service/Notif";
 import { getFileUrl, IModelValidationMessage, validationMessage } from "../../util/Util";
 
 interface IProfileParams {
@@ -22,7 +22,7 @@ export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileP
     const tr = Culture.getDictionary().translate;
     const api = ApiService.getInstance();
     const auth = AuthService.getInstance();
-    const notif = NotificationService.getInstance();
+    const notif = Notif.getInstance();
     const genderOptions: IFormOption[] = [
         { id: UserGender.Male, title: tr("enum_male") },
         { id: UserGender.Female, title: tr("enum_female") }];

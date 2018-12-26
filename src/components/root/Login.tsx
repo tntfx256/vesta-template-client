@@ -5,9 +5,9 @@ import React, { ComponentType, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { withTheme } from "theming";
 import { IUser, User } from "../../cmn/models/User";
-import { ApiService } from "../../service/ApiService";
-import { AuthService } from "../../service/AuthService";
-import { NotificationService } from "../../service/NotificationService";
+import { ApiService } from "../../service/getApi";
+import { AuthService } from "../../service/getAuth";
+import { Notif } from "../../service/Notif";
 import { IModelValidationMessage, validationMessage } from "../../util/Util";
 import { IBaseComponentWithRouteProps } from "../BaseComponent";
 
@@ -22,7 +22,7 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
     const tr = Culture.getDictionary().translate;
     const api = ApiService.getInstance();
     const auth = AuthService.getInstance();
-    const notif = NotificationService.getInstance();
+    const notif = Notif.getInstance();
     const formErrorsMessages: IModelValidationMessage = {
         password: {
             maxLength: tr("err_max_length", 16),

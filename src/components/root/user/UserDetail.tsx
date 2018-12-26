@@ -1,6 +1,6 @@
 import React, { ComponentType, useEffect, useState } from "react";
 import { IUser } from "../../../cmn/models/User";
-import { ModelService } from "../../../service/ModelService";
+import { Crud } from "../../../service/Crud";
 import { getFileUrl } from "../../../util/Util";
 import { IBaseComponentWithRouteProps } from "../../BaseComponent";
 import { Culture } from "@vesta/culture";
@@ -14,7 +14,7 @@ interface IUserDetailProps extends IBaseComponentWithRouteProps<IUserDetailParam
 
 export const UserDetail: ComponentType<IUserDetailProps> = (props: IUserDetailProps) => {
 
-    const service = ModelService.getService<IUser>("user");
+    const service = Crud.getService<IUser>("user");
     const tr = Culture.getDictionary().translate;
     let initiated = false;
     const userTypeOptions = {
