@@ -1,6 +1,7 @@
 const { join, parse, normalize } = require("path");
 const { readFileSync, mkdirSync, writeFileSync } = require("fs");
 const rimraf = require("rimraf");
+const webpack = require("webpack");
 
 const root = normalize(join(__dirname, "../.."));
 
@@ -84,10 +85,14 @@ module.exports = {
             path: `${dir.build}/${target}/js`
         };
         wpConfig.resolve = {
-            extensions: [".ts", ".tsx", ".js", ".scss"]
+            extensions: [".ts", ".tsx", ".js"]
         };
         wpConfig.module = {
             rules: [{
+                    test: /\.tsx?$/,
+                    use: ["ts-loader"]
+                },
+                {
                     test: /\.js$/,
                     loader: `babel-loader`,
                     exclude: /node_modules\/(?!(@vesta)\/).*/,
@@ -96,17 +101,15 @@ module.exports = {
                             ["@babel/env", { "modules": false }]
                         ]
                     }
-                },
-                {
-                    test: /\.tsx?$/,
-                    use: ["ts-loader"]
-                },
+                }
             ]
         };
-        wpConfig.plugins = [];
-        if (setting.production) {
-            wpConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-        }
+        wpConfig.plugins = [
+            new webpack.ProvidePlugin({
+                "__assign": ["tslib", "__assign"],
+                "__extends": ["tslib", "__extends"],
+            }),
+        ];
         wpConfig.optimization = {
             minimize: false,
             splitChunks: {

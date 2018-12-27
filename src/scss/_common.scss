@@ -10,6 +10,7 @@
 @import "../components/BaseComponent";
 @import "../components/Root";
 
+@import '../components/root/ErrorBoundary';
 @import '../components/root/Forbidden';
 @import '../components/root/Forget';
 @import '../components/root/Home';

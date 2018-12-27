@@ -1,7 +1,6 @@
 {
     "extends": [
-        "tslint:recommended",
-        "tslint-react"
+        "tslint:recommended"
     ],
     "rules": {
         "no-empty-interface": false,

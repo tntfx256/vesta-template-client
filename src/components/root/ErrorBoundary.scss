@@ -1,0 +1,16 @@
+.error-boundary {
+    text-align: startØ;
+
+    .error-message {
+        margin: 40px 0;
+        color: $color-error;
+    }
+
+    Ø .error-stack {
+        padding: 50px 5vw;
+
+        li {
+            margin: 15px;
+        }
+    }
+}

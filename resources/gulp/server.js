@@ -1,5 +1,5 @@
 const { copyFileSync } = require("fs-extra");
-var browserSync = require('browser-sync').create();
+var browserSync = require('browser-sync').create("vesta");
 
 module.exports = function(setting) {
     const dir = setting.dir;

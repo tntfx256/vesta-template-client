@@ -3,7 +3,6 @@ import { IResponse, IValidationError } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { withTheme } from "theming";
 import { IUser, User } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { getAuth, isGuest } from "../../service/Auth";
@@ -18,7 +17,7 @@ interface ILoginParams {
 interface ILoginProps extends IBaseComponentWithRouteProps<ILoginParams> {
 }
 
-export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) => {
+export const Login: ComponentType<ILoginProps> = (props: ILoginProps) => {
     const tr = Culture.getDictionary().translate;
     const api = getApi();
     const auth = getAuth();
@@ -43,7 +42,6 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
 
     useEffect(() => {
         if (!isGuest()) {
-            // if it's a user logout first
             props.history.push("/logout");
         }
     })
@@ -58,7 +56,7 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
                     <img src="images/icons/144x144.png" alt="Vesta Logo" />
                 </div>
             </div>
-            <FormWrapper name="loginForm" onSubmit={onSubmit}>
+            <FormWrapper name={"loginForm"} onSubmit={onSubmit}>
                 {loginErr}
                 <TextInput name="username" label={tr("fld_username")} value={user.username}
                     error={errors.username} onChange={onChange} />
@@ -103,4 +101,4 @@ export const Login: ComponentType<ILoginProps> = withTheme((props: ILoginProps) 
                 notif.error(error.message);
             });
     }
-});
+};

@@ -13,7 +13,7 @@ Object.keys(targets).forEach(target => {
     });
 });
 
-createTasks(...loadTasks(["asset", "client", "sass", "server", "model"]));
+createTasks(...loadTasks(["asset", "server", "client", "sass", "model"]));
 
 function loadTasks(modules) {
     let tasks = [];
@@ -40,7 +40,7 @@ function createTasks(tasks, watches) {
         }
     });
 
-    function runWatches(cb) {
+    function runWatches() {
         for (let i = 0, il = watches.length; i < il; ++i) {
             watches[i]();
         }

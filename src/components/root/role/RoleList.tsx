@@ -4,7 +4,6 @@ import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IRole } from "../../../cmn/models/Role";
 import { Crud } from "../../../service/Crud";
-import { getAcl } from "../../../service/Acl";
 import { Notif } from "../../../service/Notif";
 import { IBaseComponentProps } from "../../BaseComponent";
 
@@ -13,7 +12,6 @@ interface IRoleListProps extends IBaseComponentProps {
 }
 
 export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) => {
-    const access = getAcl().getAccessList("role");
     const service = Crud.getService<IRole>("acl/role");
     const tr = Culture.getDictionary().translate;
     let initialized = false;
@@ -34,7 +32,7 @@ export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) =
         { name: "name", title: tr("fld_name") },
         { name: "status", title: tr("fld_status"), render: (r) => tr(statusOptions[r.status]) },
         {
-            render: (r) => <DataTableOperations id={r.id} access={access} onDelete={onDelete} path="role" />,
+            render: (r) => <DataTableOperations id={r.id} access={props.access} onDelete={onDelete} path="role" />,
             title: tr("operations"),
         },
     ];

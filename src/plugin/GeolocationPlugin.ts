@@ -96,7 +96,7 @@ export class GeolocationPlugin {
                     positionOptions.enableHighAccuracy = false;
                 } else {
                     // checking app activity
-                    if (SyncStorage.get<boolean>("isAppInBackground")) {
+                    if (SyncStorage.get<boolean>("inBackground")) {
                         // super extend timeout if app in background
                         // console.log("app in bg; extending timeout even more");
                         positionOptions.timeout = Math.floor(3 * positionOptions.timeout / 2);

@@ -13,7 +13,6 @@ interface IUserListProps extends IBaseComponentProps {
 
 export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) => {
 
-    const access = getAcl().getAccessList("user");
     const tr = Culture.getDictionary().translate;
     const userService = Crud.getService<IUser>("user");
     let initiated = false;
@@ -28,8 +27,6 @@ export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) =
     });
 
     const statusOptions = { 1: tr("enum_active"), 0: tr("enum_inactive") };
-    // prevent deleting user
-    delete access.del;
     const columns: Array<IColumn<IUser>> = [
         { name: "id", title: tr("fld_id") },
         { name: "username", title: tr("fld_username") },
@@ -38,7 +35,7 @@ export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) =
         { name: "mobile", title: tr("fld_mobile") },
         { name: "status", title: tr("fld_status"), render: (r) => tr(statusOptions[r.status]) },
         {
-            render: (r) => <DataTableOperations id={r.id} path="user" access={access} onDelete={onDelete} />,
+            render: (r) => <DataTableOperations id={r.id} path="user" access={props.access} onDelete={onDelete} />,
             title: tr("operations"),
         },
     ];

@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const { watch, parallel } = require("gulp");
 const { copyFileSync } = require("fs-extra");
 const { readdirSync, statSync } = require("fs");
+var browserSync = require('browser-sync').get("vesta");
 
 module.exports = function(setting) {
     const dir = setting.dir;
@@ -12,7 +13,7 @@ module.exports = function(setting) {
         let timestamp = Date.now();
         const files = getFilesList(`${dir.build}/${target}`, "").join('","');
         setting.findInFileAndReplace(`${dir.public}/service-worker.js`, /__TIMESTAMP__/g, timestamp, `${dir.build}/${target}`);
-        setting.findInFileAndReplace(`${dir.build}/${target}/service-worker.js`, "__FILES__", files, `${dir.build}/${target}`);
+        setting.findInFileAndReplace(`${dir.build}/${target}/service-worker.js`, "__FILES__", `"${files}"`, `${dir.build}/${target}`);
         return Promise.resolve();
     }
 
@@ -22,18 +23,14 @@ module.exports = function(setting) {
             copyFileSync(`${dir.resource}/gitignore/variantConfig.ts`, `${dir.src}/app/config`);
         }
         wpConfig.entry = { app: `${dir.src}/index` };
-        return new Promise((resolve, reject) => {
-            webpack(wpConfig).run((err, stats) => {
-                if (err) {
-                    return reject(err);
-                }
-                const info = stats.toJson();
-                if (stats.hasErrors()) {
-                    process.stderr.write(info.errors.join("\n\n"));
-                }
-                resolve(true);
-            });
+
+        webpack(wpConfig).run((err, stats) => {
+            const info = stats.toJson();
+            if (info.errors.length) {
+                showErrors(info.errors);
+            }
         });
+        return Promise.resolve();
     }
 
     function watches() {
@@ -54,6 +51,12 @@ module.exports = function(setting) {
             }
         }
         return files;
+    }
+
+    function showErrors(errors) {
+        for (const error of errors) {
+            console.error(error);
+        }
     }
 
     return {
