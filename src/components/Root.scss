@@ -1,1 +1,69 @@
+$page-transition-enter-duration: $transition-duration-default;
+$page-transition-leave-duration: floor(2 * $page-transition-enter-duration / 3);
+$page-transition-effect: $transition-effect-default;
+$page-center-form-padding: 30px 30px 15px 30px;
+$page-padding: 15px;
+
 .root-component {}
+
+.page {
+    margin: auto;
+    max-width: $page-max-width;
+    padding: $page-padding;
+    position: relative;
+
+    &.has-navbar {
+        padding-top: $appbar-height;
+    }
+}
+
+.page-logo-form {
+    $logo-img-size: 25vh;
+    $logo-border-size: floor($logo-img-size / 10);
+    $logo-wrapper-size: $logo-img-size + (2 * $logo-border-size);
+
+    .logo-wrapper {
+        border: $logo-border-size solid transparentize($white, .5);
+        border-radius: 50%;
+        height: $logo-wrapper-size;
+        margin: 5px auto 30px auto;
+        overflow: hidden;
+        width: $logo-wrapper-size;
+    }
+
+    .logo-container {
+        align-items: center;
+        border: $logo-border-size solid transparentize($white, .3);
+        border-radius: 50%;
+        display: flex;
+        height: $logo-img-size;
+        justify-content: center;
+        overflow: hidden;
+        width: $logo-img-size;
+
+        img {
+            height: 100%;
+            width: auto;
+        }
+    }
+
+    .form-wrapper {
+        background: transparentize($white, 0);
+        border-radius: $border-radius;
+        margin: auto;
+        max-width: $layout-medium-min;
+        padding: $page-center-form-padding;
+        // width: 90%;
+    }
+
+    .btn-group {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .btn {
+        height: $element-height-large;
+        width: 40%;
+    }
+}

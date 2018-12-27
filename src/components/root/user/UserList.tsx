@@ -1,11 +1,9 @@
-import { DataTable, DataTableOperations, IColumn, IDataTableQueryOption } from "@vesta/components";
+import { DataTable, DataTableOperations, IBaseComponentProps, IColumn, IDataTableQueryOption } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IUser } from "../../../cmn/models/User";
-import { getAcl } from "../../../service/Acl";
 import { Crud } from "../../../service/Crud";
-import { IBaseComponentProps } from "../../BaseComponent";
 
 interface IUserListProps extends IBaseComponentProps {
     access: IAccess;
@@ -39,6 +37,7 @@ export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) =
             title: tr("operations"),
         },
     ];
+
     return (
         <div className="crud-page">
             <DataTable queryOption={queryOption} columns={columns} records={users}

@@ -2,7 +2,6 @@ import { IValidationError } from "@vesta/core";
 import { appConfig } from "../config/appConfig";
 
 export interface IModelValidationMessage {
-    // {fieldName: {ruleName: error message}}
     [fieldName: string]: { [ruleName: string]: string };
 }
 
@@ -12,7 +11,6 @@ export interface IFieldValidationMessage {
 
 /**
  *  This method filters the error messages specified by validationErrors
- *
  */
 // tslint:disable-next-line:max-line-length
 export function validationMessage(messages: IModelValidationMessage, validationErrors: IValidationError): IFieldValidationMessage {

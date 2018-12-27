@@ -1,6 +1,6 @@
+import { IBaseComponentWithRouteProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
-import { IBaseComponentWithRouteProps } from "../../BaseComponent";
 import { UserForm } from "./UserForm";
 
 interface IUserEditParams {
@@ -29,6 +29,6 @@ export const UserEdit: ComponentType<IUserEditProps> = (props: IUserEditProps) =
     );
 
     function goBack() {
-        props.history.goBack();
+        props.history.back();
     }
 }
