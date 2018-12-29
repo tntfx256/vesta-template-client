@@ -11,7 +11,7 @@ import { SplashPlugin } from './plugin/SplashPlugin';
 import { StatusbarPlugin } from './plugin/StatusbarPlugin';
 import { getAcl } from './service/Acl';
 import { isGuest } from './service/Auth';
-import { transitionTo } from './service/transitionTo';
+import { transitionTo } from './service/Transition';
 
 interface IAppProps { }
 

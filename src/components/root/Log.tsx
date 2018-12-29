@@ -8,7 +8,7 @@ import { IUser, SourceApp } from "../../cmn/models/User";
 import { getAcl } from "../../service/Acl";
 import { Crud } from "../../service/Crud";
 import { Notif } from "../../service/Notif";
-import { transitionTo } from "../../service/transitionTo";
+import { transitionTo } from "../../service/Transition";
 import { LogDetail } from "./log/LogDetail";
 
 export interface ILogger {

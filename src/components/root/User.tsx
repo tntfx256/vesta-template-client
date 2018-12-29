@@ -1,10 +1,10 @@
-import { CrudMenu, Navbar, PageTitle , IRouteComponentProps} from "@vesta/components";
+import { CrudMenu, IRouteComponentProps, Navbar, PageTitle } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { getAcl } from "../../service/Acl";
-import { transitionTo } from "../../service/transitionTo";
+import { transitionTo } from "../../service/Transition";
 import { UserAdd } from "./user/UserAdd";
 import { UserDetail } from "./user/UserDetail";
 import { UserEdit } from "./user/UserEdit";

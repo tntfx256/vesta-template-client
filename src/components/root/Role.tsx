@@ -4,7 +4,7 @@ import React, { ComponentType } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { getAcl } from "../../service/Acl";
-import { transitionTo } from "../../service/transitionTo";
+import { transitionTo } from "../../service/Transition";
 import { RoleAdd } from "./role/RoleAdd";
 import { RoleDetail } from "./role/RoleDetail";
 import { RoleEdit } from "./role/RoleEdit";
