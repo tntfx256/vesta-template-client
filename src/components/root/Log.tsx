@@ -1,15 +1,14 @@
-import { CrudMenu, DataTable, DataTableOperations, IColumn, IDataTableQueryOption, Navbar, PageTitle, Preloader } from "@vesta/components";
+import { CrudMenu, DataTable, DataTableOperations, IColumn, IDataTableQueryOption, IRouteComponentProps, Navbar, PageTitle, Preloader } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { ILog } from "../../cmn/models/Log";
 import { IUser, SourceApp } from "../../cmn/models/User";
-import { Crud } from "../../service/Crud";
 import { getAcl } from "../../service/Acl";
+import { Crud } from "../../service/Crud";
 import { Notif } from "../../service/Notif";
 import { transitionTo } from "../../service/transitionTo";
-import { IBaseComponentWithRouteProps } from "../BaseComponent";
 import { LogDetail } from "./log/LogDetail";
 
 export interface ILogger {
@@ -24,7 +23,7 @@ export interface ILogger {
 interface ILogParams {
 }
 
-interface ILogProps extends IBaseComponentWithRouteProps<ILogParams> {
+interface ILogProps extends IRouteComponentProps<ILogParams> {
 }
 
 export const Log: ComponentType<ILogProps> = (props: ILogProps) => {

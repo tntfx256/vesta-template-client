@@ -1,16 +1,15 @@
-import { Preloader } from "@vesta/components";
+import { IRouteComponentProps, Preloader } from "@vesta/components";
 import { IResponse } from "@vesta/core";
 import { FC, useEffect } from "react";
 import { IUser } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { getAuth, isGuest } from "../../service/Auth";
 import { Log } from "../../service/Log";
-import { IBaseComponentWithRouteProps } from "../BaseComponent";
 
 interface ILogoutParams {
 }
 
-interface ILogoutProps extends IBaseComponentWithRouteProps<ILogoutParams> {
+interface ILogoutProps extends IRouteComponentProps<ILogoutParams> {
 }
 
 export const Logout: FC<ILogoutProps> = function (props: ILogoutProps) {

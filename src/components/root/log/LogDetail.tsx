@@ -1,15 +1,15 @@
+import { IRouteComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IUser } from "../../../cmn/models/User";
 import { Crud } from "../../../service/Crud";
-import { IBaseComponentWithRouteProps } from "../../BaseComponent";
 import { ILogger } from "../Log";
 
 interface ILogDetailParams {
     id: number;
 }
 
-interface ILogDetailProps extends IBaseComponentWithRouteProps<ILogDetailParams> {
+interface ILogDetailProps extends IRouteComponentProps<ILogDetailParams> {
     users: IUser[];
 }
 

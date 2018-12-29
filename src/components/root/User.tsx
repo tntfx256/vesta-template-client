@@ -1,4 +1,4 @@
-import { CrudMenu, Navbar, PageTitle , IBaseComponentWithRouteProps} from "@vesta/components";
+import { CrudMenu, Navbar, PageTitle , IRouteComponentProps} from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
 import { Route, Switch } from "react-router";
@@ -13,7 +13,7 @@ import { UserList } from "./user/UserList";
 interface IUserParams {
 }
 
-interface IUserProps extends IBaseComponentWithRouteProps<IUserParams> {
+interface IUserProps extends IRouteComponentProps<IUserParams> {
 }
 
 export const User: ComponentType<IUserProps> = (props: IUserProps) => {

@@ -1,4 +1,4 @@
-import { IBaseComponentWithRouteProps } from "@vesta/components";
+import { IRouteComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
 import { UserForm } from "./UserForm";
@@ -6,7 +6,7 @@ import { UserForm } from "./UserForm";
 interface IUserAddParams {
 }
 
-interface IUserAddProps extends IBaseComponentWithRouteProps<IUserAddParams> {
+interface IUserAddProps extends IRouteComponentProps<IUserAddParams> {
 }
 
 export const UserAdd: ComponentType<IUserAddProps> = (props: IUserAddProps) => {
@@ -27,6 +27,6 @@ export const UserAdd: ComponentType<IUserAddProps> = (props: IUserAddProps) => {
     );
 
     function goBack() {
-        props.history.back();
+        props.history.goBack();
     }
 }

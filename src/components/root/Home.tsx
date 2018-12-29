@@ -1,13 +1,12 @@
-import { Navbar } from "@vesta/components";
+import { IRouteComponentProps, Navbar } from "@vesta/components";
+import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
 import { withTheme } from "react-jss";
-import { IBaseComponentWithRouteProps } from "../BaseComponent";
-import { Culture } from "@vesta/culture";
 
 interface IHomeParams {
 }
 
-interface IHomeProps extends IBaseComponentWithRouteProps<IHomeParams> {
+interface IHomeProps extends IRouteComponentProps<IHomeParams> {
 }
 
 export const Home: ComponentType<IHomeProps> = withTheme((props: IHomeProps) => {

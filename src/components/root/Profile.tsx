@@ -1,6 +1,6 @@
 
 import { Avatar, DateTimeInput, FormWrapper, IFormOption, Navbar, Preloader, Select, TextInput } from "@vesta/components";
-import { IResponse, IValidationError } from "@vesta/core";
+import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useState } from "react";
 import { RouteComponentProps } from "react-router";
@@ -10,7 +10,7 @@ import { IUser, User, UserGender } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { getAuth } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
-import { getFileUrl, IModelValidationMessage, validationMessage } from "../../util/Util";
+import { getFileUrl } from "../../util/Util";
 
 interface IProfileParams {
 }

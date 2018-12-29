@@ -1,14 +1,13 @@
+import { Avatar, IComponentProps, Icon, IMenuItem, Menu, Select } from "@vesta/components";
+import { Dispatcher } from "@vesta/core";
+import { Culture } from "@vesta/culture";
 import React, { PureComponent } from "react";
 import { Link } from "react-router-dom";
 import { IUser } from "../../cmn/models/User";
 import { getFileUrl } from "../../util/Util";
-import { IBaseComponentProps } from "../BaseComponent";
-import { IMenuItem, Icon, Avatar, Select, Menu } from "@vesta/components";
-import { Dispatcher } from "@vesta/core";
-import { Culture } from "@vesta/culture";
 
 
-interface ISidenavContentProps extends IBaseComponentProps {
+interface ISidenavContentProps extends IComponentProps {
     menuItems: IMenuItem[];
     name: string;
     user: IUser;

@@ -1,15 +1,14 @@
-import { DateTimeInput, FileInput, FormWrapper, IFormOption, Multichoice, Select, TextInput } from "@vesta/components";
-import { IValidationError } from "@vesta/core";
+import { DateTimeInput, FileInput, FormWrapper, IComponentProps, IFormOption, Multichoice, Select, TextInput } from "@vesta/components";
+import { IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Status } from "../../../cmn/enum/Status";
 import { IRole } from "../../../cmn/models/Role";
 import { IUser, User, UserGender, UserType } from "../../../cmn/models/User";
 import { Crud } from "../../../service/Crud";
-import { getFileUrl, validationMessage } from "../../../util/Util";
-import { IBaseComponentProps } from "../../BaseComponent";
+import { getFileUrl } from "../../../util/Util";
 
-interface IUserFormProps extends IBaseComponentProps {
+interface IUserFormProps extends IComponentProps {
     id?: number;
 }
 

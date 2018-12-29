@@ -1,19 +1,17 @@
-import { Alert, Button, FormWrapper, MessageType, Navbar, Preloader, TextInput } from "@vesta/components";
-import { IResponse } from "@vesta/core";
-import { IValidationError } from "@vesta/core/Validator";
+import { Alert, Button, FormWrapper, IRouteComponentProps, MessageType, Preloader, TextInput } from "@vesta/components";
+import { IResponse, validationMessage } from "@vesta/core";
+import { IModelValidationMessage, IValidationError } from "@vesta/core/Validator";
 import { Culture } from "@vesta/culture";
 import React, { FC, useState } from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { Notif } from "../../service/Notif";
-import { IModelValidationMessage, validationMessage } from "../../util/Util";
-import { IBaseComponentWithRouteProps } from "../BaseComponent";
 
 interface IForgetParams {
 }
 
-interface IForgetProps extends IBaseComponentWithRouteProps<IForgetParams> {
+interface IForgetProps extends IRouteComponentProps<IForgetParams> {
 }
 
 export const Forget: FC<IForgetProps> = function (props: IForgetProps) {

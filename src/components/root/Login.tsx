@@ -1,5 +1,5 @@
-import { Alert, Button, FormWrapper, MessageType, Preloader, TextInput } from "@vesta/components";
-import { IResponse, IValidationError } from "@vesta/core";
+import { Alert, Button, FormWrapper, IRouteComponentProps, MessageType, Preloader, TextInput } from "@vesta/components";
+import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,14 +7,12 @@ import { IUser, User } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { getAuth, isGuest } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
-import { IModelValidationMessage, validationMessage } from "../../util/Util";
-import { IBaseComponentWithRouteProps } from "../BaseComponent";
 
 
 interface ILoginParams {
 }
 
-interface ILoginProps extends IBaseComponentWithRouteProps<ILoginParams> {
+interface ILoginProps extends IRouteComponentProps<ILoginParams> {
 }
 
 export const Login: ComponentType<ILoginProps> = (props: ILoginProps) => {

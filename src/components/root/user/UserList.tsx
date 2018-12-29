@@ -1,11 +1,11 @@
-import { DataTable, DataTableOperations, IBaseComponentProps, IColumn, IDataTableQueryOption } from "@vesta/components";
+import { DataTable, DataTableOperations, IComponentProps, IColumn, IDataTableQueryOption } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IUser } from "../../../cmn/models/User";
 import { Crud } from "../../../service/Crud";
 
-interface IUserListProps extends IBaseComponentProps {
+interface IUserListProps extends IComponentProps {
     access: IAccess;
 }
 

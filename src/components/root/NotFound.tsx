@@ -1,13 +1,13 @@
-import React, { FC, useEffect } from "react";
-import { IBaseComponentWithRouteProps } from "../BaseComponent";
+import { IRouteComponentProps } from "@vesta/components";
+import React, { ComponentType, useEffect } from "react";
 
 interface INotFoundParams {
 }
 
-interface INotFoundProps extends IBaseComponentWithRouteProps<INotFoundParams> {
+interface INotFoundProps extends IRouteComponentProps<INotFoundParams> {
 }
 
-export const NotFound: FC<INotFoundProps> = function (props: INotFoundProps) {
+export const NotFound: ComponentType<INotFoundProps> = function (props: INotFoundProps) {
 
     useEffect(() => {
         props.history.replace("/");
