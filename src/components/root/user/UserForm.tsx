@@ -5,7 +5,7 @@ import React, { ComponentType, useEffect, useState } from "react";
 import { Status } from "../../../cmn/enum/Status";
 import { IRole } from "../../../cmn/models/Role";
 import { IUser, User, UserGender, UserType } from "../../../cmn/models/User";
-import { Crud } from "../../../service/Crud";
+import { getCrud } from "../../../service/crud";
 import { getFileUrl } from "../../../util/Util";
 
 interface IUserFormProps extends IComponentProps {
@@ -15,7 +15,7 @@ interface IUserFormProps extends IComponentProps {
 export const UserForm: ComponentType<IUserFormProps> = (props: IUserFormProps) => {
 
     const tr = Culture.getDictionary().translate;
-    const service = Crud.getService<IUser>("user");
+    const service = getCrud<IUser>("user");
     const genderOptions: IFormOption[] = [
         { id: UserGender.Male, title: tr("enum_male") },
         { id: UserGender.Female, title: tr("enum_female") }];

@@ -76,7 +76,7 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
         const userModel = new User(user);
         const validationErrors = userModel.validate("username", "password");
         if (validationErrors) {
-            setErrors(validationErrors);
+            return setErrors(validationErrors);
         }
         Preloader.show();
         setErrors(null);

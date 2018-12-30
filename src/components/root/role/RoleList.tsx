@@ -3,15 +3,15 @@ import { Culture } from "@vesta/culture";
 import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IRole } from "../../../cmn/models/Role";
-import { Crud } from "../../../service/Crud";
 import { Notif } from "../../../service/Notif";
+import { getCrud } from "../../../service/crud";
 
 interface IRoleListProps extends IComponentProps {
     access: IAccess;
 }
 
 export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) => {
-    const service = Crud.getService<IRole>("acl/role");
+    const service = getCrud<IRole>("acl/role");
     const tr = Culture.getDictionary().translate;
     let initialized = false;
 

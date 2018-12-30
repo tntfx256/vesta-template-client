@@ -2,7 +2,7 @@ import { IRouteComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IUser } from "../../../cmn/models/User";
-import { Crud } from "../../../service/Crud";
+import { getCrud } from "../../../service/crud";
 import { ILogger } from "../Log";
 
 interface ILogDetailParams {
@@ -14,7 +14,6 @@ interface ILogDetailProps extends IRouteComponentProps<ILogDetailParams> {
 }
 
 export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps) => {
-    const service = Crud.getService<string>("log");
 
     let initiated = false;
     const [log, setLog] = useState("");
@@ -22,7 +21,7 @@ export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps
     useEffect(() => {
         if (initiated) { return; }
         initiated = true;
-        this.service.fetch(+props.match.params.id).then((log) => setLog(log));
+        getCrud<string>("log").fetch(+props.match.params.id).then((log) => setLog(log));
     });
 
     if (!log) { return null; }

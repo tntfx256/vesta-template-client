@@ -4,7 +4,7 @@ import { FC, useEffect } from "react";
 import { IUser } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { getAuth, isGuest } from "../../service/Auth";
-import { Log } from "../../service/Log";
+import { getLog } from "../../service/getLog";
 
 interface ILogoutParams {
 }
@@ -27,7 +27,7 @@ export const Logout: FC<ILogoutProps> = function (props: ILogoutProps) {
                 onAfterLogout(response.items[0]);
             })
             .catch((error) => {
-                Log.error(error, "componentDidMount", "Logout");
+                getLog().error(error);
                 onAfterLogout({});
             });
         return Preloader.hide;

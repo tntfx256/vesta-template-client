@@ -5,8 +5,9 @@ import React, { ComponentType, useEffect, useState } from "react";
 import { Status } from "../../../cmn/enum/Status";
 import { IPermission } from "../../../cmn/models/Permission";
 import { IRole, Role } from "../../../cmn/models/Role";
-import { Crud } from "../../../service/Crud";
 import { IAction } from "../Role";
+import { getCrud } from "../../../service/crud";
+
 
 interface IPermissionCollection {
     [name: string]: IPermission[];
@@ -19,8 +20,8 @@ interface IRoleFormProps extends IComponentProps {
 
 export const RoleForm: ComponentType<IRoleFormProps> = (props: IRoleFormProps) => {
     const tr = Culture.getDictionary().translate;
-    const roleService = Crud.getService<IRole>("acl/role");
-    const permissionService = Crud.getService<IPermission>("acl/permission");
+    const roleService = getCrud<IRole>("acl/role");
+    const permissionService = getCrud<IPermission>("acl/permission");
     let initiated = false;
     const statusOptions: IFormOption[] = [
         { id: Status.Active, title: tr("enum_active") },

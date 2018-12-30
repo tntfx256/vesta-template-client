@@ -1,4 +1,3 @@
-import { Preloader } from "@vesta/components";
 import { isCordova } from "@vesta/core/Platform";
 import { Culture, ILocale } from "@vesta/culture";
 import { IrDate, IrLocale } from "@vesta/culture-ir";
@@ -15,21 +14,12 @@ import { IrVocabs } from "./cmn/vocabs/IrVocabs";
 import { UsVocabs } from "./cmn/vocabs/UsVocabs";
 import { appConfig } from "./config/appConfig";
 import { SplashPlugin } from "./plugin/SplashPlugin";
-import { Crud } from "./service/Crud";
-import { Log } from "./service/Log";
-import { Notif } from "./service/Notif";
+import { getLog } from "./service/getLog";
 
 // initiating locale
 Culture.register(UsLocale, UsVocabs, UsDate);
 Culture.register(IrLocale, IrVocabs, IrDate);
 loadLocale();
-// initiating CRUD service
-Crud.hooks = {
-    beforeRequest: Preloader.show,
-    afterRequest: Preloader.hide,
-    onError: Notif.getInstance().error,
-    onSuccess: Notif.getInstance().success,
-};
 
 if (isCordova()) {
     document.addEventListener("deviceready", checkScripts, false);
@@ -44,8 +34,8 @@ function loadLocale(code?: string, reload?: boolean): ILocale {
     let selectedCode: string = code || localStorage.getItem("culture");
     try {
         locale = Culture.getLocale(selectedCode);
-    } catch (e) {
-        Log.error(e.message, "loadLocale", "app.ts");
+    } catch (error) {
+        getLog().error(error);
     }
     if (!locale) {
         locale = Culture.getLocale();

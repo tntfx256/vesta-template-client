@@ -6,10 +6,10 @@ import { HashRouter } from "react-router-dom";
 import { ILog } from "../../cmn/models/Log";
 import { IUser, SourceApp } from "../../cmn/models/User";
 import { getAcl } from "../../service/Acl";
-import { Crud } from "../../service/Crud";
 import { Notif } from "../../service/Notif";
 import { transitionTo } from "../../service/Transition";
 import { LogDetail } from "./log/LogDetail";
+import { getCrud } from "../../service/crud";
 
 export interface ILogger {
     duration: number;
@@ -28,7 +28,7 @@ interface ILogProps extends IRouteComponentProps<ILogParams> {
 
 export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
     const access = getAcl().getAccessList("log");
-    const service = Crud.getService<string>("log");
+    const service = getCrud<string>("log");
     const tr = Culture.getDictionary().translate;
     let initiated = false;
 
