@@ -1,10 +1,10 @@
+import { IRouteComponentProps } from "@vesta/components";
 import React, { FC, useEffect } from "react";
-import { IBaseComponentWithRouteProps } from "../BaseComponent";
 
 interface IForbiddenParams {
 }
 
-interface IForbiddenProps extends IBaseComponentWithRouteProps<IForbiddenParams> {
+interface IForbiddenProps extends IRouteComponentProps<IForbiddenParams> {
 }
 
 export const Forbidden: FC<IForbiddenProps> = function (props: IForbiddenProps) {

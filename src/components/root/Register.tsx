@@ -1,5 +1,5 @@
-import { Button, FormWrapper, Navbar, Preloader, TextInput } from "@vesta/components";
-import { IResponse, IValidationError } from "@vesta/core";
+import { Button, FormWrapper, IRouteComponentProps, Preloader, TextInput } from "@vesta/components";
+import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useState } from "react";
 import { Link } from "react-router-dom";
@@ -7,14 +7,13 @@ import { withTheme } from "theming";
 import { IUser, User } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { Notif } from "../../service/Notif";
-import { getFileUrl, IModelValidationMessage, validationMessage } from "../../util/Util";
-import { IBaseComponentWithRouteProps } from "../BaseComponent";
+import { getFileUrl } from "../../util/Util";
 
 
 interface IRegisterParams {
 }
 
-interface IRegisterProps extends IBaseComponentWithRouteProps<IRegisterParams> {
+interface IRegisterProps extends IRouteComponentProps<IRegisterParams> {
 }
 
 export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegisterProps) => {
@@ -77,7 +76,7 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
         const userModel = new User(user);
         const validationErrors = userModel.validate("username", "password");
         if (validationErrors) {
-            setErrors(validationErrors);
+            return setErrors(validationErrors);
         }
         Preloader.show();
         setErrors(null);

@@ -1,4 +1,4 @@
-import { IBaseComponentWithRouteProps } from "@vesta/components";
+import { IRouteComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
 import { UserForm } from "./UserForm";
@@ -7,7 +7,7 @@ interface IUserEditParams {
     id: number;
 }
 
-interface IUserEditProps extends IBaseComponentWithRouteProps<IUserEditParams> {
+interface IUserEditProps extends IRouteComponentProps<IUserEditParams> {
 }
 
 export const UserEdit: ComponentType<IUserEditProps> = (props: IUserEditProps) => {
@@ -29,6 +29,6 @@ export const UserEdit: ComponentType<IUserEditProps> = (props: IUserEditProps) =
     );
 
     function goBack() {
-        props.history.back();
+        props.history.goBack();
     }
 }

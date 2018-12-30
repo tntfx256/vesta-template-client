@@ -1,28 +1,27 @@
-import { FormWrapper, IFormOption, Multichoice, Select, TextInput } from "@vesta/components";
-import { IValidationError } from "@vesta/core";
+import { FormWrapper, IComponentProps, IFormOption, Multichoice, Select, TextInput } from "@vesta/components";
+import { IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Status } from "../../../cmn/enum/Status";
 import { IPermission } from "../../../cmn/models/Permission";
 import { IRole, Role } from "../../../cmn/models/Role";
-import { Crud } from "../../../service/Crud";
-import { validationMessage } from "../../../util/Util";
-import { IBaseComponentProps } from "../../BaseComponent";
 import { IAction } from "../Role";
+import { getCrud } from "../../../service/crud";
+
 
 interface IPermissionCollection {
     [name: string]: IPermission[];
 }
 
-interface IRoleFormProps extends IBaseComponentProps {
+interface IRoleFormProps extends IComponentProps {
     id?: number;
     goBack: () => void;
 }
 
 export const RoleForm: ComponentType<IRoleFormProps> = (props: IRoleFormProps) => {
     const tr = Culture.getDictionary().translate;
-    const roleService = Crud.getService<IRole>("acl/role");
-    const permissionService = Crud.getService<IPermission>("acl/permission");
+    const roleService = getCrud<IRole>("acl/role");
+    const permissionService = getCrud<IPermission>("acl/permission");
     let initiated = false;
     const statusOptions: IFormOption[] = [
         { id: Status.Active, title: tr("enum_active") },

@@ -1,22 +1,21 @@
-import { DateTimeInput, FileInput, FormWrapper, IFormOption, Multichoice, Select, TextInput } from "@vesta/components";
-import { IValidationError } from "@vesta/core";
+import { DateTimeInput, FileInput, FormWrapper, IComponentProps, IFormOption, Multichoice, Select, TextInput } from "@vesta/components";
+import { IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Status } from "../../../cmn/enum/Status";
 import { IRole } from "../../../cmn/models/Role";
 import { IUser, User, UserGender, UserType } from "../../../cmn/models/User";
-import { Crud } from "../../../service/Crud";
-import { getFileUrl, validationMessage } from "../../../util/Util";
-import { IBaseComponentProps } from "../../BaseComponent";
+import { getCrud } from "../../../service/crud";
+import { getFileUrl } from "../../../util/Util";
 
-interface IUserFormProps extends IBaseComponentProps {
+interface IUserFormProps extends IComponentProps {
     id?: number;
 }
 
 export const UserForm: ComponentType<IUserFormProps> = (props: IUserFormProps) => {
 
     const tr = Culture.getDictionary().translate;
-    const service = Crud.getService<IUser>("user");
+    const service = getCrud<IUser>("user");
     const genderOptions: IFormOption[] = [
         { id: UserGender.Male, title: tr("enum_male") },
         { id: UserGender.Female, title: tr("enum_female") }];

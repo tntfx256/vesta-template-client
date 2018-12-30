@@ -14,7 +14,7 @@ import { IrVocabs } from "./cmn/vocabs/IrVocabs";
 import { UsVocabs } from "./cmn/vocabs/UsVocabs";
 import { appConfig } from "./config/appConfig";
 import { SplashPlugin } from "./plugin/SplashPlugin";
-import { Log } from "./service/Log";
+import { getLog } from "./service/getLog";
 
 // initiating locale
 Culture.register(UsLocale, UsVocabs, UsDate);
@@ -34,8 +34,8 @@ function loadLocale(code?: string, reload?: boolean): ILocale {
     let selectedCode: string = code || localStorage.getItem("culture");
     try {
         locale = Culture.getLocale(selectedCode);
-    } catch (e) {
-        Log.error(e.message, "loadLocale", "app.ts");
+    } catch (error) {
+        getLog().error(error);
     }
     if (!locale) {
         locale = Culture.getLocale();

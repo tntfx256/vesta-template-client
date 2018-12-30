@@ -1,12 +1,12 @@
+import { IRouteComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
-import { IBaseComponentWithRouteProps } from "../../BaseComponent";
 import { RoleForm } from "./RoleForm";
 
 interface IRoleAddParams {
 }
 
-interface IRoleAddProps extends IBaseComponentWithRouteProps<IRoleAddParams> {
+interface IRoleAddProps extends IRouteComponentProps<IRoleAddParams> {
 }
 
 export const RoleAdd: ComponentType<IRoleAddProps> = (props: IRoleAddProps) => {

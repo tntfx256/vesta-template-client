@@ -1,16 +1,15 @@
-import { CrudMenu, DataTable, DataTableOperations, IColumn, IDataTableQueryOption, Navbar, PageTitle, Preloader } from "@vesta/components";
+import { CrudMenu, DataTable, DataTableOperations, IColumn, IDataTableQueryOption, IRouteComponentProps, Navbar, PageTitle, Preloader } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { ILog } from "../../cmn/models/Log";
 import { IUser, SourceApp } from "../../cmn/models/User";
-import { Crud } from "../../service/Crud";
 import { getAcl } from "../../service/Acl";
 import { Notif } from "../../service/Notif";
-import { transitionTo } from "../../service/transitionTo";
-import { IBaseComponentWithRouteProps } from "../BaseComponent";
+import { transitionTo } from "../../service/Transition";
 import { LogDetail } from "./log/LogDetail";
+import { getCrud } from "../../service/crud";
 
 export interface ILogger {
     duration: number;
@@ -24,12 +23,12 @@ export interface ILogger {
 interface ILogParams {
 }
 
-interface ILogProps extends IBaseComponentWithRouteProps<ILogParams> {
+interface ILogProps extends IRouteComponentProps<ILogParams> {
 }
 
 export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
     const access = getAcl().getAccessList("log");
-    const service = Crud.getService<string>("log");
+    const service = getCrud<string>("log");
     const tr = Culture.getDictionary().translate;
     let initiated = false;
 
