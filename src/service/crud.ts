@@ -3,7 +3,7 @@ import { Crud, ICrudConfig } from "@vesta/services";
 import { getApi } from "./Api";
 import { getLog } from "./getLog";
 
-let instances: { [edge: string]: Crud<any> };
+const instances: { [edge: string]: Crud<any> } = {};
 
 export function getCrud<T>(edge): Crud<T> {
     if (!instances[edge]) {
@@ -15,7 +15,7 @@ export function getCrud<T>(edge): Crud<T> {
                 beforeRequest: Preloader.show,
                 onError: getLog().error,
                 onSuccess: getLog().log,
-            }
+            },
         };
         instances[edge] = new Crud(crudConfig);
     }

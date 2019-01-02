@@ -4,8 +4,7 @@ import { Forbidden } from "../components/root/Forbidden";
 import { getAcl } from "./Acl";
 
 let idCounter = 1;
-let acl = getAcl();
-
+const acl = getAcl();
 
 // tslint:disable-next-line:max-line-length
 export function transitionTo(componentClass: ComponentType, permissions?: IPermissions, extraProps?: Attributes & any, children?: ReactNode[]) {
@@ -18,4 +17,3 @@ export function transitionTo(componentClass: ComponentType, permissions?: IPermi
             React.createElement(Forbidden, props);
     };
 }
-

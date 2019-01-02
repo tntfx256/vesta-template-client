@@ -3,7 +3,6 @@ import { Api, IApiConfig, IRequestHeader, SyncStorage } from "@vesta/services";
 import { SourceApp } from "../cmn/models/User";
 import { appConfig } from "../config/appConfig";
 
-
 let instance: Api;
 
 export function getApi(): Api {
@@ -15,12 +14,11 @@ export function getApi(): Api {
         const endpoint = `${api}/api/${version.api}`;
         const option: IApiConfig = {
             endpoint,
-            hooks: { afterReceive, beforeSend }
+            hooks: { afterReceive, beforeSend },
         };
         instance = new Api(option);
     }
     return instance;
-
 
     function afterReceive<T>(method: string, xhr: XMLHttpRequest, edge: string, data: T) {
         const token = xhr.getResponseHeader(this.tokenHeaderKeyName);

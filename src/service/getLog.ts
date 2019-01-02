@@ -4,11 +4,10 @@ let instance: Log;
 export function getLog() {
     if (!instance) {
         const logConfig: ILogConfig = {
+            driver: console,
             level: LogLevel.Warning,
-            driver: console
         };
         instance = new Log(logConfig);
     }
     return instance;
 }
-
