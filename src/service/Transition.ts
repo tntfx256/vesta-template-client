@@ -9,7 +9,7 @@ const acl = getAcl();
 // tslint:disable-next-line:max-line-length
 export function transitionTo(componentClass: ComponentType, permissions?: IPermissions, extraProps?: Attributes & any, children?: ReactNode[]) {
     const id = idCounter++;
-    acl.registerPermisions(id.toString(), permissions);
+    acl.register(id.toString(), permissions);
     extraProps = extraProps || {};
     return (props) => {
         return acl.hasAccessToState(id.toString()) ?

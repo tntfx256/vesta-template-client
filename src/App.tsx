@@ -1,57 +1,66 @@
-import { isCordova } from '@vesta/core';
-import { AclPolicy } from '@vesta/services';
-import React, { FC } from 'react';
+import { IResponse, isCordova } from "@vesta/core";
+import { AclPolicy } from "@vesta/services";
+import React, { ComponentType, useEffect, useReducer } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
-import Root from './components/Root';
-import { NotFound } from './components/root/NotFound';
-import { getRoutes, IRouteItem } from './config/route';
-import { KeyboardPlugin } from './plugin/KeyboardPlugin';
-import { SplashPlugin } from './plugin/SplashPlugin';
-import { StatusbarPlugin } from './plugin/StatusbarPlugin';
-import { getAcl } from './service/Acl';
-import { isGuest } from './service/Auth';
-import { transitionTo } from './service/Transition';
+import { IUser } from "./cmn/models/User";
+import Root from "./components/Root";
+import { NotFound } from "./components/root/NotFound";
+import { getRoutes, IRouteItem } from "./config/route";
+import { KeyboardPlugin } from "./plugin/KeyboardPlugin";
+import { SplashPlugin } from "./plugin/SplashPlugin";
+import { StatusbarPlugin } from "./plugin/StatusbarPlugin";
+import { getAcl } from "./service/Acl";
+import { getApi } from "./service/Api";
+import { getAuth, isGuest } from "./service/Auth";
+import { AppAction, appReducer, getInitialState, IAppAction, IAppState, Store } from "./service/Store";
+import { transitionTo } from "./service/Transition";
 
 interface IAppProps { }
 
-export const App: FC = function (props: IAppProps) {
-  // const dispatcher = Dispatcher.getInstance();
+export const App: ComponentType = (props: IAppProps) => {
+
   const routeItems = getRoutes(!isGuest());
   const routes = renderRoutes(routeItems, "");
 
-  // initiation
-  getAcl().setDefaultPolicy(AclPolicy.Allow);
   // prevent splash from hiding after timeout; it must be hidden manually
   SplashPlugin.show();
   if (isCordova()) {
     KeyboardPlugin.setDefaultProperties();
     StatusbarPlugin.styleDefault();
   }
+
+  const [store, dispatch] = useReducer<IAppState, IAppAction>(appReducer, getInitialState());
+
+  useEffect(() => {
+    getApi().get<IUser, IResponse<IUser>>("me")
+      .then((response) => {
+        const user = response.items[0];
+        const auth = getAuth();
+        auth.login(user);
+        dispatch({ type: AppAction.User, payload: { user } });
+      });
+  }, [isGuest()]);
   // todo: registerPushNotification();
-  // auth event registration
-  // dispatcher.register<IUser>(AuthService.Events.Update, () => run());
 
   return (
-    <HashRouter>
-      <Root routeItems={routeItems}>
-        <Switch>
-          {routes}
-          <Route component={NotFound} />
-        </Switch>
-      </Root>
-    </HashRouter>
-  )
+    <Store.Provider value={{ store, dispatch }}>
+      <HashRouter>
+        <Root routeItems={routeItems}>
+          <Switch>
+            {routes}
+            <Route component={NotFound} />
+          </Switch>
+        </Root>
+      </HashRouter>
+    </Store.Provider>
+  );
 
-  function init() {
-
-  }
-
-  function renderRoutes(routeItems: IRouteItem[], prefix: string) {
+  function renderRoutes(items: IRouteItem[], prefix: string) {
     let links = [];
-    const routeCount = routeItems.length;
+    const routeCount = items.length;
     for (let i = 0, il = routeCount; i < il; ++i) {
-      const item = routeItems[i];
+      const item = items[i];
       if (!item.abstract) {
         const basePath = prefix ? `/${prefix}` : "";
         links.push((
@@ -65,4 +74,4 @@ export const App: FC = function (props: IAppProps) {
     }
     return links;
   }
-}
+};

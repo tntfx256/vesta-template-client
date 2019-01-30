@@ -1,4 +1,4 @@
-import { SyncStorage } from "@vesta/services";
+import { Storage } from "@vesta/services";
 import { ILocation } from "../cmn/interfaces/GeoLocation";
 import { shallowClone } from "../util/Util";
 
@@ -19,8 +19,8 @@ export class GeolocationPlugin {
     }
 
     public static getLatestLocation(): ILocation {
-        const defaultLocation = SyncStorage.get<ILocation>("defaultLocation");
-        let lastLocation = SyncStorage.get<ILocation>(GeolocationPlugin.LocationKey);
+        const defaultLocation = Storage.sync.get<ILocation>("defaultLocation");
+        let lastLocation = Storage.sync.get<ILocation>(GeolocationPlugin.LocationKey);
         if (!lastLocation || !lastLocation.lat) {
             lastLocation = defaultLocation;
         }
@@ -82,11 +82,11 @@ export class GeolocationPlugin {
             // todo: if position is not accurate, try for highAccuracy
             GeolocationPlugin.tmpPositionOptions = null;
             // }
-            SyncStorage.set(GeolocationPlugin.LocationKey, location);
+            Storage.sync.set(GeolocationPlugin.LocationKey, location);
             resolve(location);
         }, (error: PositionError) => {
             // console.error(error, positionOptions);
-            if (error.code != error.TIMEOUT) { return reject(error); }
+            if (error.code !== error.TIMEOUT) { return reject(error); }
             // checking timeoutThreshold
             if (positionOptions.timeout >= GeolocationPlugin.timeoutThreshold) {
                 // checking high accuracy
@@ -96,7 +96,7 @@ export class GeolocationPlugin {
                     positionOptions.enableHighAccuracy = false;
                 } else {
                     // checking app activity
-                    if (SyncStorage.get<boolean>("inBackground")) {
+                    if (Storage.sync.get<boolean>("inBackground")) {
                         // super extend timeout if app in background
                         // console.log("app in bg; extending timeout even more");
                         positionOptions.timeout = Math.floor(3 * positionOptions.timeout / 2);

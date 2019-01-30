@@ -1,82 +1,71 @@
-import { Html, Preloader, Sidenav, ToastMessage } from "@vesta/components";
+import { Html, IRouteComponentProps, Preloader, Sidenav, ToastMessage } from "@vesta/components";
 import { Culture } from "@vesta/culture";
-import { SyncStorage } from "@vesta/services";
-import React, { ComponentType, PureComponent } from "react";
-import { RouteComponentProps, withRouter } from "react-router";
+import { Storage } from "@vesta/services";
+import React, { ComponentType, useContext, useEffect } from "react";
+import { withRouter } from "react-router";
 import { IRouteItem } from "../config/route";
-import { IAppState } from "../misc/AppState";
-import { appStore } from "../misc/appStore";
+import { IStore, Store } from "../service/Store";
 import { SidenavContent } from "./general/SidenavContent";
 import { ErrorBoundary } from "./root/ErrorBoundary";
 
-
 interface IRootParams { }
 
-interface IRootProps extends RouteComponentProps<IRootParams> {
+interface IRootProps extends IRouteComponentProps<IRootParams> {
     routeItems: IRouteItem[];
 }
 
-interface IRootState extends IAppState {
-}
+const Root: ComponentType<IRootProps> = (props: IRootProps) => {
 
-class Root extends PureComponent<IRootProps, IRootState> {
+    const { store: { user, navbar, toast } } = useContext<IStore>(Store); // this.state;
+    const { code, dir } = Culture.getLocale();
 
-    constructor(props: IRootProps) {
-        super(props);
-        this.state = appStore.getState();
-    }
-
-    public componentDidMount() {
+    useEffect(() => {
         // application behaviours
-        window.onfocus = this.toForeground;
-        document.addEventListener("resume", this.toForeground);
-        window.onblur = this.toBackground;
-        document.addEventListener("pause", this.toBackground);
-        window.onunload = this.onExit;
+        window.onfocus = toForeground;
+        document.addEventListener("resume", toForeground);
+        window.onblur = toBackground;
+        document.addEventListener("pause", toBackground);
+        window.onunload = onExit;
         // global state
-        appStore.subscribe(() => {
-            this.setState(appStore.getState());
-        });
-    }
+        // appStore.subscribe(() => {
+        //     this.setState(appStore.getState());
+        // });
+    });
 
-    public render() {
-        const { user, toast } = this.state;
-        const { routeItems } = this.props;
-        const { code, dir } = Culture.getLocale();
-        const toastMsg = toast ? <ToastMessage message={toast.message} type={toast.type} onClose={this.onCloseToast} /> : null;
+    const toastMsg = toast ?
+        <ToastMessage message={toast.message} type={toast.type} onClose={onCloseToast} /> : null;
 
-        return (
-            <ErrorBoundary>
-                <div id="main-wrapper" className="root-component">
-                    <Html lang={code} dir={dir} />
-                    <div id="content-wrapper">
-                        {this.props.children}
-                    </div>
-                    <Sidenav>
-                        <SidenavContent name="main-sidenav" user={user} menuItems={routeItems} />
-                    </Sidenav>
-                    {toastMsg}
-                    <Preloader />
+    return (
+        <ErrorBoundary>
+            <div id="main-wrapper" className="root-component">
+                <Html lang={code} dir={dir} />
+                <div id="content-wrapper">
+                    {props.children}
                 </div>
-            </ErrorBoundary>
-        );
+                <Sidenav open={navbar}>
+                    <SidenavContent name="main-sidenav" user={user} menuItems={props.routeItems} />
+                </Sidenav>
+                {toastMsg}
+                <Preloader />
+            </div>
+        </ErrorBoundary>
+    );
+
+    function onCloseToast() {
+        // this.setState({ toast: null });
     }
 
-    private onCloseToast = () => {
-        this.setState({ toast: null });
+    function onExit() {
+        Storage.sync.set("lastPath", this.props.location.pathname);
     }
 
-    private onExit = () => {
-        SyncStorage.set("lastPath", this.props.location.pathname);
+    function toBackground() {
+        Storage.sync.set("inBackground", true);
     }
 
-    private toBackground = () => {
-        SyncStorage.set("inBackground", true);
+    function toForeground() {
+        Storage.sync.set("inBackground", false);
     }
+};
 
-    private toForeground = () => {
-        SyncStorage.set("inBackground", false);
-    }
-}
-
-export default withRouter(Root as ComponentType<IRootProps>);
+export default withRouter(Root as any);

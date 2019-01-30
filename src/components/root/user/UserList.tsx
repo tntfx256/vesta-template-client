@@ -1,9 +1,10 @@
-import { DataTable, DataTableOperations, IColumn, IComponentProps, IDataTableQueryOption } from "@vesta/components";
+import { DataTable, IColumn, IComponentProps, IDataTableQueryOption } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IUser } from "../../../cmn/models/User";
 import { getCrud } from "../../../service/crud";
+import { DataTableOperations } from "../../general/DataTableOperations";
 
 interface IUserListProps extends IComponentProps {
     access: IAccess;
@@ -57,4 +58,4 @@ export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) =
         setQueryOption(option);
         userService.fetchAll(option).then(setUsers);
     }
-}
+};

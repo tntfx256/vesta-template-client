@@ -1,5 +1,5 @@
 import { Registry } from "@vesta/core";
-import { Api, IApiConfig, IRequestHeader, SyncStorage } from "@vesta/services";
+import { Api, IApiConfig, IRequestHeader, Storage } from "@vesta/services";
 import { SourceApp } from "../cmn/models/User";
 import { appConfig } from "../config/appConfig";
 
@@ -32,7 +32,7 @@ export function getApi(): Api {
         if (method !== "UPLOAD") {
             headers["Content-Type"] = "application/json";
         }
-        const token = SyncStorage.get<string>("auth-token");
+        const token = Storage.sync.get<string>("auth-token");
         if (token) {
             headers["X-AUTH-TOKEN"] = token;
         }
