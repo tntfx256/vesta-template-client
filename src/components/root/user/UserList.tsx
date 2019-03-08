@@ -1,4 +1,4 @@
-import { DataTable, IColumn, IComponentProps, IDataTableQueryOption } from "@vesta/components";
+import { DataTable, IColumn, IComponentProps, IQueryOption } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
@@ -14,16 +14,11 @@ export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) =
 
     const tr = Culture.getDictionary().translate;
     const userService = getCrud<IUser>("user");
-    let initiated = false;
 
     const [users, setUsers] = useState([]);
     const [queryOption, setQueryOption] = useState({});
 
-    useEffect(() => {
-        if (initiated) { return; }
-        initiated = true;
-        onFetch(null);
-    });
+    useEffect(() => fetchAll(queryOption), [queryOption]);
 
     const statusOptions = { 1: tr("enum_active"), 0: tr("enum_inactive") };
     const columns: Array<IColumn<IUser>> = [
@@ -33,25 +28,22 @@ export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) =
         { name: "email", title: tr("fld_email") },
         { name: "mobile", title: tr("fld_mobile") },
         { name: "status", title: tr("fld_status"), render: (r) => tr(statusOptions[r.status]) },
-        {
-            render: (r) => <DataTableOperations id={r.id} path="user" access={props.access} onDelete={onDelete} />,
-            title: tr("operations"),
-        },
+        { render: (r) => <DataTableOperations id={r.id} path="user" access={props.access} onDelete={onDelete} /> },
     ];
 
     return (
         <div className="crud-page">
             <DataTable queryOption={queryOption} columns={columns} records={users}
-                onChange={onFetch} pagination={true} />
+                onPagination={fetchAll} pagination={true} />
         </div>
     );
 
     function onDelete(id: number) {
         userService.remove(id)
-            .then((isDeleted) => isDeleted ? onFetch(null) : null);
+            .then((isDeleted) => isDeleted ? fetchAll(null) : null);
     }
 
-    function onFetch(option: IDataTableQueryOption<IUser>) {
+    function fetchAll(option: IQueryOption<IUser>) {
         if (!option) {
             option = queryOption;
         }

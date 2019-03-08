@@ -1,4 +1,4 @@
-import { IRouteComponentProps } from "@vesta/components";
+import { Button, IRouteComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
 import { RoleForm } from "./RoleForm";
@@ -18,16 +18,14 @@ export const RoleAdd: ComponentType<IRoleAddProps> = (props: IRoleAddProps) => {
             <h2>{tr("title_record_add", tr("role"))}</h2>
             <RoleForm goBack={goBack}>
                 <div className="btn-group">
-                    <button className="btn btn-primary" type="submit">{tr("save")}</button>
-                    <button className="btn btn-outline" type="button"
-                        onClick={goBack}>{tr("cancel")}</button>
+                    <Button color="primary" variant="outlined" type="button" onClick={goBack}>{tr("cancel")}</Button>
+                    <Button color="primary" variant="contained" type="submit">{tr("add")}</Button>
                 </div>
             </RoleForm>
         </div>
     );
 
-
     function goBack() {
         props.history.goBack();
     }
-}
+};

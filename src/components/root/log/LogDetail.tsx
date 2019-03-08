@@ -36,7 +36,6 @@ export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps
         </div>
     );
 
-
     function renderRecord(log: ILogger, index: number) {
         const logLevelOptions = {
             0: this.tr("enum_none"),
@@ -77,4 +76,4 @@ export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps
             </div>
         );
     }
-}
+};

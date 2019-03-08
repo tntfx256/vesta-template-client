@@ -1,5 +1,6 @@
 const { join, parse, normalize } = require("path");
 const { readFileSync, mkdirSync, writeFileSync } = require("fs");
+const path = require("path");
 const rimraf = require("rimraf");
 const webpack = require("webpack");
 
@@ -85,7 +86,14 @@ module.exports = {
             path: `${dir.build}/${target}/js`
         };
         wpConfig.resolve = {
-            extensions: [".ts", ".tsx", ".js"]
+            extensions: [".ts", ".tsx", ".js"],
+            alias: {
+                // "@vesta/components": path.resolve(`${dir.src}/vesta/components`),
+                // "@vesta/services": path.resolve(`${dir.src}/vesta/services`),
+                // "@vesta/culture": path.resolve(`${dir.src}/vesta/culture`),
+                // "@vesta/culture-ir": path.resolve(`${dir.src}/vesta/culture-ir`),
+                // "@vesta/culture-us": path.resolve(`${dir.src}/vesta/culture-us`),
+            }
         };
         wpConfig.module = {
             rules: [{

@@ -1,13 +1,14 @@
 import { Alert, Button, FormWrapper, IRouteComponentProps, MessageType, Preloader, TextInput } from "@vesta/components";
 import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
-import React, { ComponentType, useEffect, useState } from "react";
+import React, { ComponentType, useState } from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
+import { AppAction } from "../../misc/AppAction";
+import { appStore } from "../../misc/appStore";
 import { getApi } from "../../service/Api";
-import { getAuth, isGuest } from "../../service/Auth";
+import { getAuth } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
-
 
 interface ILoginParams {
 }
@@ -16,6 +17,7 @@ interface ILoginProps extends IRouteComponentProps<ILoginParams> {
 }
 
 export const Login: ComponentType<ILoginProps> = (props: ILoginProps) => {
+
     const tr = Culture.getDictionary().translate;
     const api = getApi();
     const auth = getAuth();
@@ -31,18 +33,11 @@ export const Login: ComponentType<ILoginProps> = (props: ILoginProps) => {
             minLength: tr("err_min_length", 4),
             required: tr("err_required"),
         },
-    }
+    };
     // state
-    const [user, setUser] = useState<IUser>({});
+    const [user, setUser] = useState<IUser>({} as IUser);
     const [validationErrors, setErrors] = useState<IValidationError>(null);
     const [loginError, setLoginError] = useState<string>("");
-
-
-    useEffect(() => {
-        if (!isGuest()) {
-            props.history.push("/logout");
-        }
-    })
 
     const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
     const loginErr = loginError ? <Alert type={MessageType.Error}>{tr("err_wrong_user_pass")}</Alert> : null;
@@ -64,7 +59,7 @@ export const Login: ComponentType<ILoginProps> = (props: ILoginProps) => {
                     <Link to="forget">{tr("forget_pass")}</Link>
                 </p>
                 <div className="btn-group">
-                    <Button color="primary" type="button">
+                    <Button color="primary" variant="outlined" type="button">
                         <Link to="register">{tr("register")}</Link>
                     </Button>
                     <Button color="primary" variant="contained">{tr("login")}</Button>
@@ -72,7 +67,6 @@ export const Login: ComponentType<ILoginProps> = (props: ILoginProps) => {
             </FormWrapper>
         </div>
     );
-
 
     function onChange(name: string, value: string) {
         user[name] = value;
@@ -91,11 +85,12 @@ export const Login: ComponentType<ILoginProps> = (props: ILoginProps) => {
             .then((response) => {
                 Preloader.hide();
                 auth.login(response.items[0]);
+                appStore.dispatch({ type: AppAction.User, payload: { user: auth.getUser() } });
             })
             .catch((error) => {
                 Preloader.hide();
                 setLoginError(tr("err_wrong_user_pass"));
-                if (error.message == "err_db_no_record") { return; }
+                if (error.message === "err_db_no_record") { return; }
                 notif.error(error.message);
             });
     }

@@ -1,7 +1,9 @@
 import { IRouteComponentProps, Navbar } from "@vesta/components";
 import { Culture } from "@vesta/culture";
-import React, { ComponentType } from "react";
+import React, { ComponentType, MouseEvent } from "react";
 import { withTheme } from "react-jss";
+import { AppAction } from "../../misc/AppAction";
+import { appStore } from "../../misc/appStore";
 
 interface IHomeParams {
 }
@@ -14,8 +16,12 @@ export const Home: ComponentType<IHomeProps> = withTheme((props: IHomeProps) => 
 
     return (
         <div className="page home-page has-navbar">
-            <Navbar title={tr("home")} showBurger={true} />
-            <h1>Home Component!</h1>
+            <Navbar title={tr("home")} onBurgerClick={openSidenav} />
+            <h1>home page</h1>
         </div>
     );
+
+    function openSidenav(e: MouseEvent<HTMLElement>) {
+        appStore.dispatch({ type: AppAction.Sidenav, payload: { isSidenavOpen: true } });
+    }
 });

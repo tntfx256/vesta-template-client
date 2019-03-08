@@ -16,16 +16,12 @@ interface IRoleDetailProps extends IRouteComponentProps<IRoleDetailParams> {
 export const RoleDetail: ComponentType<IRoleDetailProps> = (props: IRoleDetailProps) => {
     const service = getCrud<IRole>("acl/role");
     const tr = Culture.getDictionary().translate;
-    let initiated = false;
 
     const [role, setRole] = useState<IRole>(null);
 
     useEffect(() => {
-        if (initiated) { return; }
-        initiated = true;
         service.fetch(+props.match.params.id).then(setRole);
-    });
-
+    }, [props.match.params.id]);
 
     if (!role) { return null; }
     const permissions: IPermissions = {};
@@ -86,4 +82,4 @@ export const RoleDetail: ComponentType<IRoleDetailProps> = (props: IRoleDetailPr
             </table>
         </div>
     );
-}
+};

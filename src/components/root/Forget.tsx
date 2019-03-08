@@ -14,7 +14,7 @@ interface IForgetParams {
 interface IForgetProps extends IRouteComponentProps<IForgetParams> {
 }
 
-export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
+export const Forget: FC<IForgetProps> = (props: IForgetProps) => {
     const tr = Culture.getDictionary().translate;
     const notif = Notif.getInstance();
     const api = getApi();
@@ -44,31 +44,31 @@ export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
             </div>
             <FormWrapper name="ForgetForm" onSubmit={onSubmit}>
                 {alert}
-                <TextInput name="mobile" label={tr("fld_mobile")} value={mobile} error={errors.mobile} onChange={onChange} />
+                <TextInput name="mobile" label={tr("fld_mobile")} value={mobile}
+                    error={errors.mobile} onChange={onChange} />
                 <div className="btn-group">
-                    <Button type="button" color="primary">
+                    <Button type="button" color="primary" variant="outlined">
                         <Link to="/">{tr("login")}</Link>
                     </Button>
-                    <Button color="primary" variant="outlined">{tr("send_reset")}</Button>
+                    <Button color="primary" variant="contained">{tr("send_reset")}</Button>
                 </div>
             </FormWrapper>
         </div>
     );
-
 
     function onChange(name: string, value: any) {
         setMobile(value);
     }
 
     function onSubmit() {
-        const user = new User({ mobile });
+        const user = new User({ mobile } as IUser);
         const validationErrors = user.validate("mobile");
         if (validationErrors) {
             return setErrors(validationErrors);
         }
         Preloader.show();
         setErrors(null);
-        api.post<IUser, IResponse<IUser>>("account/forget", { mobile })
+        api.post<IUser, IResponse<IUser>>("account/forget", { mobile } as IUser)
             .then((response) => {
                 Preloader.hide();
                 notif.success(tr("info_forget"));
@@ -79,4 +79,4 @@ export const Forget: FC<IForgetProps> = function (props: IForgetProps) {
                 setErrors(error.violations);
             });
     }
-}
+};

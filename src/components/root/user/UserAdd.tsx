@@ -29,4 +29,4 @@ export const UserAdd: ComponentType<IUserAddProps> = (props: IUserAddProps) => {
     function goBack() {
         props.history.goBack();
     }
-}
+};

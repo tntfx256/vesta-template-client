@@ -1,10 +1,11 @@
-import { DataTable, DataTableOperations, IComponentProps, IColumn, IDataTableQueryOption } from "@vesta/components";
+import { DataTable, IColumn, IComponentProps, IQueryOption } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IRole } from "../../../cmn/models/Role";
-import { Notif } from "../../../service/Notif";
 import { getCrud } from "../../../service/crud";
+import { Notif } from "../../../service/Notif";
+import { DataTableOperations } from "../../general/DataTableOperations";
 
 interface IRoleListProps extends IComponentProps {
     access: IAccess;
@@ -13,17 +14,11 @@ interface IRoleListProps extends IComponentProps {
 export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) => {
     const service = getCrud<IRole>("acl/role");
     const tr = Culture.getDictionary().translate;
-    let initialized = false;
 
-    const [queryOption, setQueryOption] = useState<IDataTableQueryOption<IRole>>({});
     const [roles, setRoles] = useState<IRole[]>([]);
+    const [queryOption, setQueryOption] = useState<IQueryOption<IRole>>({});
 
-
-    useEffect(() => {
-        if (initialized) { return; }
-        initialized = true;
-        fetchAll(queryOption);
-    })
+    useEffect(() => fetchAll(queryOption), [queryOption]);
 
     const statusOptions = { 1: tr("enum_active"), 0: tr("enum_inactive") };
     const columns: Array<IColumn<IRole>> = [
@@ -37,16 +32,15 @@ export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) =
     ];
     return (
         <div className="crud-page">
-            <DataTable onChange={fetchAll} columns={columns} records={roles} pagination={false}
+            <DataTable onPagination={fetchAll} columns={columns} records={roles} pagination={false}
                 queryOption={queryOption} />
         </div>);
 
-
-    function fetchAll(queryOption: IDataTableQueryOption<IRole>) {
-        service.fetchAll(queryOption)
+    function fetchAll(option: IQueryOption<IRole>) {
+        service.fetchAll(option)
             .then((roles) => {
                 setRoles(roles);
-                setQueryOption(queryOption);
+                setQueryOption(option);
             });
     }
 
@@ -60,4 +54,4 @@ export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) =
                 Notif.getInstance().error(tr(error.message));
             });
     }
-}
+};

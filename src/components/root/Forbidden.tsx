@@ -7,13 +7,13 @@ interface IForbiddenParams {
 interface IForbiddenProps extends IRouteComponentProps<IForbiddenParams> {
 }
 
-export const Forbidden: FC<IForbiddenProps> = function (props: IForbiddenProps) {
+export const Forbidden: FC<IForbiddenProps> = (props: IForbiddenProps) => {
 
     useEffect(() => {
         props.history.replace("/");
-    })
+    });
 
     return (
         <div className="forbidden-page page has-navbar" />
     );
-}
+};

@@ -20,14 +20,14 @@ export const UserDetail: ComponentType<IUserDetailProps> = (props: IUserDetailPr
         2: tr("enum_user"),
     };
 
-    const [user, setUser] = useState<IUser>({});
-    
+    const [user, setUser] = useState<IUser>({} as IUser);
+
     let initiated = false;
     useEffect(() => {
         if (!initiated) { return; }
         initiated = true;
         getCrud("user").fetch(+props.match.params.id).then(setUser);
-    })
+    });
 
     if (!user) { return null; }
     const userGenderOptions = { 1: tr("enum_male"), 2: tr("enum_female") };
@@ -78,4 +78,4 @@ export const UserDetail: ComponentType<IUserDetailProps> = (props: IUserDetailPr
             </table>
         </div>
     );
-}
+};

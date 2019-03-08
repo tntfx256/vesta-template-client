@@ -1,4 +1,5 @@
-import { DateTimeInput, FileInput, FormWrapper, IComponentProps, IFormOption, Multichoice, Select, TextInput } from "@vesta/components";
+// tslint:disable-next-line:max-line-length
+import { DateTimeInput, FileInput, FormWrapper, IComponentProps, IFormOption, Select, TextInput } from "@vesta/components";
 import { IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
@@ -79,7 +80,7 @@ export const UserForm: ComponentType<IUserFormProps> = (props: IUserFormProps) =
         },
     };
 
-    const [user, setUser] = useState<IUser>({});
+    const [user, setUser] = useState<IUser>({} as IUser);
     const [roles, setRoles] = useState<IRole[]>([]);
     const [validationErrors, setValidationErrors] = useState<IValidationError>(null);
 
@@ -93,15 +94,15 @@ export const UserForm: ComponentType<IUserFormProps> = (props: IUserFormProps) =
                 }
                 setUser(user);
             });
-    })
-
+        getCrud<IRole>("acl/role").fetchAll().then(setRoles);
+    }, [props.id]);
 
     const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
     const roleId = user.role && (user.role as IRole).id;
 
     return (
         <FormWrapper name="userForm" onSubmit={onSubmit}>
-            <Multichoice name="type" label={tr("fld_type")} value={user.type}
+            <Select name="type" label={tr("fld_type")} value={user.type}
                 error={errors.type} onChange={onChange} options={typeOptions} />
             <Select name="role" label={tr("role")} options={roles} value={roleId}
                 error={errors.role} onChange={onChange} titleKey="name" valueKey="id" />
@@ -136,14 +137,14 @@ export const UserForm: ComponentType<IUserFormProps> = (props: IUserFormProps) =
 
     function onSubmit() {
         const userModel = new User(user);
-        const userFiles: IUser = {};
+        const userFiles: IUser = {} as IUser;
         const validationResult = userModel.validate();
         if (validationResult) {
             if (!userModel.password) {
                 delete validationResult.password;
             }
             if (Object.keys(validationResult).length) {
-                return Promise.reject(validationResult);
+                return setValidationErrors(validationResult);
             }
         }
         let hasFile = false;
@@ -154,4 +155,4 @@ export const UserForm: ComponentType<IUserFormProps> = (props: IUserFormProps) =
         }
         service.save(userModel.getValues(), hasFile ? userFiles : null);
     }
-}
+};

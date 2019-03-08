@@ -1,4 +1,5 @@
-import { CrudMenu, DataTable, DataTableOperations, IColumn, IDataTableQueryOption, IRouteComponentProps, Navbar, PageTitle, Preloader } from "@vesta/components";
+// tslint:disable-next-line:max-line-length
+import { CrudMenu, DataTable, IColumn, IQueryOption, IRouteComponentProps, Navbar, PageTitle, Preloader } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
 import { Route, Switch } from "react-router";
@@ -6,10 +7,10 @@ import { HashRouter } from "react-router-dom";
 import { ILog } from "../../cmn/models/Log";
 import { IUser, SourceApp } from "../../cmn/models/User";
 import { getAcl } from "../../service/Acl";
-import { Notif } from "../../service/Notif";
-import { transitionTo } from "../../service/Transition";
-import { LogDetail } from "./log/LogDetail";
 import { getCrud } from "../../service/crud";
+import { Notif } from "../../service/Notif";
+import { DataTableOperations } from "../general/DataTableOperations";
+import { LogDetail } from "./log/LogDetail";
 
 export interface ILogger {
     duration: number;
@@ -33,7 +34,7 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
     let initiated = false;
 
     const [logs, setLogs] = useState<ILog[]>([]);
-    const [queryOption, setQueryOption] = useState<IDataTableQueryOption<string>>({});
+    const [queryOption, setQueryOption] = useState<IQueryOption<string>>({});
 
     useEffect(() => {
         if (initiated) { return; }
@@ -65,13 +66,13 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
     return (
         <div className="page log-page has-navbar">
             <PageTitle title={tr("mdl_log")} />
-            <Navbar title={tr("mdl_log")} showBurger={true} />
+            <Navbar title={tr("mdl_log")} backLink="/" />
             <h1>{tr("mdl_log")}</h1>
             <CrudMenu path="log" access={access} />
             <div className="crud-wrapper">
                 <HashRouter>
                     <Switch>
-                        <Route path="/log/detail/:id" render={transitionTo(LogDetail, { log: ["read"] })} />
+                        <Route path="/log/detail/:id" component={LogDetail} />
                     </Switch>
                 </HashRouter>
                 <div className="crud-page">

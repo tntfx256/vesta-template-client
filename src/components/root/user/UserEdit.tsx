@@ -31,4 +31,4 @@ export const UserEdit: ComponentType<IUserEditProps> = (props: IUserEditProps) =
     function goBack() {
         props.history.goBack();
     }
-}
+};

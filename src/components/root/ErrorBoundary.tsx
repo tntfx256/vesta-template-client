@@ -19,7 +19,7 @@ export class ErrorBoundary extends Component<IErrorBoundaryProps, IErrorBoundary
         this.setState({ error, info });
     }
 
-    render() {
+    public render() {
         const { error, info } = this.state;
         if (!error) {
             return this.props.children;
