@@ -1,8 +1,8 @@
 // tslint:disable-next-line:max-line-length
-import { CrudMenu, DataTable, IColumn, IQueryOption, IRouteComponentProps, Navbar, PageTitle, Preloader } from "@vesta/components";
+import { CrudMenu, DataTable, IColumn, IComponentProps, IQueryOption, Navbar, PageTitle, Preloader } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
-import { Route, Switch } from "react-router";
+import { Route, RouteComponentProps, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { ILog } from "../../cmn/models/Log";
 import { IUser, SourceApp } from "../../cmn/models/User";
@@ -24,7 +24,7 @@ export interface ILogger {
 interface ILogParams {
 }
 
-interface ILogProps extends IRouteComponentProps<ILogParams> {
+interface ILogProps extends IComponentProps, RouteComponentProps<ILogParams> {
 }
 
 export const Log: ComponentType<ILogProps> = (props: ILogProps) => {

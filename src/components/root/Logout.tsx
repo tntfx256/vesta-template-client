@@ -1,6 +1,7 @@
-import { IRouteComponentProps, Preloader } from "@vesta/components";
+import { IComponentProps, Preloader } from "@vesta/components";
 import { IResponse } from "@vesta/core";
-import { FC, useEffect } from "react";
+import { FunctionComponent, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
 import { IUser } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { getAuth, isGuest } from "../../service/Auth";
@@ -9,10 +10,10 @@ import { getLog } from "../../service/getLog";
 interface ILogoutParams {
 }
 
-interface ILogoutProps extends IRouteComponentProps<ILogoutParams> {
+interface ILogoutProps extends IComponentProps, RouteComponentProps<ILogoutParams> {
 }
 
-export const Logout: FC<ILogoutProps> = function (props: ILogoutProps) {
+export const Logout: FunctionComponent<ILogoutProps> = (props: ILogoutProps) => {
     const api = getApi();
     const auth = getAuth();
 
@@ -31,7 +32,7 @@ export const Logout: FC<ILogoutProps> = function (props: ILogoutProps) {
                 onAfterLogout({});
             });
         return Preloader.hide;
-    });
+    }, []);
 
 
     return null;

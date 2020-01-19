@@ -1,18 +1,18 @@
-import { IRouteComponentProps } from "@vesta/components";
-import React, { ComponentType, useEffect } from "react";
+import { IComponentProps } from "@vesta/components";
+import React, { FunctionComponent, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
 
 interface INotFoundParams {
 }
 
-interface INotFoundProps extends IRouteComponentProps<INotFoundParams> {
+interface INotFoundProps extends IComponentProps, RouteComponentProps<INotFoundParams> {
 }
 
-export const NotFound: ComponentType<INotFoundProps> = function (props: INotFoundProps) {
+export const NotFound: FunctionComponent<INotFoundProps> = (props: INotFoundProps) => {
 
     useEffect(() => {
         props.history.replace("/");
-    })
-
+    }, [])
 
     return (
         <div className="notFound-page page has-navbar" />

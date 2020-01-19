@@ -1,19 +1,18 @@
-import { IRouteComponentProps, Navbar } from "@vesta/components";
+import { IComponentProps, Navbar } from "@vesta/components";
 import { Culture } from "@vesta/culture";
-import React, { ComponentType, MouseEvent } from "react";
-import { withTheme } from "react-jss";
-import { AppAction } from "../../misc/AppAction";
-import { appStore } from "../../misc/appStore";
+import React, { ComponentType, MouseEvent, useContext } from "react";
+import { RouteComponentProps } from "react-router";
+import { AppAction, Store } from "../../service/Store";
 
 interface IHomeParams {
 }
 
-interface IHomeProps extends IRouteComponentProps<IHomeParams> {
+interface IHomeProps extends IComponentProps, RouteComponentProps<IHomeParams> {
 }
 
-export const Home: ComponentType<IHomeProps> = withTheme((props: IHomeProps) => {
+export const Home: ComponentType<IHomeProps> = (props: IHomeProps) => {
     const tr = Culture.getDictionary().translate;
-
+    const { dispatch } = useContext(Store);
     return (
         <div className="page home-page has-navbar">
             <Navbar title={tr("home")} onBurgerClick={openSidenav} />
@@ -22,6 +21,6 @@ export const Home: ComponentType<IHomeProps> = withTheme((props: IHomeProps) => 
     );
 
     function openSidenav(e: MouseEvent<HTMLElement>) {
-        appStore.dispatch({ type: AppAction.Sidenav, payload: { isSidenavOpen: true } });
+        dispatch({ type: AppAction.Navbar, payload: { navbar: true } });
     }
-});
+}

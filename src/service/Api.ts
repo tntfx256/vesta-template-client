@@ -1,14 +1,14 @@
 import { Registry } from "@vesta/core";
 import { Api, IApiConfig, IRequestHeader, Storage } from "@vesta/services";
 import { SourceApp } from "../cmn/models/User";
-import { appConfig } from "../config/appConfig";
+import { config } from "../config";
+import { getAuth } from "./Auth";
 
 let instance: Api;
 
 export function getApi(): Api {
 
-    const sourceApp = Registry.get<SourceApp>("sourceApp");
-    const { api, version } = appConfig;
+    const { api, version } = config;
 
     if (!instance) {
         const endpoint = `${api}/api/${version.api}`;
@@ -21,14 +21,17 @@ export function getApi(): Api {
     return instance;
 
     function afterReceive<T>(method: string, xhr: XMLHttpRequest, edge: string, data: T) {
-        const token = xhr.getResponseHeader(this.tokenHeaderKeyName);
+        const token = xhr.getResponseHeader("X-Auth-Token");
         if (token) {
-            this.authService.setToken(token);
+            getAuth().setToken(token);
         }
     }
 
     function beforeSend<T>(method: string, edge: string, data: T, headers: IRequestHeader) {
-        (data as any).sourceApp = sourceApp;
+        if (data) {
+            const sourceApp = Registry.get<SourceApp>("sourceApp");
+            (data as any).s = sourceApp;
+        }
         if (method !== "UPLOAD") {
             headers["Content-Type"] = "application/json";
         }

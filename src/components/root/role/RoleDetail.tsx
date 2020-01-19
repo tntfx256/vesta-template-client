@@ -1,16 +1,17 @@
-import { IRouteComponentProps } from "@vesta/components";
+import { IComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { IPermissions } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router";
 import { IPermission } from "../../../cmn/models/Permission";
 import { IRole } from "../../../cmn/models/Role";
 import { getCrud } from "../../../service/crud";
 
 interface IRoleDetailParams {
-    id: number;
+    id: string;
 }
 
-interface IRoleDetailProps extends IRouteComponentProps<IRoleDetailParams> {
+interface IRoleDetailProps extends IComponentProps, RouteComponentProps<IRoleDetailParams> {
 }
 
 export const RoleDetail: ComponentType<IRoleDetailProps> = (props: IRoleDetailProps) => {

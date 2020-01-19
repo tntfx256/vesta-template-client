@@ -1,5 +1,4 @@
 import { IResponse, isCordova } from "@vesta/core";
-import { AclPolicy } from "@vesta/services";
 import React, { ComponentType, useEffect, useReducer } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
@@ -10,10 +9,9 @@ import { getRoutes, IRouteItem } from "./config/route";
 import { KeyboardPlugin } from "./plugin/KeyboardPlugin";
 import { SplashPlugin } from "./plugin/SplashPlugin";
 import { StatusbarPlugin } from "./plugin/StatusbarPlugin";
-import { getAcl } from "./service/Acl";
 import { getApi } from "./service/Api";
 import { getAuth, isGuest } from "./service/Auth";
-import { AppAction, appReducer, getInitialState, IAppAction, IAppState, Store } from "./service/Store";
+import { AppAction, appReducer, getInitialState, Store } from "./service/Store";
 import { transitionTo } from "./service/Transition";
 
 interface IAppProps { }
@@ -23,28 +21,28 @@ export const App: ComponentType = (props: IAppProps) => {
   const routeItems = getRoutes(!isGuest());
   const routes = renderRoutes(routeItems, "");
 
-  // prevent splash from hiding after timeout; it must be hidden manually
-  SplashPlugin.show();
   if (isCordova()) {
     KeyboardPlugin.setDefaultProperties();
     StatusbarPlugin.styleDefault();
   }
 
-  const [store, dispatch] = useReducer<IAppState, IAppAction>(appReducer, getInitialState());
+  const [state, dispatch] = useReducer<typeof appReducer>(appReducer, getInitialState());
 
   useEffect(() => {
+    // prevent splash from hiding after timeout; it must be hidden manually
+    SplashPlugin.hide();
     getApi().get<IUser, IResponse<IUser>>("me")
       .then((response) => {
         const user = response.items[0];
         const auth = getAuth();
         auth.login(user);
         dispatch({ type: AppAction.User, payload: { user } });
-      });
-  }, [isGuest()]);
+      }).catch((err) => { console.log(err) });
+  }, []);
   // todo: registerPushNotification();
 
   return (
-    <Store.Provider value={{ store, dispatch }}>
+    <Store.Provider value={{ state, dispatch }}>
       <HashRouter>
         <Root routeItems={routeItems}>
           <Switch>

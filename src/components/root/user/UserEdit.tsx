@@ -1,13 +1,14 @@
-import { IRouteComponentProps } from "@vesta/components";
+import { IComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
+import { RouteComponentProps } from "react-router";
 import { UserForm } from "./UserForm";
 
 interface IUserEditParams {
-    id: number;
+    id: string;
 }
 
-interface IUserEditProps extends IRouteComponentProps<IUserEditParams> {
+interface IUserEditProps extends IComponentProps, RouteComponentProps<IUserEditParams> {
 }
 
 export const UserEdit: ComponentType<IUserEditProps> = (props: IUserEditProps) => {

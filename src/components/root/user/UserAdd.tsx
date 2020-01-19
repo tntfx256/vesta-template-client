@@ -1,12 +1,13 @@
-import { IRouteComponentProps } from "@vesta/components";
+import { IComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
+import { RouteComponentProps } from "react-router";
 import { UserForm } from "./UserForm";
 
 interface IUserAddParams {
 }
 
-interface IUserAddProps extends IRouteComponentProps<IUserAddParams> {
+interface IUserAddProps extends IComponentProps, RouteComponentProps<IUserAddParams> {
 }
 
 export const UserAdd: ComponentType<IUserAddProps> = (props: IUserAddProps) => {

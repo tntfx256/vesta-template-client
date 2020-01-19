@@ -1,15 +1,16 @@
-import { IRouteComponentProps } from "@vesta/components";
+import { IComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router";
 import { IUser } from "../../../cmn/models/User";
 import { getCrud } from "../../../service/crud";
-import { getFileUrl } from "../../../util/Util";
+import { getFileUrl } from "../../../util";
 
 interface IUserDetailParams {
-    id: number;
+    id: string;
 }
 
-interface IUserDetailProps extends IRouteComponentProps<IUserDetailParams> {
+interface IUserDetailProps extends IComponentProps, RouteComponentProps<IUserDetailParams> {
 }
 
 export const UserDetail: ComponentType<IUserDetailProps> = (props: IUserDetailProps) => {

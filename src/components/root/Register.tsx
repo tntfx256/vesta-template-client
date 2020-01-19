@@ -1,22 +1,19 @@
-import { Button, FormWrapper, IRouteComponentProps, Preloader, TextInput } from "@vesta/components";
+import { Button, FormWrapper, IComponentProps, Preloader, TextInput } from "@vesta/components";
 import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useState } from "react";
-import { Link } from "react-router-dom";
-import { withTheme } from "theming";
+import { Link, RouteComponentProps } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { Notif } from "../../service/Notif";
-import { getFileUrl } from "../../util/Util";
-
 
 interface IRegisterParams {
 }
 
-interface IRegisterProps extends IRouteComponentProps<IRegisterParams> {
+interface IRegisterProps extends IComponentProps, RouteComponentProps<IRegisterParams> {
 }
 
-export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegisterProps) => {
+export const Register: ComponentType<IRegisterProps> = (props: IRegisterProps) => {
     const tr = Culture.getDictionary().translate;
     const api = getApi();
     const notif = Notif.getInstance()
@@ -36,7 +33,7 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
     const [user, setUser] = useState<IUser>({});
     const [validationErrors, setErrors] = useState<IValidationError>(null);
 
-    user.image = getFileUrl(user.image as string);
+    // user.image = getFileUrl(user.image as string);
     const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
 
     return (
@@ -57,19 +54,17 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
                         <a href="https://vesta.bz" target="_blank">{tr("privacy")}</a>)
                     </div>
                 <div className="btn-group">
-                    <Button color="primary" type="button">
+                    <Button color="primary" variant="outlined">
                         <Link to="/">{tr("login")}</Link>
                     </Button>
-                    <Button color="primary" variant="contained">{tr("register")}</Button>
+                    <Button color="primary" variant="contained" type="submit">{tr("register")}</Button>
                 </div>
             </FormWrapper>
         </div>
     );
 
-
     function onChange(name: string, value: any) {
-        user[name] = value;
-        setUser(user);
+        setUser({ ...user, [name]: value });
     }
 
     function onSubmit() {
@@ -91,4 +86,4 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
                 notif.error(error.message);
             });
     }
-});
+}

@@ -1,4 +1,5 @@
-import { appConfig } from "../config/appConfig";
+import { Dispatch, useState as UseStateReact } from "react";
+import { config } from "../config";
 
 export function shallowClone<T>(object: T): T {
     if (!object) { return object; }
@@ -21,5 +22,16 @@ export function launchLink(link: string, target: string = "_blank") {
 }
 
 export function getFileUrl(address: string) {
-    return `${appConfig.api}/upl/${address || ""}`;
+    return `${config.api}/upl/${address || ""}`;
+}
+
+export function useState<T>(initialState: T): [T, Dispatch<Partial<T>>] {
+
+    const [state, setStateInternal] = UseStateReact<T>(initialState);
+
+    const setState = (newState: Partial<T>) => {
+        setStateInternal({ ...state, ...newState });
+    };
+
+    return [state, setState];
 }

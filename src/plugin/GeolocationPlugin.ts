@@ -1,6 +1,6 @@
 import { Storage } from "@vesta/services";
 import { ILocation } from "../cmn/interfaces/GeoLocation";
-import { shallowClone } from "../util/Util";
+import { shallowClone } from "../util";
 
 /**
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/Using_geolocation

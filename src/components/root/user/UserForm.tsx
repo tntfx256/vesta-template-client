@@ -1,4 +1,3 @@
-// tslint:disable-next-line:max-line-length
 import { DateTimeInput, FileInput, FormWrapper, IComponentProps, IFormOption, Select, TextInput } from "@vesta/components";
 import { IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
@@ -7,7 +6,7 @@ import { Status } from "../../../cmn/enum/Status";
 import { IRole } from "../../../cmn/models/Role";
 import { IUser, User, UserGender, UserType } from "../../../cmn/models/User";
 import { getCrud } from "../../../service/crud";
-import { getFileUrl } from "../../../util/Util";
+import { getFileUrl } from "../../../util";
 
 interface IUserFormProps extends IComponentProps {
     id?: number;

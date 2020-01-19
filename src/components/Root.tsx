@@ -1,22 +1,22 @@
-import { Html, IRouteComponentProps, Preloader, Sidenav, ToastMessage } from "@vesta/components";
+import { Html, IComponentProps, Preloader, Sidenav, ToastMessage } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { Storage } from "@vesta/services";
 import React, { ComponentType, useContext, useEffect } from "react";
-import { withRouter } from "react-router";
+import { RouteComponentProps, withRouter } from "react-router";
 import { IRouteItem } from "../config/route";
-import { IStore, Store } from "../service/Store";
+import { Store } from "../service/Store";
 import { SidenavContent } from "./general/SidenavContent";
 import { ErrorBoundary } from "./root/ErrorBoundary";
 
 interface IRootParams { }
 
-interface IRootProps extends IRouteComponentProps<IRootParams> {
+interface IRootProps extends IComponentProps, RouteComponentProps<IRootParams> {
     routeItems: IRouteItem[];
 }
 
 const Root: ComponentType<IRootProps> = (props: IRootProps) => {
 
-    const { store: { user, navbar, toast } } = useContext<IStore>(Store); // this.state;
+    const { state: { user, navbar, toast } } = useContext(Store); // this.state;
     const { code, dir } = Culture.getLocale();
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const Root: ComponentType<IRootProps> = (props: IRootProps) => {
                     {props.children}
                 </div>
                 <Sidenav open={navbar}>
-                    <SidenavContent name="main-sidenav" user={user} menuItems={props.routeItems} />
+                    <SidenavContent name="main-sidenav" menuItems={props.routeItems} />
                 </Sidenav>
                 {toastMsg}
                 <Preloader />
@@ -68,4 +68,4 @@ const Root: ComponentType<IRootProps> = (props: IRootProps) => {
     }
 };
 
-export default withRouter(Root as any);
+export default withRouter<IRootProps, typeof Root>(Root as any);

@@ -17,7 +17,7 @@ export interface IAppAction {
 }
 
 export interface IStore {
-    store: IAppState;
+    state: IAppState;
     dispatch: Dispatch<IAppAction>;
 }
 

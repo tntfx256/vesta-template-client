@@ -9,13 +9,6 @@ const { src, dest, watch } = require("gulp");
 
 module.exports = function(setting) {
     const dir = setting.dir;
-    const browsersToSupport = [
-        "last 4 version",
-        "iOS >= 7",
-        "Android >= 4",
-        "Explorer >= 10",
-        "ExplorerMobile >= 11"
-    ];
 
     function compileSass() {
         const genMap = !setting.production;
@@ -25,7 +18,7 @@ module.exports = function(setting) {
             stream = stream.pipe(sourcemaps.init());
         }
         stream = stream.pipe(eliminator(setting)).pipe(sass());
-        const preprocessors = [autoPrefixer({ browsers: browsersToSupport })];
+        const preprocessors = [autoPrefixer({})];
         preprocessors.push(mqpacker);
         preprocessors.push(csswring);
         stream = stream.pipe(postCss(preprocessors));

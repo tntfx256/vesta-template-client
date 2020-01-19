@@ -9,10 +9,6 @@ end_of_line = lf
 insert_final_newline = false
 trim_trailing_whitespace = true
 
-[*.{ts,js,html,scss,tsx}]
-indent_size = 4
-
-
 [*.md]
 insert_final_newline = false
 trim_trailing_whitespace = false

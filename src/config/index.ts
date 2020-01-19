@@ -1,4 +1,4 @@
-import { cmnConfig, ICmnConfig } from "../cmn/config/cmnConfig";
+import { cmnConfig, ICmnConfig } from "../cmn/config";
 import { IVariantConfig, variantConfig } from "./variantConfig";
 
 export interface IPaginationConfig {
@@ -15,7 +15,7 @@ export interface IAppConfig extends IVariantConfig, ICmnConfig {
     transition: ITransitionConfig;
 }
 
-export const appConfig: IAppConfig = {
+export const config: IAppConfig = {
     api: variantConfig.api,
     env: variantConfig.env,
     locale: cmnConfig.locale,

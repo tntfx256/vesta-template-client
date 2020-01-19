@@ -1,7 +1,7 @@
-import { CrudMenu, IRouteComponentProps, Navbar, PageTitle } from "@vesta/components";
+import { CrudMenu, IComponentProps, Navbar, PageTitle } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
-import { Route, Switch } from "react-router";
+import { Route, RouteComponentProps, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { getAcl } from "../../service/Acl";
 import { transitionTo } from "../../service/Transition";
@@ -13,7 +13,7 @@ import { UserList } from "./user/UserList";
 interface IUserParams {
 }
 
-interface IUserProps extends IRouteComponentProps<IUserParams> {
+interface IUserProps extends IComponentProps, RouteComponentProps<IUserParams> {
 }
 
 export const User: ComponentType<IUserProps> = (props: IUserProps) => {
@@ -32,7 +32,7 @@ export const User: ComponentType<IUserProps> = (props: IUserProps) => {
     return (
         <div className="page user-page has-navbar">
             <PageTitle title={tr("mdl_user")} />
-            <Navbar title={tr("mdl_user")} showBurger={true} />
+            <Navbar title={tr("mdl_user")} />
             <h1>{tr("users")}</h1>
             <CrudMenu path="user" access={access} />
 

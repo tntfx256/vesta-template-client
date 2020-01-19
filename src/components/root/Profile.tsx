@@ -4,13 +4,12 @@ import { IModelValidationMessage, IResponse, IValidationError, validationMessage
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import { withTheme } from "theming";
 import { IRole } from "../../cmn/models/Role";
 import { IUser, User, UserGender } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { getAuth } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
-import { getFileUrl } from "../../util/Util";
+import { getFileUrl } from "../../util";
 
 interface IProfileParams {
 }
@@ -18,7 +17,7 @@ interface IProfileParams {
 interface IProfileProps extends RouteComponentProps<IProfileParams> {
 }
 
-export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileProps) => {
+export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
     const tr = Culture.getDictionary().translate;
     const auth = getAuth();
     const api = getApi();
@@ -63,7 +62,7 @@ export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileP
     user.role = (user.role as IRole).id;
 
     let userImage = null;
-    if (user.image && "string" == typeof user.image) {
+    if (user.image && "string" === typeof user.image) {
         userImage = getFileUrl(`user/${user.image}`);
     }
     const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
@@ -110,7 +109,6 @@ export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileP
             </FormWrapper>
         </div>
     );
-
 
     function onChange(name: string, value: any) {
         user[name] = value;
@@ -182,4 +180,4 @@ export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileP
         setUser(newUser);
         notif.success("msg_profile_update");
     }
-});
+}

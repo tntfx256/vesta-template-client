@@ -1,21 +1,22 @@
+import { setTheme } from "@vesta/components";
+import { Registry } from "@vesta/core";
 import { isCordova } from "@vesta/core/Platform";
 import { Culture, ILocale } from "@vesta/culture";
 import { IrDate, IrLocale } from "@vesta/culture-ir";
 import { UsDate, UsLocale } from "@vesta/culture-us";
 import { createTheme } from "@vesta/theme";
-import "core-js/es6/map";
-import "core-js/es6/promise";
-import "core-js/es6/set";
 import React from "react";
 import { render } from "react-dom";
 import { ThemeProvider } from "react-jss";
 import { App } from "./App";
+import { SourceApp } from "./cmn/models/User";
 import { IrVocabs } from "./cmn/vocabs/IrVocabs";
 import { UsVocabs } from "./cmn/vocabs/UsVocabs";
-import { appConfig } from "./config/appConfig";
+import { config } from "./config";
 import { SplashPlugin } from "./plugin/SplashPlugin";
 import { getLog } from "./service/getLog";
 
+Registry.set("sourceApp", SourceApp.EndUser);
 // initiating locale
 Culture.register(UsLocale, UsVocabs, UsDate);
 Culture.register(IrLocale, IrVocabs, IrDate);
@@ -64,7 +65,7 @@ function checkScripts() {
     const OFFLINE_ASSUMPTION_DURATION = 30000;
     const SCRIPT_CHECK_INTERVAL = 300;
     const scriptsToCheck: string[] = [];
-    if (appConfig.env !== "production") {
+    if (config.env !== "production") {
         // do not waste time in development
         scriptsToCheck.splice(0, scriptsToCheck.length);
     }
@@ -85,13 +86,12 @@ function checkScripts() {
 }
 
 function startApp() {
-
     const theme = createTheme({});
+    setTheme(theme);
     render(
         <ThemeProvider theme={theme}>
             <App />
         </ThemeProvider>,
-        document.getElementById("root"),
-        () => setTimeout(SplashPlugin.hide, 1500),
+        document.getElementById("root")
     );
 }

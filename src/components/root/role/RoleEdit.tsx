@@ -1,13 +1,14 @@
-import { Button, IRouteComponentProps } from "@vesta/components";
+import { Button, IComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
+import { RouteComponentProps } from "react-router";
 import { RoleForm } from "./RoleForm";
 
 interface IRoleEditParams {
-    id: number;
+    id: string;
 }
 
-interface IRoleEditProps extends IRouteComponentProps<IRoleEditParams> {
+interface IRoleEditProps extends IComponentProps, RouteComponentProps<IRoleEditParams> {
 }
 
 export const RoleEdit: ComponentType<IRoleEditProps> = (props: IRoleEditProps) => {

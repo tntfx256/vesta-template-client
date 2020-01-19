@@ -1,7 +1,7 @@
-import { CrudMenu, IRouteComponentProps, Navbar, PageTitle } from "@vesta/components";
+import { CrudMenu, IComponentProps, Navbar, PageTitle } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType } from "react";
-import { Route, Switch } from "react-router";
+import { Route, RouteComponentProps, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { getAcl } from "../../service/Acl";
 import { transitionTo } from "../../service/Transition";
@@ -18,7 +18,7 @@ export interface IAction {
 interface IRoleParams {
 }
 
-interface IRoleProps extends IRouteComponentProps<IRoleParams> {
+interface IRoleProps extends IComponentProps, RouteComponentProps<IRoleParams> {
 }
 
 export const Role: ComponentType<IRoleProps> = (props: IRoleProps) => {
