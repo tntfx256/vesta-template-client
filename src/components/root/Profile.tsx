@@ -59,7 +59,6 @@ export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
     const [preview, setPreview] = useState<string>("");
     const [user, setUser] = useState<IUser>(auth.getUser());
     const [validationErrors, setErrors] = useState<IValidationError>(null);
-    user.role = (user.role as IRole).id;
 
     let userImage = null;
     if (user.image && "string" === typeof user.image) {
@@ -69,7 +68,7 @@ export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
 
     return (
         <div className="page profile-page has-navbar">
-            <Navbar title={tr("profile")} backLink="/" />
+            <Navbar title={tr("profile")} onBack={() => props.history.replace("/")} />
             <FormWrapper onSubmit={onSubmit}>
                 <div className="avatar-wrapper">
                     <Avatar src={preview ? preview : userImage as string}
@@ -120,6 +119,7 @@ export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
             return setErrors({ password: "conf" });
         }
         const userModel = new User(user);
+        userModel.role = (user.role as IRole).id;
         const validationErrors = userModel.validate();
         if (validationErrors) {
             if (!user.password) {

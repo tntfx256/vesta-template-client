@@ -1,19 +1,15 @@
-import { setTheme } from "@vesta/components";
 import { Registry } from "@vesta/core";
 import { isCordova } from "@vesta/core/Platform";
 import { Culture, ILocale } from "@vesta/culture";
 import { IrDate, IrLocale } from "@vesta/culture-ir";
 import { UsDate, UsLocale } from "@vesta/culture-us";
-import { createTheme } from "@vesta/theme";
 import React from "react";
 import { render } from "react-dom";
-import { ThemeProvider } from "react-jss";
-import { App } from "./App";
+import AppInit from "./AppInit";
 import { SourceApp } from "./cmn/models/User";
 import { IrVocabs } from "./cmn/vocabs/IrVocabs";
 import { UsVocabs } from "./cmn/vocabs/UsVocabs";
 import { config } from "./config";
-import { SplashPlugin } from "./plugin/SplashPlugin";
 import { getLog } from "./service/getLog";
 
 Registry.set("sourceApp", SourceApp.EndUser);
@@ -86,12 +82,11 @@ function checkScripts() {
 }
 
 function startApp() {
-    const theme = createTheme({});
-    setTheme(theme);
+    // const theme = createTheme({});
+    // setTheme(theme);
+    // const [state, dispatch] = useReducer<typeof appReducer>(appReducer, getInitialState());
     render(
-        <ThemeProvider theme={theme}>
-            <App />
-        </ThemeProvider>,
+        <AppInit />,
         document.getElementById("root")
     );
 }

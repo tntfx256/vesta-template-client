@@ -1,13 +1,11 @@
-@import './scss/misc/colors';
-@import './scss/misc/variables';
 @import './scss/misc/mixins';
 @import './scss/misc/animation';
 
 @import './scss/fonts/material';
 
-@import "../App";
+@import '../App';
 
-@import "../components/Root";
+@import '../components/Root';
 
 @import '../components/root/ErrorBoundary';
 @import '../components/root/Forbidden';

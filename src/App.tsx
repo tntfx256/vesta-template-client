@@ -1,5 +1,5 @@
 import { IResponse, isCordova } from "@vesta/core";
-import React, { ComponentType, useEffect, useReducer } from "react";
+import React, { ComponentType, useEffect, useReducer, useContext } from "react";
 import { Route, Switch } from "react-router";
 import { HashRouter } from "react-router-dom";
 import { IUser } from "./cmn/models/User";
@@ -11,22 +11,19 @@ import { SplashPlugin } from "./plugin/SplashPlugin";
 import { StatusbarPlugin } from "./plugin/StatusbarPlugin";
 import { getApi } from "./service/Api";
 import { getAuth, isGuest } from "./service/Auth";
-import { AppAction, appReducer, getInitialState, Store } from "./service/Store";
+import { appReducer, getInitialState, Store } from "./service/Store";
 import { transitionTo } from "./service/Transition";
 
 interface IAppProps { }
 
 export const App: ComponentType = (props: IAppProps) => {
 
-  const routeItems = getRoutes(!isGuest());
-  const routes = renderRoutes(routeItems, "");
+  const { state, dispatch } = useContext(Store);
 
   if (isCordova()) {
     KeyboardPlugin.setDefaultProperties();
     StatusbarPlugin.styleDefault();
   }
-
-  const [state, dispatch] = useReducer<typeof appReducer>(appReducer, getInitialState());
 
   useEffect(() => {
     // prevent splash from hiding after timeout; it must be hidden manually
@@ -36,22 +33,25 @@ export const App: ComponentType = (props: IAppProps) => {
         const user = response.items[0];
         const auth = getAuth();
         auth.login(user);
-        dispatch({ type: AppAction.User, payload: { user } });
-      }).catch((err) => { console.log(err) });
+        dispatch({ user });
+      }).catch((err) => {
+        // log
+      });
+    // todo: registerPushNotification();
   }, []);
-  // todo: registerPushNotification();
+
+  const routeItems = getRoutes(!isGuest());
+  const routes = renderRoutes(routeItems, "");
 
   return (
-    <Store.Provider value={{ state, dispatch }}>
-      <HashRouter>
-        <Root routeItems={routeItems}>
-          <Switch>
-            {routes}
-            <Route component={NotFound} />
-          </Switch>
-        </Root>
-      </HashRouter>
-    </Store.Provider>
+    <HashRouter>
+      <Root routeItems={routeItems}>
+        <Switch>
+          {routes}
+          <Route component={NotFound} />
+        </Switch>
+      </Root>
+    </HashRouter>
   );
 
   function renderRoutes(items: IRouteItem[], prefix: string) {

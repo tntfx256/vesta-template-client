@@ -3,7 +3,7 @@ import { Culture } from "@vesta/culture";
 import React, { FunctionComponent, useContext } from "react";
 import { Link } from "react-router-dom";
 import { IUser } from "../../cmn/models/User";
-import { AppAction, Store } from "../../service/Store";
+import { Store } from "../../service/Store";
 import { getFileUrl } from "../../util";
 
 interface ISidenavContentProps extends IComponentProps {
@@ -18,22 +18,18 @@ interface ISidenavContentState {
 
 export const SidenavContent: FunctionComponent<ISidenavContentProps> = (props: ISidenavContentProps) => {
 
-    const { state, dispatch } = useContext(Store);
+    const { state: { user }, dispatch } = useContext(Store);
     const tr = Culture.getDictionary().translate;
     const localeOptions = [
         { id: 1, locale: "fa-IR", title: tr("persian") },
         { id: 2, locale: "en-US", title: tr("english") },
     ];
 
-    // public constructor(props: ISidenavContentProps) {
-    //     super(props);
     const locale = Culture.getLocale().code;
-    const { user } = state;
-    // const state = { locale: locale === "fa-IR" ? 1 : 2, user: state.getState().user };
-    // }
+    // const { user } = state;
 
     const closeSidenav = () => {
-        dispatch({ type: AppAction.Navbar, payload: { navbar: false } });
+        dispatch({ navbar: false });
     }
 
     const onLocaleChange = (name: string, value: number) => {

@@ -17,7 +17,6 @@ export const Logout: FunctionComponent<ILogoutProps> = (props: ILogoutProps) => 
     const api = getApi();
     const auth = getAuth();
 
-
     useEffect(() => {
         if (isGuest()) {
             return props.history.replace("/");
@@ -34,9 +33,7 @@ export const Logout: FunctionComponent<ILogoutProps> = (props: ILogoutProps) => 
         return Preloader.hide;
     }, []);
 
-
     return null;
-
 
     function onAfterLogout(user: IUser) {
         auth.logout();

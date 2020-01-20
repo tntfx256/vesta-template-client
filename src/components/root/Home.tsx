@@ -2,7 +2,7 @@ import { IComponentProps, Navbar } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, MouseEvent, useContext } from "react";
 import { RouteComponentProps } from "react-router";
-import { AppAction, Store } from "../../service/Store";
+import { Store } from "../../service/Store";
 
 interface IHomeParams {
 }
@@ -21,6 +21,6 @@ export const Home: ComponentType<IHomeProps> = (props: IHomeProps) => {
     );
 
     function openSidenav(e: MouseEvent<HTMLElement>) {
-        dispatch({ type: AppAction.Navbar, payload: { navbar: true } });
+        dispatch({ navbar: true });
     }
 }

@@ -3,22 +3,15 @@ import { createContext, Dispatch } from "react";
 import { IUser } from "../cmn/models/User";
 import { getAuth } from "./Auth";
 
-export enum AppAction { User, Navbar }
-
 export interface IAppState {
     navbar: boolean;
-    toast: IToastMessageProps;
+    toast: IToastMessageProps | null;
     user: IUser;
-}
-
-export interface IAppAction {
-    type: AppAction;
-    payload: Partial<IAppState>;
 }
 
 export interface IStore {
     state: IAppState;
-    dispatch: Dispatch<IAppAction>;
+    dispatch: Dispatch<Partial<IAppState>>;
 }
 
 export function getInitialState(): IAppState {
@@ -29,17 +22,8 @@ export function getInitialState(): IAppState {
     };
 }
 
-export function appReducer(state: IAppState, action: IAppAction): IAppState {
-    if (!state) {
-        return getInitialState();
-    }
-    switch (action.type) {
-        case AppAction.User:
-            return { ...state, user: action.payload.user };
-        case AppAction.Navbar:
-            return { ...state, navbar: action.payload.navbar };
-    }
-    return state;
+export function appReducer(state: IAppState, action: Partial<IAppState>): IAppState {
+    return { ...state, ...action };
 }
 
-export const Store = createContext<IStore>({} as IStore);
+export const Store = createContext<IStore>(null);

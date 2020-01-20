@@ -7,5 +7,7 @@ $font-path: '../fonts';
 
 $base-font-family: IRANSans, Tahoma, Verdana, Geneva, sans-serif;
 
+@import './scss/misc/colors';
+@import './scss/misc/variables';
 @import '../node_modules/@vesta/components/index-rtl.scss';
 @import 'scss/common';

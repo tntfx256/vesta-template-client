@@ -1,4 +1,5 @@
-import { Html, IComponentProps, Preloader, Sidenav, ToastMessage } from "@vesta/components";
+import { Html, IComponentProps, IToastMessageProps, Preloader, Sidenav, ToastMessage } from "@vesta/components";
+import { Dispatcher } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import { Storage } from "@vesta/services";
 import React, { ComponentType, useContext, useEffect } from "react";
@@ -16,7 +17,7 @@ interface IRootProps extends IComponentProps, RouteComponentProps<IRootParams> {
 
 const Root: ComponentType<IRootProps> = (props: IRootProps) => {
 
-    const { state: { user, navbar, toast } } = useContext(Store); // this.state;
+    const { state: { user, navbar, toast }, dispatch } = useContext(Store); // this.state;
     const { code, dir } = Culture.getLocale();
 
     useEffect(() => {
@@ -26,11 +27,11 @@ const Root: ComponentType<IRootProps> = (props: IRootProps) => {
         window.onblur = toBackground;
         document.addEventListener("pause", toBackground);
         window.onunload = onExit;
-        // global state
-        // appStore.subscribe(() => {
-        //     this.setState(appStore.getState());
-        // });
-    });
+        // toast subscription
+        Dispatcher.getInstance().register<IToastMessageProps>("toast", toast => {
+            dispatch({ toast });
+        });
+    }, []);
 
     const toastMsg = toast ?
         <ToastMessage message={toast.message} type={toast.type} onClose={onCloseToast} /> : null;
@@ -52,7 +53,7 @@ const Root: ComponentType<IRootProps> = (props: IRootProps) => {
     );
 
     function onCloseToast() {
-        // this.setState({ toast: null });
+        dispatch({ toast: null });
     }
 
     function onExit() {

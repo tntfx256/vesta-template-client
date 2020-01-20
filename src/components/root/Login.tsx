@@ -7,7 +7,7 @@ import { IUser, User } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
 import { getAuth } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
-import { AppAction, Store } from "../../service/Store";
+import { Store } from "../../service/Store";
 import { useState } from "../../util";
 
 interface ILoginParams {
@@ -98,7 +98,7 @@ export const Login: FunctionComponent<ILoginProps> = (props: ILoginProps) => {
             .then((response) => {
                 Preloader.hide();
                 auth.login(response.items[0]);
-                dispatch({ type: AppAction.User, payload: { user: auth.getUser() } });
+                dispatch({ user: auth.getUser() });
             })
             .catch((error) => {
                 Preloader.hide();
