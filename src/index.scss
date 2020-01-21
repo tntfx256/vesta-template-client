@@ -14,20 +14,21 @@ html, body {
 }
 
 html {
-    background: url('../images/bg-main.jpg') no-repeat fixed center $white;
-    background-size: cover;
+    // background: url('../images/bg-main.jpg') no-repeat fixed center $white;
+    // background-size: cover;
+    background: $body-background-color;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 body {
-    color: $color-dark;
+    color: $color-text;
     min-width: $layout-small-min;
     overflow: visible;
 
     .splash-wrapper {
-        background: url('../images/splash/768x1024.jpg') no-repeat center $white;
-        background-size: cover;
+        background: url('../images/icons/768x1024.jpg') no-repeat center $white;
+        background-size: contain;
         bottom: 0;
         display: none;
         left: 0;

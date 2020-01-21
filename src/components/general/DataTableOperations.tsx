@@ -24,7 +24,7 @@ export class DataTableOperations extends PureComponent<IDataTableOperationsProps
     }
 
     public render() {
-        const { path, id, access } = this.props;
+        const { path, id, access, children } = this.props;
         const { showConfirmBox } = this.state;
         const editLink = access.edit ?
             <Link to={`/${path}/edit/${id}`} className="edit-btn"><Icon name="mode_edit" /></Link> : null;
@@ -36,6 +36,7 @@ export class DataTableOperations extends PureComponent<IDataTableOperationsProps
                 <Link to={`/${path}/detail/${id}`}><Icon name="search" /></Link>
                 {editLink}
                 {delLink}
+                {children}
                 <MessageBox show={showConfirmBox} btnGroup={MessageBoxBtnGroup.YesNo} onAction={this.onAction}
                     title={this.tr("title_record_delete")}>
                     <p>{this.tr("msg_delete_confirm")}</p>

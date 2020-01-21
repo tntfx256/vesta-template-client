@@ -1,9 +1,7 @@
 import { IToastMessageProps } from "@vesta/components";
 import { createContext, Dispatch } from "react";
 import { IUser } from "../cmn/models/User";
-import { getAuth } from "./Auth";
-
-export enum AppAction { User, Navbar }
+import { getAuthInstance } from "./Auth";
 
 export interface IAppState {
     navbar: boolean;
@@ -11,35 +9,21 @@ export interface IAppState {
     user: IUser;
 }
 
-export interface IAppAction {
-    type: AppAction;
-    payload: Partial<IAppState>;
-}
-
 export interface IStore {
     store: IAppState;
-    dispatch: Dispatch<IAppAction>;
+    dispatch: Dispatch<Partial<IAppState>>;
 }
 
 export function getInitialState(): IAppState {
     return {
         navbar: false,
         toast: null,
-        user: getAuth().getUser(),
+        user: getAuthInstance().getUser(),
     };
 }
 
-export function appReducer(state: IAppState, action: IAppAction): IAppState {
-    if (!state) {
-        return getInitialState();
-    }
-    switch (action.type) {
-        case AppAction.User:
-            return { ...state, user: action.payload.user };
-        case AppAction.Navbar:
-            return { ...state, navbar: action.payload.navbar };
-    }
-    return state;
+export function appReducer(state: IAppState, action: IAppState): IAppState {
+    return { ...state, ...action };
 }
 
-export const Store = createContext<IStore>({} as IStore);
+export const Store = createContext<IStore>(null);

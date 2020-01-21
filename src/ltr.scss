@@ -3,9 +3,11 @@ $opposite-float: right;
 $direction: ltr;
 $opposite-direction: rtl;
 $direction-eq: 1;
-$font-path: '../fonts';
+$font-path: "../fonts";
 
 $base-font-family: Verdana, Geneva, sans-serif;
 
-@import '../node_modules/@vesta/components/index-ltr.scss';
-@import 'scss/common';
+@import "./scss/misc/colors";
+@import "./scss/misc/variables";
+@import "../node_modules/@vesta/components/index-ltr.scss";
+@import "./scss/common";

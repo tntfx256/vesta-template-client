@@ -1,4 +1,4 @@
-import { cmnConfig, ICmnConfig } from "../cmn/config/cmnConfig";
+import { cmnConfig, ICmnConfig } from "../cmn/config";
 import { IVariantConfig, variantConfig } from "./variantConfig";
 
 export interface IPaginationConfig {

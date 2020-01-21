@@ -3,7 +3,7 @@ import { Culture } from "@vesta/culture";
 import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IUser } from "../../../cmn/models/User";
-import { getCrud } from "../../../service/crud";
+import { getCrud } from "../../../service/Crud";
 import { DataTableOperations } from "../../general/DataTableOperations";
 
 interface IUserListProps extends IComponentProps {

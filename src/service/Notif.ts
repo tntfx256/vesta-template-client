@@ -8,10 +8,9 @@ export interface IToastData {
 }
 
 export class Notif {
-
-    public static getInstance(dispatcher: Dispatcher = Dispatcher.getInstance()): Notif {
+    public static getInstance(dispatch = Dispatcher.getInstance()): Notif {
         if (!Notif.instance) {
-            Notif.instance = new Notif(dispatcher);
+            Notif.instance = new Notif(dispatch);
         }
         return Notif.instance;
     }
@@ -19,8 +18,7 @@ export class Notif {
     private static instance: Notif;
     private tr = Culture.getDictionary().translate;
 
-    private constructor(private dispatcher: Dispatcher) {
-    }
+    private constructor(private dispatch) {}
 
     public success(message: string, ...placeholders: any[]) {
         this.toast(message, MessageType.Success, placeholders);
@@ -36,7 +34,7 @@ export class Notif {
 
     public toast(message: string, type: MessageType = MessageType.Info, ...placeholders: any[]) {
         const text = this.tr(message, placeholders);
-        this.dispatcher.dispatch<IToastData>("toast", { message: text, type });
+        // this.dispatch({ type: AppAction.Toast, payload: { toast: { message: text, type } } });
         // tslint:disable-next-line:no-console
         console.log(text);
     }

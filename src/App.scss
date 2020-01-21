@@ -1,5 +1,22 @@
+// FRAME
 html, body {
-    color: $color-dark;
+    height: 100%;
+    width: 100%;
+}
+
+html {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+body {
+    min-width: $layout-small-min;
+    overflow: visible;
+}
+
+// GLOBAL STYLE
+html, body {
+    color: $color-text;
     direction: $direction;
     font-family: $base-font-family;
     font-size: $font-size-small;
@@ -16,7 +33,7 @@ input, textarea, select, button {
 }
 
 a {
-    color: $color-primary;
+    color: $color-default-text;
     text-decoration: none;
 }
 
@@ -44,66 +61,3 @@ ul {
     }
 }
 
-// FRAME
-html, body {
-    height: 100%;
-    width: 100%;
-}
-
-html {
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-
-body {
-    min-width: $layout-small-min;
-    overflow: visible;
-}
-
-
-//#root
-//  #main-wrapper
-//    #main-content
-//      #content-wrapper
-//        .page
-//        #main-footer
-//        #side-nav
-
-#root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-}
-
-#main-wrapper {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-}
-
-#main-content {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-}
-
-#content-wrapper {
-    //padding-top: $appbar-height;
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-
-    .page {
-        //border: 2px solid blue;
-        flex: 1;
-        width: 100%;
-    }
-}
-
-#main-footer {
-    //border: 2px solid green;
-    direction: ltr;
-    height: $footer-height;
-    min-height: $footer-height;
-    text-align: center;
-}

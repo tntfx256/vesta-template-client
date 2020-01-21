@@ -4,9 +4,15 @@ $sidenav-top-padding: $appbar-height;
 $sidenav-menu-bg: rgba($white, .5);
 
 .sidenav-content {
-    background: url('../images/bg-main.jpg') no-repeat center transparent;
-    background-size: cover;
-    height: 100vh;
+
+    .select-input {
+        // max-width: 64px;
+        min-width: auto;
+
+        label {
+            background: transparent;
+        }
+    }
 
     .navbar {
         background: transparent;
@@ -32,20 +38,13 @@ $sidenav-menu-bg: rgba($white, .5);
 
     header {
         // color: $white;
-        padding: $sidenav-top-padding $sidenav-padding 0;
+        padding: $sidenav-padding;
         position: relative;
-
-        .icon {
-            #{$opposite-float}: $sidenav-padding;
-            bottom: ceil($sidenav-padding / 2);
-            // color: $white;
-            font-size: $font-size-large;
-            position: absolute;
-        }
     }
 
     .avatar {
-        border: 2px solid $border-color;
+        border: none;
+        border-radius: 0;
         height: $sidenav-header-avatar-width;
         width: $sidenav-header-avatar-width;
     }
@@ -53,13 +52,30 @@ $sidenav-menu-bg: rgba($white, .5);
     .name-wrapper {
         $name-padding: ceil($sidenav-padding / 2);
         padding: $name-padding;
+        position: relative;
 
         h4 {
             font-weight: normal;
         }
+
+        .icon {
+            #{$opposite-float}: 0;
+            bottom: ceil($sidenav-padding / 2);
+            // color: $white;
+            font-size: $font-size-large;
+            position: absolute;
+        }
     }
 
-    a {
-        padding-#{$float}: 5 * $unit;
+    // a {
+    //     padding-#{$float}: 5 * $unit;
+    // }
+}
+
+.sidenav-static {
+    .sidenav-content {
+        .navbar {
+            display: none;
+        }
     }
 }

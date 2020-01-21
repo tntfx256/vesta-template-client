@@ -1,7 +1,7 @@
 import { ILogConfig, Log, LogLevel } from "@vesta/services";
 
 let instance: Log;
-export function getLog() {
+export function getLogInstance() {
     if (!instance) {
         const logConfig: ILogConfig = {
             driver: console,

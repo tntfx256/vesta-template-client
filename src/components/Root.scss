@@ -4,7 +4,52 @@ $page-transition-effect: $transition-effect-default;
 $page-center-form-padding: 30px 30px 15px 30px;
 $page-padding: 15px;
 
-.root-component {}
+//#root
+//  #main-wrapper
+//    #main-content
+//      #side-nav
+//      #content-wrapper
+//        .page
+//        #main-footer
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+#main-wrapper {
+    display: flex;
+    flex: 1;
+    // flex-direction: column;
+}
+
+// .sidenav-component {}
+
+#main-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+
+#content-wrapper {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    .page {
+        flex: 1;
+        width: 100%;
+    }
+}
+
+#main-footer {
+    //border: 2px solid green;
+    direction: ltr;
+    height: $footer-height;
+    min-height: $footer-height;
+    text-align: center;
+}
 
 .page {
     margin: auto;
@@ -14,6 +59,19 @@ $page-padding: 15px;
 
     &.has-navbar {
         padding-top: $appbar-height;
+    }
+
+    .crud-page {
+        margin-top: ceil($appbar-height / 2);
+
+        &+.crud-page {
+            @include scale(0);
+            display: none;
+        }
+
+        .box {
+            margin: 0;
+        }
     }
 }
 
@@ -66,4 +124,20 @@ $page-padding: 15px;
         height: $element-height-large;
         width: 40%;
     }
+
+    .alert {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        text-align: center;
+    }
 }
+
+.total-row{
+    border-top:solid 2px grey;
+    font-weight: bold;
+    background: rgba(230,230,230,.5);
+    color: #444;
+}
+

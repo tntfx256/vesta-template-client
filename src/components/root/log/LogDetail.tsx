@@ -15,14 +15,13 @@ interface ILogDetailProps extends IRouteComponentProps<ILogDetailParams> {
 
 export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps) => {
 
-    let initiated = false;
+    const tr = Culture.getDictionary().translate;
     const [log, setLog] = useState("");
 
     useEffect(() => {
-        if (initiated) { return; }
-        initiated = true;
-        getCrud<string>("log").fetch(+props.match.params.id).then((log) => setLog(log));
-    });
+        getApiInstance().get<ILog, string>(`log/${+props.match.params.id}`)
+            .then((log) => setLog(log));
+    }, [props.match.params.id]);
 
     if (!log) { return null; }
     const records = [];
@@ -30,6 +29,15 @@ export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps
     for (let i = 1, il = lines.length; i < il; ++i) {
         records.push(renderRecord(JSON.parse(lines[i]), i));
     }
+
+    if (!records.length) {
+        return (
+            <div className="details-table">
+                <h1>Log is empty</h1>
+            </div>
+        );
+    }
+
     return (
         <div className="crud-page">
             {records}
@@ -38,16 +46,16 @@ export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps
 
     function renderRecord(log: ILogger, index: number) {
         const logLevelOptions = {
-            0: this.tr("enum_none"),
-            1: this.tr("enum_error"),
-            2: this.tr("enum_warn"),
-            3: this.tr("enum_info"),
+            0: tr("enum_none"),
+            1: tr("enum_error"),
+            2: tr("enum_warn"),
+            3: tr("enum_info"),
         };
         const dateTime = Culture.getDateTimeInstance();
         const dateTimeFormat = Culture.getLocale().defaultDateTimeFormat;
         dateTime.setTime(log.start);
         const logDate = dateTime.format(dateTimeFormat);
-        const sourceAppOptions = { 1: this.tr("enum_panel"), 2: this.tr("enum_enduser"), 3: this.tr("enum_service") };
+        const sourceAppOptions = { 1: tr("enum_panel"), 2: tr("enum_enduser"), 3: tr("enum_service") };
         const logs = log.logs.map((thisLog, i) => {
             const messages = thisLog.message.split("-;-").map((msg, j) => (
                 <li key={j} className={`alert alert-${thisLog.level}`}>{msg}</li>
@@ -67,9 +75,8 @@ export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps
 
         return (
             <div className="details-table" key={index}>
-                <p><label>{this.tr("fld_level")}</label> {logLevelOptions[log.level]}</p>
-                <p><label>{this.tr("fld_date")}</label> <span className="en">{logDate}</span></p>
-                <p><label>{this.tr("fld_sourceapp")}</label> {sourceAppOptions[log.sourceApp]}</p>
+                <p><label>{tr("fld_level")}</label> {logLevelOptions[log.level]}</p>
+                <p><label>{tr("fld_date")}</label> <span className="en">{logDate}</span></p>
                 <ul>
                     {logs}
                 </ul>

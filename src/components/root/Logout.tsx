@@ -1,45 +1,42 @@
-import { IRouteComponentProps, Preloader } from "@vesta/components";
+import { IComponentProps, Preloader } from "@vesta/components";
 import { IResponse } from "@vesta/core";
-import { FC, useEffect } from "react";
+import { FunctionComponent, useEffect } from "react";
+import { RouteComponentProps } from "react-router";
 import { IUser } from "../../cmn/models/User";
-import { getApi } from "../../service/Api";
-import { getAuth, isGuest } from "../../service/Auth";
-import { getLog } from "../../service/getLog";
+import { getApiInstance } from "../../service/Api";
+import { getAuthInstance, isGuest } from "../../service/Auth";
+import { getLogInstance } from "../../service/Log";
 
-interface ILogoutParams {
-}
+interface ILogoutParams {}
 
-interface ILogoutProps extends IRouteComponentProps<ILogoutParams> {
-}
+interface ILogoutProps extends IComponentProps, RouteComponentProps<ILogoutParams> {}
 
-export const Logout: FC<ILogoutProps> = function (props: ILogoutProps) {
-    const api = getApi();
-    const auth = getAuth();
+export const Logout: FunctionComponent<ILogoutProps> = (props: ILogoutProps) => {
+  const api = getApiInstance();
+  const auth = getAuthInstance();
 
-
-    useEffect(() => {
-        if (isGuest()) {
-            return props.history.replace("/");
-        }
-        Preloader.show();
-        api.get<IUser, IResponse<IUser>>("account/logout")
-            .then((response) => {
-                onAfterLogout(response.items[0]);
-            })
-            .catch((error) => {
-                getLog().error(error);
-                onAfterLogout({});
-            });
-        return Preloader.hide;
-    });
-
-
-    return null;
-
-
-    function onAfterLogout(user: IUser) {
-        auth.logout();
-        auth.login(user);
-        props.history.replace("/");
+  useEffect(() => {
+    if (isGuest()) {
+      return props.history.replace("/");
     }
-}
+    Preloader.show();
+    api
+      .get<IUser, IResponse<IUser>>("account/logout")
+      .then(response => {
+        onAfterLogout(response.items[0]);
+      })
+      .catch(error => {
+        getLogInstance().error(error);
+        onAfterLogout({});
+      });
+    return Preloader.hide;
+  }, []);
+
+  return null;
+
+  function onAfterLogout(user: IUser) {
+    auth.logout();
+    auth.login(user);
+    props.history.replace("/");
+  }
+};

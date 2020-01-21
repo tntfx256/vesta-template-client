@@ -28,29 +28,27 @@ interface ILogProps extends IRouteComponentProps<ILogParams> {
 }
 
 export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
-    const access = getAcl().getAccessList("log");
-    const service = getCrud<string>("log");
+    const access = getAclInstance().getAccessList("log");
+    const service = getCrudInstance<string>("log");
     const tr = Culture.getDictionary().translate;
-    let initiated = false;
+    delete access[AclAction.Edit];
 
     const [logs, setLogs] = useState<ILog[]>([]);
     const [queryOption, setQueryOption] = useState<IQueryOption<string>>({});
 
     useEffect(() => {
-        if (initiated) { return; }
-        initiated = true;
         onFetchAll();
-    });
+    }, []);
 
     const dateTime = Culture.getDateTimeInstance();
-    const dateTimeFormst = Culture.getLocale().defaultDateTimeFormat;
+    const dateTimeFormat = Culture.getLocale().defaultDateTimeFormat;
     const columns: Array<IColumn<string>> = [
         { title: tr("fld_name"), render: (r) => <p className="en">{r}</p> },
         {
             render: (r) => {
                 const timestamp = +(/^\d+/.exec(r)[0]);
                 dateTime.setTime(timestamp);
-                return <p className="en">{dateTime.format(dateTimeFormst)}</p>;
+                return <p className="en">{dateTime.format(dateTimeFormat)}</p>;
             },
             title: tr("fld_file"),
         },
@@ -66,15 +64,11 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
     return (
         <div className="page log-page has-navbar">
             <PageTitle title={tr("mdl_log")} />
-            <Navbar title={tr("mdl_log")} backLink="/" />
+            <Navbar title={tr("mdl_log")} onBurgerClick={openSidenav} />
             <h1>{tr("mdl_log")}</h1>
             <CrudMenu path="log" access={access} />
             <div className="crud-wrapper">
-                <HashRouter>
-                    <Switch>
-                        <Route path="/log/detail/:id" component={LogDetail} />
-                    </Switch>
-                </HashRouter>
+                <Go path="/log/detail/:id" component={LogDetail} />
                 <div className="crud-page">
                     <DataTable columns={columns} records={logs as any} queryOption={queryOption} />
                 </div>

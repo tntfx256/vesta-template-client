@@ -18,8 +18,8 @@ export const RoleAdd: ComponentType<IRoleAddProps> = (props: IRoleAddProps) => {
             <h2>{tr("title_record_add", tr("role"))}</h2>
             <RoleForm goBack={goBack}>
                 <div className="btn-group">
-                    <Button color="primary" variant="outlined" type="button" onClick={goBack}>{tr("cancel")}</Button>
                     <Button color="primary" variant="contained" type="submit">{tr("add")}</Button>
+                    <Button color="primary" variant="outlined" type="button" onClick={goBack}>{tr("cancel")}</Button>
                 </div>
             </RoleForm>
         </div>

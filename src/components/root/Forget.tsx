@@ -1,8 +1,8 @@
-import { Alert, Button, FormWrapper, IRouteComponentProps, MessageType, Preloader, TextInput } from "@vesta/components";
+import { Alert, Button, FormWrapper, IRouteComponentProps, MessageType, PageTitle, Preloader, TextInput } from "@vesta/components";
 import { IResponse, validationMessage } from "@vesta/core";
 import { IModelValidationMessage, IValidationError } from "@vesta/core/Validator";
 import { Culture } from "@vesta/culture";
-import React, { FC, useState } from "react";
+import React, { ComponentType, useState } from "react";
 import { Link } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
 import { getApi } from "../../service/Api";
@@ -14,7 +14,7 @@ interface IForgetParams {
 interface IForgetProps extends IRouteComponentProps<IForgetParams> {
 }
 
-export const Forget: FC<IForgetProps> = (props: IForgetProps) => {
+export const Forget: ComponentType<IForgetProps> = (props: IForgetProps) => {
     const tr = Culture.getDictionary().translate;
     const notif = Notif.getInstance();
     const api = getApi();
@@ -37,6 +37,7 @@ export const Forget: FC<IForgetProps> = (props: IForgetProps) => {
 
     return (
         <div className="page forget-page has-navbar page-logo-form">
+            <PageTitle title={tr("forget_pass")} />
             <div className="logo-wrapper">
                 <div className="logo-container">
                     <img src="images/icons/144x144.png" alt="Vesta Logo" />

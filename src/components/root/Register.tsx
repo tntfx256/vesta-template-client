@@ -57,7 +57,7 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
                         <a href="https://vesta.bz" target="_blank">{tr("privacy")}</a>)
                     </div>
                 <div className="btn-group">
-                    <Button color="primary" type="button">
+                    <Button color="primary" variant="outlined" type="button">
                         <Link to="/">{tr("login")}</Link>
                     </Button>
                     <Button color="primary" variant="contained">{tr("register")}</Button>
@@ -66,10 +66,8 @@ export const Register: ComponentType<IRegisterProps> = withTheme((props: IRegist
         </div>
     );
 
-
     function onChange(name: string, value: any) {
-        user[name] = value;
-        setUser(user);
+        setUser({ ...user, [name]: value });
     }
 
     function onSubmit() {

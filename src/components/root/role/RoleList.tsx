@@ -3,7 +3,7 @@ import { Culture } from "@vesta/culture";
 import { IAccess } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IRole } from "../../../cmn/models/Role";
-import { getCrud } from "../../../service/crud";
+import { getCrud } from "../../../service/Crud";
 import { Notif } from "../../../service/Notif";
 import { DataTableOperations } from "../../general/DataTableOperations";
 
@@ -18,7 +18,7 @@ export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) =
     const [roles, setRoles] = useState<IRole[]>([]);
     const [queryOption, setQueryOption] = useState<IQueryOption<IRole>>({});
 
-    useEffect(() => fetchAll(queryOption), [queryOption]);
+    useEffect(() => fetchAll(queryOption), []);
 
     const statusOptions = { 1: tr("enum_active"), 0: tr("enum_inactive") };
     const columns: Array<IColumn<IRole>> = [
@@ -40,7 +40,7 @@ export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) =
         service.fetchAll(option)
             .then((roles) => {
                 setRoles(roles);
-                setQueryOption(option);
+                setQueryOption({ ...option });
             });
     }
 

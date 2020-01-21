@@ -17,6 +17,10 @@ $profile-fb-width: $element-height;
     .profile-form {
         border: 0;
         margin: 15px auto;
+
+        .form-group {
+            max-width: initial;
+        }
     }
 
     .avatar-wrapper {

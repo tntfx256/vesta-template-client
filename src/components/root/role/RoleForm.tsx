@@ -5,7 +5,7 @@ import React, { ComponentType, useEffect, useState } from "react";
 import { Status } from "../../../cmn/enum/Status";
 import { IPermission } from "../../../cmn/models/Permission";
 import { IRole, Role } from "../../../cmn/models/Role";
-import { getCrud } from "../../../service/crud";
+import { getCrud } from "../../../service/Crud";
 
 interface IPermissionCollection {
     [name: string]: IPermission[];
@@ -85,7 +85,7 @@ export const RoleForm: ComponentType<IRoleFormProps> = (props: IRoleFormProps) =
 
     function onChange(name: string, value: any) {
         role[name] = value;
-        setRole(role);
+        setRole({ ...role });
     }
 
     function onPermissionChange(name: string, values: number[]) {

@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
-    "forceConsistentCasingInFileNames": true,
     "importHelpers": false,
     "isolatedModules": true,
     "jsx": "react",
@@ -13,7 +12,5 @@
     "skipLibCheck": false,
     "target": "es6"
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

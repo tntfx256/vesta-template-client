@@ -4,7 +4,7 @@ import { IPermissions } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { IPermission } from "../../../cmn/models/Permission";
 import { IRole } from "../../../cmn/models/Role";
-import { getCrud } from "../../../service/crud";
+import { getCrud } from "../../../service/Crud";
 
 interface IRoleDetailParams {
     id: number;
