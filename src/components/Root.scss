@@ -13,131 +13,123 @@ $page-padding: 15px;
 //        #main-footer
 
 #root {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 #main-wrapper {
-    display: flex;
-    flex: 1;
-    // flex-direction: column;
+  display: flex;
+  flex: 1;
+  // flex-direction: column;
 }
 
 // .sidenav-component {}
 
 #main-content {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 }
 
 #content-wrapper {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
 
-    .page {
-        flex: 1;
-        width: 100%;
-    }
+  .page {
+    flex: 1;
+    width: 100%;
+  }
 }
 
 #main-footer {
-    //border: 2px solid green;
-    direction: ltr;
-    height: $footer-height;
-    min-height: $footer-height;
-    text-align: center;
+  //border: 2px solid green;
+  direction: ltr;
+  height: $footer-height;
+  min-height: $footer-height;
+  text-align: center;
 }
 
 .page {
-    margin: auto;
-    max-width: $page-max-width;
-    padding: $page-padding;
-    position: relative;
+  margin: auto;
+  max-width: $page-max-width;
+  padding: $page-padding;
+  position: relative;
 
-    &.has-navbar {
-        padding-top: $appbar-height;
+  &.has-navbar {
+    padding-top: $appbar-height;
+  }
+
+  .crud-page {
+    margin-top: ceil($appbar-height / 2);
+
+    & + .crud-page {
+      @include scale(0);
+      display: none;
     }
 
-    .crud-page {
-        margin-top: ceil($appbar-height / 2);
-
-        &+.crud-page {
-            @include scale(0);
-            display: none;
-        }
-
-        .box {
-            margin: 0;
-        }
+    .box {
+      margin: 0;
     }
+  }
 }
 
 .page-logo-form {
-    $logo-img-size: 25vh;
-    $logo-border-size: floor($logo-img-size / 10);
-    $logo-wrapper-size: $logo-img-size + (2 * $logo-border-size);
+  $logo-img-size: 25vh;
+  $logo-border-size: floor($logo-img-size / 10);
+  $logo-wrapper-size: $logo-img-size + (2 * $logo-border-size);
 
-    .logo-wrapper {
-        border: $logo-border-size solid transparentize($white, .5);
-        border-radius: 50%;
-        height: $logo-wrapper-size;
-        margin: 5px auto 30px auto;
-        overflow: hidden;
-        width: $logo-wrapper-size;
+  .logo-wrapper {
+    border: $logo-border-size solid transparentize($white, 0.5);
+    border-radius: 50%;
+    height: $logo-wrapper-size;
+    margin: 5px auto 30px auto;
+    overflow: hidden;
+    width: $logo-wrapper-size;
+  }
+
+  .logo-container {
+    align-items: center;
+    border: $logo-border-size solid transparentize($white, 0.3);
+    border-radius: 50%;
+    display: flex;
+    height: $logo-img-size;
+    justify-content: center;
+    overflow: hidden;
+    width: $logo-img-size;
+
+    img {
+      height: 100%;
+      width: auto;
     }
+  }
 
-    .logo-container {
-        align-items: center;
-        border: $logo-border-size solid transparentize($white, .3);
-        border-radius: 50%;
-        display: flex;
-        height: $logo-img-size;
-        justify-content: center;
-        overflow: hidden;
-        width: $logo-img-size;
+  .form-wrapper {
+    background: transparentize($white, 0);
+    border-radius: $border-radius;
+    margin: auto;
+    max-width: $layout-medium-min;
+    padding: $page-center-form-padding;
+    // width: 90%;
+  }
 
-        img {
-            height: 100%;
-            width: auto;
-        }
-    }
+  .btn-group {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-evenly;
+  }
 
-    .form-wrapper {
-        background: transparentize($white, 0);
-        border-radius: $border-radius;
-        margin: auto;
-        max-width: $layout-medium-min;
-        padding: $page-center-form-padding;
-        // width: 90%;
-    }
+  .btn {
+    height: $element-height-large;
+    width: 40%;
+  }
 
-    .btn-group {
-        margin-top: 30px;
-        display: flex;
-        justify-content: space-evenly;
-    }
-
-    .btn {
-        height: $element-height-large;
-        width: 40%;
-    }
-
-    .alert {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        text-align: center;
-    }
+  .alert {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+  }
 }
-
-.total-row{
-    border-top:solid 2px grey;
-    font-weight: bold;
-    background: rgba(230,230,230,.5);
-    color: #444;
-}
-

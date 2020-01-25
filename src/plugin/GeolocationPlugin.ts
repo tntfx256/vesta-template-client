@@ -1,4 +1,4 @@
-–import { Storage } from "@vesta/services";
+import { Storage } from "@vesta/services";
 import { ILocation } from "../cmn/interfaces/GeoLocation";
 
 /**
@@ -56,7 +56,7 @@ export class GeolocationPlugin {
   private static getLocation(resolve, reject) {
     const defaultLocation = GeolocationPlugin.getLatestLocation();
     // use default options or tampered options by plugin
-    const positionOptions = GeolocationPlugin.tmpPositionOptions || {...GeolocationPlugin.positionOptions};
+    const positionOptions = GeolocationPlugin.tmpPositionOptions || { ...GeolocationPlugin.positionOptions };
     if (GeolocationPlugin.preventLocation) {
       return reject({ message: "geo_prevent" });
     }

@@ -10,8 +10,8 @@ export interface IVariantConfig {
 }
 
 export const variantConfig: IVariantConfig = {
-    api: "https://api.autoapp.me",
-    env: "production",
+    api: "http://localhost:3000",
+    env: "development",
     sw: "service-worker",
     viewport: {
         Large: 1024,

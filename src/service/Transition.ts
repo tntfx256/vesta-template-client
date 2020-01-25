@@ -1,10 +1,10 @@
 import { IPermissions } from "@vesta/services";
 import React, { Attributes, ComponentType, ReactNode } from "react";
 import { Forbidden } from "../components/root/Forbidden";
-import { getAcl } from "./Acl";
+import { getAclInstance } from "./Acl";
 
 let idCounter = 1;
-const acl = getAcl();
+const acl = getAclInstance();
 
 export function transitionTo(componentClass: ComponentType, permissions?: IPermissions, extraProps?: Attributes, children?: ReactNode[]) {
   const id = idCounter++;

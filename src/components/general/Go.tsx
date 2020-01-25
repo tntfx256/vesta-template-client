@@ -19,7 +19,7 @@ export const Go: ComponentType<IGoProps> = (props: IGoProps) => {
     if (props.permissions) {
       acl.register(state, props.permissions);
     }
-  }, []);
+  }, [acl, props.permissions, state]);
 
   return !props.permissions || acl.hasAccessToState(state) ? <Route path={props.path} component={props.component} exact={props.exact} /> : null;
 };

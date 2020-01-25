@@ -25,13 +25,4 @@ yarn-error.log*
 # vesta
 .idea
 .vscode
-node_modules
-npm-debug.log
-/public/css
-/src/app/config/variantConfig.ts
-/vesta/cordova/*
-!/vesta/cordova/config.xml
-/vesta/cordova/www
-/vesta/electron/www
-/vesta/web/www
-/vesta/tmp
+/src/config/variantConfig.ts

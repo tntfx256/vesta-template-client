@@ -17,9 +17,9 @@ print_status(){
 cd ${CLONE_PATH}
 git checkout master
 print_status "Cloning SubModules"
-git submodule update --init src/app/cmn
+git submodule update --init src/cmn
 git submodule foreach git checkout master
-cp resources/gitignore/variantConfig.ts src/app/config/variantConfig.ts
+cp resources/gitignore/variantConfig.ts src/config/variantConfig.ts
 
 print_status "Executing pre-deploy Script"
 chmod +x resources/ci/scripts/pre-deploy.js
@@ -37,7 +37,7 @@ npm run deploy:web
 cd ${WD}
 rm -rf ${DEPLOY_PATH}
 mkdir -p ${DEPLOY_PATH}
-mv ${CLONE_PATH}/vesta/web/www ${DEPLOY_PATH}/www
+mv ${CLONE_PATH}/build ${DEPLOY_PATH}/www
 
 #print_status "Re-Starting NGINX"
 #sudo service nginx restart

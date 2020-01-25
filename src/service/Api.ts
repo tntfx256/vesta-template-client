@@ -1,14 +1,14 @@
 import { Registry } from "@vesta/core";
 import { Api, IApiConfig, IRequestHeader, Storage } from "@vesta/services";
 import { SourceApp } from "../cmn/models/User";
-import { appConfig } from "../config";
+import { config } from "../config";
 import { getAuthInstance } from "./Auth";
 
 let instance: Api = null;
 const tokenHeaderKeyName = "X-Auth-Token";
 
 export function getApiInstance(): Api {
-  const { api, version } = appConfig;
+  const { api, version } = config;
   const auth = getAuthInstance();
 
   if (!instance) {
@@ -31,7 +31,7 @@ export function getApiInstance(): Api {
   function beforeSend<T>(method: string, edge: string, data: T, headers: IRequestHeader) {
     if (data) {
       const sourceApp = Registry.get<SourceApp>("sourceApp");
-      (data as any).sourceApp = sourceApp;
+      (data as any).s = sourceApp;
     }
     if (method !== "UPLOAD") {
       headers["Content-Type"] = "application/json";

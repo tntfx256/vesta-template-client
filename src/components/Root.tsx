@@ -1,78 +1,71 @@
-import { Html, Preloader, Sidenav, ToastMessage } from "@vesta/components";
+import { Html, IComponentProps, IToastMessageProps, Preloader, Sidenav, ToastMessage } from "@vesta/components";
+import { Dispatcher } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import { Storage } from "@vesta/services";
-import React, { ComponentType, PureComponent } from "react";
+import React, { FunctionComponent, useContext, useEffect } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
-import { appConfig } from "../config";
 import { IRouteItem } from "../config/route";
+import { Store } from "../service/Store";
 import { SidenavContent } from "./general/SidenavContent";
 import { ErrorBoundary } from "./root/ErrorBoundary";
-import { Dispatcher } from "@vesta/core";
 
 interface IRootParams {}
 
-interface IRootProps extends RouteComponentProps<IRootParams> {
+interface IRootProps extends IComponentProps, RouteComponentProps<IRootParams> {
   routeItems: IRouteItem[];
 }
 
-interface IRootState extends IAppState {}
+const Root: FunctionComponent = (props: IRootProps) => {
+  const {
+    state: { user, navbar, toast },
+    dispatch,
+  } = useContext(Store);
+  const { code, dir } = Culture.getLocale();
 
-class Root extends PureComponent<IRootProps, IRootState> {
-  constructor(props: IRootProps) {
-    super(props);
-    this.state = appStore.getState();
-  }
-
-  public componentDidMount() {
+  useEffect(() => {
     // application behaviours
-    window.onfocus = this.toForeground;
-    document.addEventListener("resume", this.toForeground);
-    window.onblur = this.toBackground;
-    document.addEventListener("pause", this.toBackground);
-    window.onunload = this.onExit;
-    // global state
-    // appStore.subscribe(() => {
-    //   this.setState(appStore.getState());
-    // });
-    Dispatcher.getInstance().register("toast", toast => dispatch({ toast }));
-  }
+    window.onfocus = toForeground;
+    document.addEventListener("resume", toForeground);
+    window.onblur = toBackground;
+    document.addEventListener("pause", toBackground);
+    window.onunload = onExit;
+    // toast subscription
+    Dispatcher.getInstance().register<IToastMessageProps>("toast", toast => {
+      dispatch({ toast });
+    });
+  }, []);
 
-  public render() {
-    const { user, toast } = this.state;
-    const { routeItems } = this.props;
-    const { code, dir } = Culture.getLocale();
-    const toastMsg = toast ? <ToastMessage message={toast.message} type={toast.type} onClose={this.onCloseToast} /> : null;
+  const toastMsg = toast ? <ToastMessage message={toast.message} type={toast.type} onClose={onCloseToast} /> : null;
 
-    return (
-      <ErrorBoundary>
+  return (
+    <ErrorBoundary>
+      <div id="main-wrapper" className="root-component">
         <Html lang={code} dir={dir} />
-        <div id="main-wrapper">
-          <Sidenav open={this.state.isSidenavOpen} breakWidth={appConfig.viewport.Medium}>
-            <SidenavContent name="main-sidenav" menuItems={routeItems} />
-          </Sidenav>
-          <div id="content-wrapper">{this.props.children}</div>
-        </div>
+        <div id="content-wrapper">{props.children}</div>
+        <Sidenav open={navbar}>
+          <SidenavContent name="main-sidenav" menuItems={props.routeItems} />
+        </Sidenav>
         {toastMsg}
         <Preloader />
-      </ErrorBoundary>
-    );
+      </div>
+    </ErrorBoundary>
+  );
+
+  function onCloseToast() {
+    dispatch({ toast: null });
   }
 
-  private onCloseToast = () => {
-    dispatch({ toast: null });
-  };
+  function onExit() {
+    Storage.sync.set("lastPath", props.location.pathname);
+  }
 
-  private onExit = () => {
-    Storage.sync.set("lastPath", this.props.location.pathname);
-  };
-
-  private toBackground = () => {
+  function toBackground() {
     Storage.sync.set("inBackground", true);
-  };
+  }
 
-  private toForeground = () => {
+  function toForeground() {
     Storage.sync.set("inBackground", false);
-  };
-}
+  }
+};
 
-export default withRouter(Root as ComponentType<IRootProps>);
+export default withRouter<IRootProps, typeof Root>(Root as any);

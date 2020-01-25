@@ -1,15 +1,16 @@
-import { IRouteComponentProps } from "@vesta/components";
+import { IComponentProps } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
+import { RouteComponentProps } from "react-router";
 import { IUser } from "../../../cmn/models/User";
-import { getCrud } from "../../../service/Crud";
+import { getCrudInstance } from "../../../service/Crud";
 import { getFileUrl } from "../../../util";
 
 interface IUserDetailParams {
-  id: number;
+  id: string;
 }
 
-interface IUserDetailProps extends IRouteComponentProps<IUserDetailParams> {}
+interface IUserDetailProps extends IComponentProps, RouteComponentProps<IUserDetailParams> {}
 
 export const UserDetail: ComponentType<IUserDetailProps> = (props: IUserDetailProps) => {
   const tr = Culture.getDictionary().translate;
@@ -18,7 +19,7 @@ export const UserDetail: ComponentType<IUserDetailProps> = (props: IUserDetailPr
     2: tr("enum_user"),
   };
 
-  const [user, setUser] = useState<IUser>({} as IUser);
+  const [user, setUser] = useState<IUser>({});
 
   let initiated = false;
   useEffect(() => {
@@ -26,7 +27,7 @@ export const UserDetail: ComponentType<IUserDetailProps> = (props: IUserDetailPr
       return;
     }
     initiated = true;
-    getCrud("user")
+    getCrudInstance("user")
       .fetch(+props.match.params.id)
       .then(setUser);
   });

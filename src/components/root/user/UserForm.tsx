@@ -1,4 +1,4 @@
-import { DateTimeInput, FileInput, FormWrapper, IComponentProps, IFormOption, Select, TextInput } from "@vesta/components";
+import { DateTimeInput, FormWrapper, IComponentProps, IFormOption, Select, TextInput } from "@vesta/components";
 import { IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useEffect, useState } from "react";
@@ -116,7 +116,7 @@ export const UserForm: ComponentType<IUserFormProps> = (props: IUserFormProps) =
       <TextInput name="password" label={tr("fld_password")} value={user.password} error={errors.password} onChange={onChange} type="password" />
       <DateTimeInput name="birthDate" label={tr("fld_birthDate")} value={user.birthDate} error={errors.birthDate} onChange={onChange} />
       <Select name="gender" label={tr("fld_gender")} value={user.gender} error={errors.gender} onChange={onChange} options={genderOptions} />
-      <FileInput name="image" label={tr("fld_image")} value={user.image} error={errors.image} onChange={onChange} />
+      {/* <FileInput name="image" label={tr("fld_image")} value={user.image} error={errors.image} onChange={onChange} /> */}
       <Select name="status" label={tr("fld_status")} value={user.status} error={errors.status} onChange={onChange} options={statusOptions} />
       {props.children}
     </FormWrapper>

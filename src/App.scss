@@ -1,63 +1,67 @@
 // FRAME
-html, body {
-    height: 100%;
-    width: 100%;
+html,
+body {
+  height: 100%;
+  width: 100%;
 }
 
 html {
-    overflow-x: hidden;
-    overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 body {
-    min-width: $layout-small-min;
-    overflow: visible;
+  min-width: $layout-small-min;
+  overflow: visible;
 }
 
 // GLOBAL STYLE
-html, body {
-    color: $color-text;
-    direction: $direction;
-    font-family: $base-font-family;
-    font-size: $font-size-small;
-    text-overflow: clip;
+html,
+body {
+  color: $color-text;
+  direction: $direction;
+  font-family: $base-font-family;
+  font-size: $font-size-small;
+  text-overflow: clip;
 }
 
 .en {
-    direction: ltr;
-    font-family: Verdana, Geneva, sans-serif;
+  direction: ltr;
+  font-family: Verdana, Geneva, sans-serif;
 }
 
-input, textarea, select, button {
-    font-family: inherit;
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
 }
 
 a {
-    color: $color-default-text;
-    text-decoration: none;
+  color: $color-default-text;
+  text-decoration: none;
 }
 
 table {
-    border-collapse: collapse;
+  border-collapse: collapse;
 }
 
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 .row {
-    display: flex;
+  display: flex;
 
-    &.wrap {
-        flex-wrap: wrap;
-    }
+  &.wrap {
+    flex-wrap: wrap;
+  }
 
-    &.space-around {
-        justify-content: space-around;
-    }
+  &.space-around {
+    justify-content: space-around;
+  }
 
-    &.space-between {
-        justify-content: space-between;
-    }
+  &.space-between {
+    justify-content: space-between;
+  }
 }
-

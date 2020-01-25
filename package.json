@@ -7,70 +7,53 @@
   "contributors": [
     "javadkh2 <khalilian.javad@gmail.com>"
   ],
-  "main": "./vesta/electron/main.js",
-  "scripts": {
-    "start": "npm run dev:web",
-    "dev:web": "gulp dev:web",
-    "dev:android": "gulp dev:android",
-    "dev:ios": "gulp dev:ios",
-    "deploy:web": "gulp deploy:web",
-    "deploy:android": "gulp deploy:android",
-    "deploy:ios": "gulp deploy:ios"
-  },
   "dependencies": {
     "@vesta/components": "^0.2.24",
-    "@vesta/core": "^2.0.11",
-    "@vesta/culture": "^0.1.1",
+    "@vesta/core": "^2.0.13",
+    "@vesta/culture": "^0.1.2",
     "@vesta/culture-ir": "^1.0.5",
     "@vesta/culture-us": "^1.0.5",
-    "@vesta/services": "^0.1.12",
-    "@vesta/theme": "^0.1.3",
-    "core-js": "^2.6.3",
-    "react": "^16.8.0-alpha.1",
+    "@vesta/services": "^0.3.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "react": "^16.12.0",
     "react-addons-css-transition-group": "^15.6.2",
     "react-dom": "^16.12.0",
-    "react-jss": "^10.0.3",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
-    "redux": "^4.0.5",
-    "tslib": "^1.10.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.3.1",
-    "@types/cordova": "0.0.34",
-    "@types/react": "^16.9.17",
-    "@types/react-dom": "^16.9.5",
-    "@types/react-jss": "^10.0.0",
+    "tslib": "^1.10.0",
+    "react-scripts": "3.3.0",
+    "typescript": "~3.7.2",
+    "md-font": "^0.1.1",
+    "node-sass": "^4.13.1",
     "@types/react-router": "^5.1.4",
-    "@types/react-router-dom": "^5.1.3",
-    "autoprefixer": "^9.7.4",
-    "babel-loader": "^8.0.6",
-    "browser-sync": "^2.26.7",
-    "css-mqpacker": "^7.0.0",
-    "csswring": "^7.0.0",
-    "fs-extra": "^7.0.1",
-    "gulp": "^4.0.0",
-    "gulp-htmlmin": "^5.0.1",
-    "gulp-postcss": "^8.0.0",
-    "gulp-replace": "^1.0.0",
-    "gulp-sass": "^4.0.2",
-    "gulp-sourcemaps": "^2.6.5",
-    "gulp-typescript": "^6.0.0-alpha.1",
-    "sass-lint": "^1.13.1",
-    "ts-loader": "^6.2.1",
-    "tslint": "^5.20.1",
-    "tslint-config-prettier": "^1.18.0",
-    "typescript": "^3.7.5",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "@types/react-router-dom": "^5.1.3"
   },
-  "browserslist": [
-    "defaults",
-    "last 4 version",
-    "iOS >= 7",
-    "Android >= 4",
-    "Explorer >= 10",
-    "ExplorerMobile >= 11"
-  ]
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }

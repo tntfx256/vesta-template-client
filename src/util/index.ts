@@ -21,15 +21,15 @@ export function useState<T>(initialState: T): [T, Dispatch<Partial<T>>] {
   const [state, setStateInternal] = UseStateReact<T>(initialState);
 
   const setState = (newState: Partial<T>) => {
-    setStateInternal({ ...state, ...newState });
+    setStateInternal(oldState => ({ ...oldState, ...newState }));
   };
 
   return [state, setState];
 }
 
 export function loadLocale(code?: string, reload?: boolean): ILocale {
-  let locale: ILocale = null;
-  let selectedCode: string = code || localStorage.getItem("culture");
+  let locale: ILocale | null = null;
+  let selectedCode = code || localStorage.getItem("culture");
   try {
     locale = Culture.getLocale(selectedCode);
   } catch (error) {
@@ -44,7 +44,7 @@ export function loadLocale(code?: string, reload?: boolean): ILocale {
   // loading style
   // reloading application
   if (reload) {
-    location.reload();
+    window.location.reload();
   } else {
     setTimeout(() => {
       document.querySelector("body").setAttribute("dir", locale.dir);

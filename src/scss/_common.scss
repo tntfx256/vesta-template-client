@@ -1,23 +1,25 @@
-@import './scss/misc/colors';
-@import './scss/misc/variables';
-@import './scss/misc/mixins';
-@import './scss/misc/animation';
+@import "./scss/misc/mixins";
+@import "./scss/misc/animation";
 
-@import './scss/fonts/material';
+@import "./scss/fonts/material";
 
 @import "../App";
 
 @import "../components/Root";
 
-@import '../components/root/ErrorBoundary';
-@import '../components/root/Forbidden';
-@import '../components/root/Forget';
-@import '../components/root/Home';
-@import '../components/root/Log';
-@import '../components/root/Login';
-@import '../components/root/Logout';
-@import '../components/root/NotFound';
-@import '../components/root/Profile';
-@import '../components/root/Register';
-@import '../components/root/Role';
-@import '../components/root/User';
+@import "../components/general/DataTableOperations";
+@import "../components/general/Go";
+@import "../components/general/SidenavContent";
+
+@import "../components/root/ErrorBoundary";
+@import "../components/root/Forbidden";
+@import "../components/root/Forget";
+@import "../components/root/Home";
+@import "../components/root/Log";
+@import "../components/root/Login";
+@import "../components/root/Logout";
+@import "../components/root/NotFound";
+@import "../components/root/Profile";
+@import "../components/root/Register";
+@import "../components/root/Role";
+@import "../components/root/User";

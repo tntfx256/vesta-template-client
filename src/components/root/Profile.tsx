@@ -1,13 +1,12 @@
-import { Avatar, DateTimeInput, FormWrapper, IFormOption, Navbar, Preloader, Select, TextInput } from "@vesta/components";
+import { Avatar, Button, DateTimeInput, FormWrapper, IFormOption, Navbar, Preloader, Select, TextInput } from "@vesta/components";
 import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { ComponentType, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import { withTheme } from "theming";
 import { IRole } from "../../cmn/models/Role";
 import { IUser, User, UserGender } from "../../cmn/models/User";
-import { getApi } from "../../service/Api";
-import { getAuth } from "../../service/Auth";
+import { getApiInstance } from "../../service/Api";
+import { getAuthInstance } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
 import { getFileUrl } from "../../util";
 
@@ -15,10 +14,10 @@ interface IProfileParams {}
 
 interface IProfileProps extends RouteComponentProps<IProfileParams> {}
 
-export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileProps) => {
+export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
   const tr = Culture.getDictionary().translate;
-  const auth = getAuth();
-  const api = getApi();
+  const auth = getAuthInstance();
+  const api = getApiInstance();
   const notif = Notif.getInstance();
   const genderOptions: IFormOption[] = [
     { id: UserGender.Male, title: tr("enum_male") },
@@ -67,11 +66,10 @@ export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileP
 
   return (
     <div className="page profile-page has-navbar">
-      <Navbar title={tr("profile")} onBurgerClick={openSidenav} />
-      <PageTitle title={tr("profile")} />
+      <Navbar title={tr("profile")} onBack={() => props.history.replace("/")} />
       <FormWrapper onSubmit={onSubmit}>
         <div className="avatar-wrapper">
-          <Avatar src={preview ? preview : (userImage as string)} defaultSrc="images/icons/144x144.png">
+          <Avatar src={preview ? preview : (userImage as string)} defaultSrc="img/icons/144x144.png">
             <button className="change-image" type="button">
               {tr("txt_change_image")}
             </button>
@@ -175,4 +173,4 @@ export const Profile: ComponentType<IProfileProps> = withTheme((props: IProfileP
     setUser(newUser);
     notif.success("msg_profile_update");
   }
-});
+};

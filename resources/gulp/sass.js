@@ -4,51 +4,38 @@ const postCss = require("gulp-postcss");
 const autoPrefixer = require("autoprefixer");
 const csswring = require("csswring");
 const mqpacker = require("css-mqpacker");
-const eliminator = require("./plugins/eliminator");
 const { src, dest, watch } = require("gulp");
 
 module.exports = function(setting) {
-    const dir = setting.dir;
-    const browsersToSupport = [
-        "last 4 version",
-        "iOS >= 7",
-        "Android >= 4",
-        "Explorer >= 10",
-        "ExplorerMobile >= 11"
-    ];
+  const dir = setting.dir;
 
-    function compileSass() {
-        const genMap = !setting.production;
-        const target = setting.buildPath(setting.target);
-        let stream = src(getEntries());
-        if (genMap) {
-            stream = stream.pipe(sourcemaps.init());
-        }
-        stream = stream.pipe(eliminator(setting)).pipe(sass());
-        const preprocessors = [autoPrefixer({ browsers: browsersToSupport })];
-        preprocessors.push(mqpacker);
-        preprocessors.push(csswring);
-        stream = stream.pipe(postCss(preprocessors));
-        if (genMap) {
-            stream = stream.pipe(sourcemaps.write());
-        }
-        return stream.pipe(dest(`${dir.build}/${target}/css`));
+  function compileSass() {
+    const genMap = !setting.production;
+    let stream = src(getEntries());
+    if (genMap) {
+      stream = stream.pipe(sourcemaps.init());
     }
-
-    function watches() {
-        watch(`${dir.src}/**/*.scss`, compileSass);
+    stream = stream.pipe(sass());
+    const preprocessors = [autoPrefixer({})];
+    preprocessors.push(mqpacker);
+    preprocessors.push(csswring);
+    stream = stream.pipe(postCss(preprocessors));
+    if (genMap) {
+      stream = stream.pipe(sourcemaps.write());
     }
+    return stream.pipe(dest(`${dir.build}/css`));
+  }
 
-    function getEntries() {
-        return [
-            `${dir.src}/index.scss`,
-            `${dir.src}/rtl.scss`,
-            `${dir.src}/ltr.scss`,
-        ];
-    }
+  function watches() {
+    watch(`${dir.src}/**/*.scss`, compileSass);
+  }
 
-    return {
-        tasks: compileSass,
-        watch: watches
-    };
+  function getEntries() {
+    return [`${dir.src}/index.scss`, `${dir.src}/rtl.scss`, `${dir.src}/ltr.scss`];
+  }
+
+  return {
+    tasks: compileSass,
+    watch: watches,
+  };
 };

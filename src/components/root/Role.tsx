@@ -1,9 +1,10 @@
 import { CrudMenu, IComponentProps, Navbar, PageTitle } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { AclAction } from "@vesta/services";
-import React, { ComponentType } from "react";
+import React, { ComponentType, useContext } from "react";
 import { RouteComponentProps } from "react-router";
 import { getAclInstance } from "../../service/Acl";
+import { Store } from "../../service/Store";
 import { Go } from "../general/Go";
 import { RoleAdd } from "./role/RoleAdd";
 import { RoleDetail } from "./role/RoleDetail";
@@ -15,13 +16,14 @@ interface IRoleParams {}
 interface IRoleProps extends IComponentProps, RouteComponentProps<IRoleParams> {}
 
 export const Role: ComponentType<IRoleProps> = (props: IRoleProps) => {
+  const { dispatch } = useContext(Store);
   const access = getAclInstance().getAccessList("role");
   const tr = Culture.getDictionary().translate;
 
   return (
     <div className="page role-page has-navbar">
       <PageTitle title={tr("mdl_role")} />
-      <Navbar title={tr("mdl_role")} onBurgerClick={openSidenav} />
+      <Navbar title={tr("mdl_role")} onBurgerClick={() => dispatch({ navbar: true })} />
       <CrudMenu path="role" access={access} />
       <div className="crud-wrapper">
         <Go path="/role/add" component={RoleAdd} permissions={{ role: [AclAction.Add] }} />

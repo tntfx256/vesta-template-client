@@ -3,15 +3,17 @@ import { IModelValidationMessage, IResponse, IValidationError, validationMessage
 import { Culture } from "@vesta/culture";
 import React, { FunctionComponent, useContext } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
-import { IRole } from "../../cmn/models/Role";
+import img from "../../images/icons/144x144.png";
 import { IUser, User } from "../../cmn/models/User";
-import { getAclInstance } from "../../service/Acl";
 import { getApiInstance } from "../../service/Api";
 import { getAuthInstance } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
 import { Store } from "../../service/Store";
+import { useState } from "../../util";
 
 interface ILoginParams {}
+
+interface ILoginProps extends IComponentProps, RouteComponentProps<ILoginParams> {}
 
 interface ILoginProps extends IComponentProps, RouteComponentProps<ILoginParams> {}
 
@@ -55,7 +57,7 @@ export const Login: FunctionComponent<ILoginProps> = (props: ILoginProps) => {
     <div className="page login-page has-navbar page-logo-form">
       <div className="logo-wrapper">
         <div className="logo-container">
-          <img src="images/icons/144x144.png" alt="Vesta Logo" />
+          <img src={img} alt="Vesta Logo" />
         </div>
       </div>
       <FormWrapper name={"loginForm"} onSubmit={onSubmit}>
@@ -97,17 +99,15 @@ export const Login: FunctionComponent<ILoginProps> = (props: ILoginProps) => {
       .then(response => {
         Preloader.hide();
         auth.login(response.items[0]);
-        getAclInstance().addRole(response.items[0].role as IRole);
         dispatch({ user: auth.getUser() });
       })
-      .catch(error => {
+      .catch((error: Error) => {
         Preloader.hide();
-        // setLoginError(tr("err_wrong_user_pass"));
         setState({ loginError: tr("err_wrong_user_pass") });
         if (error.message === "err_db_no_record") {
           return;
         }
-        notif.error(error.message);
+        notif.error(error.message.toLowerCase());
       });
   }
 };

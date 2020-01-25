@@ -1,81 +1,80 @@
 $sidenav-header-avatar-width: 100px;
 $sidenav-padding: 20px;
 $sidenav-top-padding: $appbar-height;
-$sidenav-menu-bg: rgba($white, .5);
+$sidenav-menu-bg: rgba($white, 0.5);
 
 .sidenav-content {
+  .select-input {
+    // max-width: 64px;
+    min-width: auto;
 
-    .select-input {
-        // max-width: 64px;
-        min-width: auto;
+    label {
+      background: transparent;
+    }
+  }
 
-        label {
-            background: transparent;
-        }
+  .navbar {
+    background: transparent;
+
+    .burger {
+      > span {
+        background: $dark;
+      }
+    }
+  }
+
+  .select-input {
+    #{$opposite-float}: 0;
+    position: absolute;
+    top: 0;
+    z-index: $z-index-navbar + 1;
+
+    .form-control {
+      background: transparent;
+      border: 0;
+    }
+  }
+
+  header {
+    // display: flex;
+    padding: $sidenav-padding;
+    position: relative;
+  }
+
+  .avatar {
+    margin-top: $sidenav-padding;
+    border-radius: 0;
+    height: $sidenav-header-avatar-width;
+    width: $sidenav-header-avatar-width;
+  }
+
+  .name-wrapper {
+    $name-padding: ceil($sidenav-padding / 2);
+    padding: $name-padding;
+    position: relative;
+
+    h4 {
+      font-weight: normal;
     }
 
-    .navbar {
-        background: transparent;
-
-        .burger {
-            >span {
-                background: $dark;
-            }
-        }
+    .icon {
+      #{$opposite-float}: 0;
+      bottom: ceil($sidenav-padding / 2);
+      // color: $white;
+      font-size: $font-size-large;
+      position: absolute;
     }
+  }
 
-    .select-input {
-        #{$opposite-float}: 0;
-        position: absolute;
-        top: 0;
-        z-index: $z-index-navbar + 1;
-
-        .form-control {
-            background: transparent;
-            border: 0;
-        }
-    }
-
-    header {
-        // color: $white;
-        padding: $sidenav-padding;
-        position: relative;
-    }
-
-    .avatar {
-        border: none;
-        border-radius: 0;
-        height: $sidenav-header-avatar-width;
-        width: $sidenav-header-avatar-width;
-    }
-
-    .name-wrapper {
-        $name-padding: ceil($sidenav-padding / 2);
-        padding: $name-padding;
-        position: relative;
-
-        h4 {
-            font-weight: normal;
-        }
-
-        .icon {
-            #{$opposite-float}: 0;
-            bottom: ceil($sidenav-padding / 2);
-            // color: $white;
-            font-size: $font-size-large;
-            position: absolute;
-        }
-    }
-
-    // a {
-    //     padding-#{$float}: 5 * $unit;
-    // }
+  // a {
+  //     padding-#{$float}: 5 * $unit;
+  // }
 }
 
 .sidenav-static {
-    .sidenav-content {
-        .navbar {
-            display: none;
-        }
+  .sidenav-content {
+    .navbar {
+      display: none;
     }
+  }
 }
