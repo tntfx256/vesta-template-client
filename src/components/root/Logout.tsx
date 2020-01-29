@@ -1,14 +1,14 @@
 import { IComponentProps, Preloader } from "@vesta/components";
 import { IResponse } from "@vesta/core";
-import { FunctionComponent, useEffect, useContext } from "react";
+import { FunctionComponent, useContext, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import { IUser } from "../../cmn/models/User";
+import { getAccountInstance } from "../../service/Account";
 import { getApiInstance } from "../../service/Api";
-import { getAuthInstance, isGuest } from "../../service/Auth";
 import { getLogInstance } from "../../service/Log";
 import { Store } from "../../service/Store";
-import { getAclInstance } from "../../service/Acl";
 
+// tslint:disable-next-line: no-empty-interface
 interface ILogoutParams {}
 
 interface ILogoutProps extends IComponentProps, RouteComponentProps<ILogoutParams> {}
@@ -16,10 +16,10 @@ interface ILogoutProps extends IComponentProps, RouteComponentProps<ILogoutParam
 export const Logout: FunctionComponent<ILogoutProps> = (props: ILogoutProps) => {
   const { dispatch } = useContext(Store);
   const api = getApiInstance();
-  const auth = getAuthInstance();
+  const acc = getAccountInstance();
 
   useEffect(() => {
-    if (isGuest()) {
+    if (acc.isGuest()) {
       return props.history.replace("/");
     }
     Preloader.show();
@@ -33,14 +33,14 @@ export const Logout: FunctionComponent<ILogoutProps> = (props: ILogoutProps) => 
         onAfterLogout({});
       });
     return Preloader.hide;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return null;
 
   function onAfterLogout(user: IUser) {
-    auth.logout();
-    auth.login(user);
-    dispatch({ user: auth.getUser() });
+    acc.logout();
+    dispatch({ user });
     props.history.replace("/");
   }
 };

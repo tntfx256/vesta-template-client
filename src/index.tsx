@@ -1,12 +1,10 @@
 import { Icon } from "@vesta/components";
-import { Registry } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import { IrDate, IrLocale } from "@vesta/culture-ir";
 import { UsDate, UsLocale } from "@vesta/culture-us";
 import React from "react";
 import { render } from "react-dom";
 import AppInit from "./AppInit";
-import { SourceApp } from "./cmn/models/User";
 import { IrVocabs } from "./cmn/vocabs/IrVocabs";
 import { UsVocabs } from "./cmn/vocabs/UsVocabs";
 import "./index.scss";
@@ -22,8 +20,6 @@ SplashPlugin.show();
 Culture.register(UsLocale, {}, UsDate);
 Culture.register(IrLocale, {}, IrDate);
 
-// Registry.set("sourceApp", SourceApp.EndUser);
-Registry.set("sourceApp", SourceApp.Panel);
 // initiating locale
 Culture.register(UsLocale, UsVocabs, UsDate);
 Culture.register(IrLocale, IrVocabs, IrDate);

@@ -3,7 +3,7 @@ import { Culture } from "@vesta/culture";
 import { AclAction } from "@vesta/services";
 import React, { ComponentType, useContext } from "react";
 import { RouteComponentProps } from "react-router";
-import { getAclInstance } from "../../service/Acl";
+import { getAccountInstance } from "../../service/Account";
 import { Store } from "../../service/Store";
 import { Go } from "../general/Go";
 import { RoleAdd } from "./role/RoleAdd";
@@ -11,13 +11,14 @@ import { RoleDetail } from "./role/RoleDetail";
 import { RoleEdit } from "./role/RoleEdit";
 import { RoleList } from "./role/RoleList";
 
+// tslint:disable-next-line: no-empty-interface
 interface IRoleParams {}
 
 interface IRoleProps extends IComponentProps, RouteComponentProps<IRoleParams> {}
 
 export const Role: ComponentType<IRoleProps> = (props: IRoleProps) => {
   const { dispatch } = useContext(Store);
-  const access = getAclInstance().getAccessList("role");
+  const access = getAccountInstance().getAccessList("role");
   const tr = Culture.getDictionary().translate;
 
   return (

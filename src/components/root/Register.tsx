@@ -4,9 +4,11 @@ import { Culture } from "@vesta/culture";
 import React, { ComponentType, useState } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
+import vestaLogo from "../../images/icons/144x144.png";
 import { getApiInstance } from "../../service/Api";
 import { Notif } from "../../service/Notif";
 
+// tslint:disable-next-line: no-empty-interface
 interface IRegisterParams {}
 
 interface IRegisterProps extends IComponentProps, RouteComponentProps<IRegisterParams> {}
@@ -38,7 +40,7 @@ export const Register: ComponentType<IRegisterProps> = (props: IRegisterProps) =
     <div className="page register-page has-navbar page-logo-form">
       <div className="logo-wrapper">
         <div className="logo-container">
-          <img src="images/icons/144x144.png" alt="Vesta Logo" />
+          <img src={vestaLogo} alt="Vesta Logo" />
         </div>
       </div>
       <FormWrapper onSubmit={onSubmit}>
@@ -47,11 +49,11 @@ export const Register: ComponentType<IRegisterProps> = (props: IRegisterProps) =
         <div className="agreement">
           {tr("register_accept")}
           &nbsp;(
-          <a href="https://vesta.bz" target="_blank">
+          <a href="https://vesta.bz" target="_blank" rel="noopener noreferrer">
             {tr("rules")}
           </a>
           ,
-          <a href="https://vesta.bz" target="_blank">
+          <a href="https://vesta.bz" target="_blank" rel="noopener noreferrer">
             {tr("privacy")}
           </a>
           )

@@ -1,24 +1,27 @@
 import { Avatar, Button, DateTimeInput, FormWrapper, IFormOption, Navbar, Preloader, Select, TextInput } from "@vesta/components";
 import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
-import React, { ComponentType, useState } from "react";
+import React, { ComponentType, useState, useContext } from "react";
 import { RouteComponentProps } from "react-router";
 import { IRole } from "../../cmn/models/Role";
 import { IUser, User, UserGender } from "../../cmn/models/User";
+import { getAccountInstance } from "../../service/Account";
 import { getApiInstance } from "../../service/Api";
-import { getAuthInstance } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
 import { getFileUrl } from "../../util";
+import { Store } from "../../service/Store";
 
+// tslint:disable-next-line: no-empty-interface
 interface IProfileParams {}
 
 interface IProfileProps extends RouteComponentProps<IProfileParams> {}
 
 export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
   const tr = Culture.getDictionary().translate;
-  const auth = getAuthInstance();
+  const auth = getAccountInstance();
   const api = getApiInstance();
   const notif = Notif.getInstance();
+  const { dispatch } = useContext(Store);
   const genderOptions: IFormOption[] = [
     { id: UserGender.Male, title: tr("enum_male") },
     { id: UserGender.Female, title: tr("enum_female") },
@@ -123,9 +126,9 @@ export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
       }
     }
     let hasImage = false;
-    const userImage: IUser = {};
+    const userFiles: IUser = {};
     if (preview) {
-      userImage.image = userModel.image;
+      userFiles.image = userModel.image;
       delete userModel.image;
       hasImage = true;
     }
@@ -138,7 +141,7 @@ export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
           Preloader.hide();
           return updateUser(response);
         }
-        return api.upload<IUser, IResponse<IUser>>(`user/file/${userModel.id}`, userImage).then(uplResponse => {
+        return api.upload<IUser, IResponse<IUser>>(`user/file/${userModel.id}`, userFiles).then(uplResponse => {
           Preloader.hide();
           updateUser(uplResponse);
         });
@@ -166,11 +169,11 @@ export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
   function updateUser(response: IResponse<IUser>) {
     const newUser = response.items[0];
     newUser.role = auth.getUser().role;
-    auth.login(newUser);
     // removing user password from state
     delete user.password;
     delete (user as any).confPassword;
     setUser(newUser);
+    dispatch({ user: newUser });
     notif.success("msg_profile_update");
   }
 };

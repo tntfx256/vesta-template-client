@@ -21,16 +21,11 @@ export const UserDetail: ComponentType<IUserDetailProps> = (props: IUserDetailPr
 
   const [user, setUser] = useState<IUser>({});
 
-  let initiated = false;
   useEffect(() => {
-    if (!initiated) {
-      return;
-    }
-    initiated = true;
     getCrudInstance("user")
       .fetch(+props.match.params.id)
       .then(setUser);
-  });
+  }, [props.match.params.id]);
 
   if (!user) {
     return null;
@@ -73,7 +68,7 @@ export const UserDetail: ComponentType<IUserDetailProps> = (props: IUserDetailPr
           </tr>
           <tr>
             <td>{tr("fld_image")}</td>
-            <td>{<img src={userImage} />}</td>
+            <td>{<img alt="user" src={userImage} />}</td>
           </tr>
           <tr>
             <td>{tr("fld_status")}</td>

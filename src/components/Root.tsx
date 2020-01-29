@@ -1,7 +1,6 @@
 import { Html, IComponentProps, IToastMessageProps, Preloader, Sidenav, ToastMessage } from "@vesta/components";
 import { Dispatcher } from "@vesta/core";
 import { Culture } from "@vesta/culture";
-import { Storage } from "@vesta/services";
 import React, { FunctionComponent, useContext, useEffect } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { IRouteItem } from "../config/route";
@@ -17,7 +16,7 @@ interface IRootProps extends IComponentProps, RouteComponentProps<IRootParams> {
 
 const Root: FunctionComponent = (props: IRootProps) => {
   const {
-    state: { user, navbar, toast },
+    state: { navbar, toast },
     dispatch,
   } = useContext(Store);
   const { code, dir } = Culture.getLocale();
@@ -30,9 +29,10 @@ const Root: FunctionComponent = (props: IRootProps) => {
     document.addEventListener("pause", toBackground);
     window.onunload = onExit;
     // toast subscription
-    Dispatcher.getInstance().register<IToastMessageProps>("toast", toast => {
-      dispatch({ toast });
+    Dispatcher.getInstance().register<IToastMessageProps>("toast", payload => {
+      dispatch({ toast: payload });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toastMsg = toast ? <ToastMessage message={toast.message} type={toast.type} onClose={onCloseToast} /> : null;
@@ -56,15 +56,15 @@ const Root: FunctionComponent = (props: IRootProps) => {
   }
 
   function onExit() {
-    Storage.sync.set("lastPath", props.location.pathname);
+    localStorage.setItem("lastPath", props.location.pathname);
   }
 
   function toBackground() {
-    Storage.sync.set("inBackground", true);
+    localStorage.setItem("inBackground", "true");
   }
 
   function toForeground() {
-    Storage.sync.set("inBackground", false);
+    localStorage.removeItem("inBackground");
   }
 };
 

@@ -3,19 +3,15 @@ import { IModelValidationMessage, IResponse, IValidationError, validationMessage
 import { Culture } from "@vesta/culture";
 import React, { FunctionComponent, useContext } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
-import img from "../../images/icons/144x144.png";
 import { IUser, User } from "../../cmn/models/User";
+import vestaLogo from "../../images/icons/144x144.png";
+import { getAccountInstance } from "../../service/Account";
 import { getApiInstance } from "../../service/Api";
-import { getAuthInstance } from "../../service/Auth";
 import { Notif } from "../../service/Notif";
 import { Store } from "../../service/Store";
 import { useState } from "../../util";
 
-interface ILoginParams {}
-
-interface ILoginProps extends IComponentProps, RouteComponentProps<ILoginParams> {}
-
-interface ILoginProps extends IComponentProps, RouteComponentProps<ILoginParams> {}
+interface ILoginProps extends IComponentProps, RouteComponentProps<{}> {}
 
 interface ILoginState {
   user: IUser;
@@ -23,11 +19,11 @@ interface ILoginState {
   loginError: string;
 }
 
-export const Login: FunctionComponent<ILoginProps> = (props: ILoginProps) => {
+export const Login: FunctionComponent<ILoginProps> = () => {
   const { dispatch } = useContext(Store);
   const tr = Culture.getDictionary().translate;
   const api = getApiInstance();
-  const auth = getAuthInstance();
+  const acc = getAccountInstance();
   const notif = Notif.getInstance();
   const formErrorsMessages: IModelValidationMessage = {
     password: {
@@ -57,7 +53,7 @@ export const Login: FunctionComponent<ILoginProps> = (props: ILoginProps) => {
     <div className="page login-page has-navbar page-logo-form">
       <div className="logo-wrapper">
         <div className="logo-container">
-          <img src={img} alt="Vesta Logo" />
+          <img src={vestaLogo} alt="Vesta Logo" />
         </div>
       </div>
       <FormWrapper name={"loginForm"} onSubmit={onSubmit}>
@@ -98,8 +94,8 @@ export const Login: FunctionComponent<ILoginProps> = (props: ILoginProps) => {
       .post<IUser, IResponse<IUser>>("account/login", userInstance.getValues("username", "password"))
       .then(response => {
         Preloader.hide();
-        auth.login(response.items[0]);
-        dispatch({ user: auth.getUser() });
+        acc.login(response.token);
+        dispatch({ user: acc.getUser() });
       })
       .catch((error: Error) => {
         Preloader.hide();

@@ -1,4 +1,4 @@
-import { Alert, Button, FormWrapper, IComponentProps, MessageType, PageTitle, Preloader, TextInput } from "@vesta/components";
+import { Button, FormWrapper, IComponentProps, PageTitle, Preloader, TextInput } from "@vesta/components";
 import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
 import React, { FunctionComponent, useState } from "react";
@@ -7,6 +7,7 @@ import { IUser, User } from "../../cmn/models/User";
 import { getApiInstance } from "../../service/Api";
 import { Notif } from "../../service/Notif";
 
+// tslint:disable-next-line: no-empty-interface
 interface IForgetParams {}
 
 interface IForgetProps extends IComponentProps, RouteComponentProps<IForgetParams> {}
@@ -25,12 +26,10 @@ export const Forget: FunctionComponent<IForgetProps> = (props: IForgetProps) => 
     },
   };
   // states
-  const [message, setMessage] = useState<string>("");
   const [mobile, setMobile] = useState<string>("");
   const [validationErrors, setErrors] = useState<IValidationError>(null);
 
   const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
-  const alert = message ? <Alert type={MessageType.Info}>{message}</Alert> : null;
 
   return (
     <div className="page forget-page has-navbar page-logo-form">
@@ -60,15 +59,15 @@ export const Forget: FunctionComponent<IForgetProps> = (props: IForgetProps) => 
   }
 
   function onSubmit() {
-    const user = new User({ mobile } as IUser);
-    const validationErrors = user.validate("mobile");
-    if (validationErrors) {
-      return setErrors(validationErrors);
+    const user = new User({ mobile });
+    const vErrors = user.validate("mobile");
+    if (vErrors) {
+      return setErrors(vErrors);
     }
     Preloader.show();
     setErrors(null);
     api
-      .post<IUser, IResponse<IUser>>("account/forget", { mobile } as IUser)
+      .post<IUser, IResponse<IUser>>("account/forget", { mobile })
       .then(response => {
         Preloader.hide();
         notif.success(tr("info_forget"));

@@ -1,21 +1,23 @@
 import { CrudMenu, IComponentProps, Navbar, PageTitle } from "@vesta/components";
 import { Culture } from "@vesta/culture";
+import { AclAction } from "@vesta/services";
 import React, { ComponentType, useContext } from "react";
-import { Route, RouteComponentProps, Switch } from "react-router";
-import { HashRouter } from "react-router-dom";
-import { getAclInstance } from "../../service/Acl";
+import { RouteComponentProps } from "react-router";
+import { getAccountInstance } from "../../service/Account";
 import { Store } from "../../service/Store";
+import { Go } from "../general/Go";
 import { UserAdd } from "./user/UserAdd";
 import { UserDetail } from "./user/UserDetail";
 import { UserEdit } from "./user/UserEdit";
 import { UserList } from "./user/UserList";
 
+// tslint:disable-next-line: no-empty-interface
 interface IUserParams {}
 
 interface IUserProps extends IComponentProps, RouteComponentProps<IUserParams> {}
 
 export const User: ComponentType<IUserProps> = (props: IUserProps) => {
-  const access = getAclInstance().getAccessList("user");
+  const access = getAccountInstance().getAccessList("user");
   const { dispatch } = useContext(Store);
   // prevent deleting user
   delete access.delete;
@@ -27,13 +29,9 @@ export const User: ComponentType<IUserProps> = (props: IUserProps) => {
       <Navbar title={tr("mdl_user")} onBurgerClick={() => dispatch({ navbar: true })} />
       <CrudMenu path="user" access={access} />
       <div className="crud-wrapper">
-        <HashRouter>
-          <Switch>
-            {access.add ? <Route path="/user/add" component={UserAdd} /> : null}
-            {access.edit ? <Route path="/user/edit/:id" component={UserEdit} /> : null}
-            {access.read ? <Route path="/user/detail/:id" component={UserDetail} /> : null}
-          </Switch>
-        </HashRouter>
+        <Go path="/user/add" component={UserAdd} permissions={{ user: [AclAction.Add] }} />
+        <Go path="/user/edit/:id" component={UserEdit} permissions={{ user: [AclAction.Edit] }} />
+        <Go path="/user/detail/:id" component={UserDetail} permissions={{ user: [AclAction.Read] }} />
         <UserList access={access} />
       </div>
     </div>

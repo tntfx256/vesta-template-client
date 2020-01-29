@@ -1,7 +1,7 @@
 import { IToastMessageProps } from "@vesta/components";
 import { createContext, Dispatch } from "react";
 import { IUser } from "../cmn/models/User";
-import { getAuthInstance } from "./Auth";
+import { getAccountInstance } from "./Account";
 
 export interface IAppState {
   navbar: boolean;
@@ -18,7 +18,7 @@ export function getInitialState(): IAppState {
   return {
     navbar: false,
     toast: null,
-    user: getAuthInstance().getUser(),
+    user: getAccountInstance().getUser(),
   };
 }
 

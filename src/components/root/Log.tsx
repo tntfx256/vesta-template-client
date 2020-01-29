@@ -5,7 +5,7 @@ import React, { ComponentType, useContext, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { ILog } from "../../cmn/models/Log";
 import { IUser, SourceApp } from "../../cmn/models/User";
-import { getAclInstance } from "../../service/Acl";
+import { getAccountInstance } from "../../service/Account";
 import { getCrudInstance } from "../../service/Crud";
 import { Notif } from "../../service/Notif";
 import { Store } from "../../service/Store";
@@ -27,7 +27,7 @@ interface ILogParams {}
 interface ILogProps extends IComponentProps, RouteComponentProps<ILogParams> {}
 
 export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
-  const access = getAclInstance().getAccessList("log");
+  const access = getAccountInstance().getAccessList("log");
   const service = getCrudInstance<string>("log");
   const tr = Culture.getDictionary().translate;
   const { dispatch } = useContext(Store);
@@ -38,11 +38,12 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
 
   useEffect(() => {
     onFetchAll();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dateTime = Culture.getDateTimeInstance();
   const dateTimeFormat = Culture.getLocale().defaultDateTimeFormat;
-  const columns: Array<IColumn<string>> = [
+  const columns: IColumn<string>[] = [
     { title: tr("fld_name"), render: r => <p className="en">{r}</p> },
     {
       render: r => {

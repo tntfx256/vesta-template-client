@@ -1,42 +1,33 @@
-import { Registry } from "@vesta/core";
-import { Api, IApiConfig, IRequestHeader, Storage } from "@vesta/services";
-import { SourceApp } from "../cmn/models/User";
+import { Api, IApiConfig, IRequestHeader } from "@vesta/services";
 import { config } from "../config";
-import { getAuthInstance } from "./Auth";
+import { getAccountInstance } from "./Account";
 
 let instance: Api = null;
-const tokenHeaderKeyName = "X-Auth-Token";
 
 export function getApiInstance(): Api {
   const { api, version } = config;
-  const auth = getAuthInstance();
+  const acc = getAccountInstance();
 
   if (!instance) {
     const endpoint = `${api}/api/${version.api}`;
     const option: IApiConfig = {
       endpoint,
-      hooks: { afterReceive, beforeSend },
+      hooks: { beforeSend },
     };
     instance = new Api(option);
   }
   return instance;
 
-  function afterReceive<T>(method: string, xhr: XMLHttpRequest, edge: string, data: T) {
-    const token = xhr.getResponseHeader(tokenHeaderKeyName);
-    if (token) {
-      auth.setToken(token);
-    }
-  }
-
   function beforeSend<T>(method: string, edge: string, data: T, headers: IRequestHeader) {
-    if (data) {
-      const sourceApp = Registry.get<SourceApp>("sourceApp");
-      (data as any).s = sourceApp;
-    }
+    // setting sourceApplication
+    const sourceApp = config.sourceApp;
+    headers.From = `${sourceApp}`;
+    // checking content type
     if (method !== "UPLOAD") {
       headers["Content-Type"] = "application/json";
     }
-    const token = Storage.sync.get<string>("auth-token");
+    // sending auth token
+    const token = acc.getToken();
     if (token) {
       headers["X-AUTH-TOKEN"] = token;
     }

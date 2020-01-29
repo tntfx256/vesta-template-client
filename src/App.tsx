@@ -1,24 +1,23 @@
 import { Dispatcher, IResponse } from "@vesta/core";
-import React, { ComponentType, useContext, useEffect } from "react";
+import React, { FunctionComponent, useContext, useEffect } from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
-import { IRole } from "./cmn/models/Role";
 import { IUser } from "./cmn/models/User";
 import { Go } from "./components/general/Go";
 import Root from "./components/Root";
 import { NotFound } from "./components/root/NotFound";
 import { getRoutes, IRouteItem } from "./config/route";
 import { SplashPlugin } from "./plugin/SplashPlugin";
-import { getAclInstance } from "./service/Acl";
+import { getAccountInstance } from "./service/Account";
 import { getApiInstance } from "./service/Api";
-import { getAuthInstance, isGuest } from "./service/Auth";
 import { Notif } from "./service/Notif";
 import { Store } from "./service/Store";
 
 // tslint:disable-next-line: no-empty-interface
 interface IAppProps {}
 
-export const App: ComponentType = (props: IAppProps) => {
-  const { state, dispatch } = useContext(Store);
+export const App: FunctionComponent<IAppProps> = () => {
+  const acc = getAccountInstance();
+  const { dispatch } = useContext(Store);
 
   useEffect(() => {
     // prevent splash from hiding after timeout; it must be hidden manually
@@ -27,19 +26,17 @@ export const App: ComponentType = (props: IAppProps) => {
     getApiInstance()
       .get<IUser, IResponse<IUser>>("me")
       .then(response => {
-        const user = (response as any).items[0];
-        const auth = getAuthInstance();
-        auth.login(user);
-        getAclInstance().addRole(user.role as IRole);
-        dispatch({ user });
+        acc.login(response.token);
+        dispatch({ user: acc.getUser() });
       })
       .catch(err => {
         Notif.getInstance().error(err.message);
       });
     // todo: registerPushNotification();
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const routeItems = getRoutes(!isGuest());
+  const routeItems = getRoutes(!getAccountInstance().isGuest());
   const routes = renderRoutes(routeItems, "");
 
   return (

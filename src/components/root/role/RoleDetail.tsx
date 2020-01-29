@@ -21,6 +21,7 @@ export const RoleDetail: ComponentType<IRoleDetailProps> = (props: IRoleDetailPr
 
   useEffect(() => {
     service.fetch(+props.match.params.id).then(setRole);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.match.params.id]);
 
   if (!role) {

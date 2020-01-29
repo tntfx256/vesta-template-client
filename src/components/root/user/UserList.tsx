@@ -17,10 +17,13 @@ export const UserList: ComponentType<IUserListProps> = (props: IUserListProps) =
   const [users, setUsers] = useState([]);
   const [queryOption, setQueryOption] = useState({});
 
-  useEffect(() => fetchAll(queryOption), [queryOption]);
+  useEffect(() => {
+    fetchAll(queryOption);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const statusOptions = { 1: tr("enum_active"), 0: tr("enum_inactive") };
-  const columns: Array<IColumn<IUser>> = [
+  const columns: IColumn<IUser>[] = [
     { name: "id", title: tr("fld_id") },
     { name: "username", title: tr("fld_username") },
     { name: "name", title: tr("fld_name") },

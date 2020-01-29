@@ -18,10 +18,13 @@ export const RoleList: ComponentType<IRoleListProps> = (props: IRoleListProps) =
   const [roles, setRoles] = useState<IRole[]>([]);
   const [queryOption, setQueryOption] = useState<IQueryOption<IRole>>({});
 
-  useEffect(() => fetchAll(queryOption), []);
+  useEffect(() => {
+    fetchAll(queryOption);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const statusOptions = { 1: tr("enum_active"), 0: tr("enum_inactive") };
-  const columns: Array<IColumn<IRole>> = [
+  const columns: IColumn<IRole>[] = [
     { name: "id", title: tr("fld_id") },
     { name: "name", title: tr("fld_name") },
     { name: "status", title: tr("fld_status"), render: r => tr(statusOptions[r.status]) },

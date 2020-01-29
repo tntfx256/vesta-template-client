@@ -1,8 +1,8 @@
 import { IComponentProps } from "@vesta/components";
 import { IPermissions } from "@vesta/services";
-import React, { ComponentType, useEffect } from "react";
+import React, { ComponentType } from "react";
 import { Route } from "react-router";
-import { getAclInstance } from "../../service/Acl";
+import { getAccountInstance } from "../../service/Account";
 
 interface IGoProps extends IComponentProps {
   component: ComponentType;
@@ -12,14 +12,7 @@ interface IGoProps extends IComponentProps {
 }
 
 export const Go: ComponentType<IGoProps> = (props: IGoProps) => {
-  const acl = getAclInstance();
-  const state = props.path;
+  const acc = getAccountInstance();
 
-  useEffect(() => {
-    if (props.permissions) {
-      acl.register(state, props.permissions);
-    }
-  }, [acl, props.permissions, state]);
-
-  return !props.permissions || acl.hasAccessToState(state) ? <Route path={props.path} component={props.component} exact={props.exact} /> : null;
+  return !props.permissions || acc.hasAccess(props.permissions) ? <Route path={props.path} component={props.component} exact={props.exact} /> : null;
 };

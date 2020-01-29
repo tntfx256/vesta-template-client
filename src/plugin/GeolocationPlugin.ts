@@ -1,4 +1,3 @@
-import { Storage } from "@vesta/services";
 import { ILocation } from "../cmn/interfaces/GeoLocation";
 
 /**
@@ -17,13 +16,17 @@ export class GeolocationPlugin {
     });
   }
 
-  public static getLatestLocation(): ILocation {
-    const defaultLocation = Storage.sync.get<ILocation>("defaultLocation");
-    let lastLocation = Storage.sync.get<ILocation>(GeolocationPlugin.LocationKey);
-    if (!lastLocation || !lastLocation.lat) {
-      lastLocation = defaultLocation;
+  public static getLatestLocation(): ILocation | null {
+    try {
+      const defaultLocation = JSON.parse(localStorage.get("defaultLocation")) as ILocation;
+      let lastLocation = JSON.parse(localStorage.get(GeolocationPlugin.LocationKey)) as ILocation;
+      if (!lastLocation || !lastLocation.lat) {
+        lastLocation = defaultLocation;
+      }
+      return lastLocation;
+    } catch {
+      return null;
     }
-    return lastLocation;
   }
 
   public static isLocationAccurate(): boolean {
@@ -82,7 +85,7 @@ export class GeolocationPlugin {
         // todo: if position is not accurate, try for highAccuracy
         GeolocationPlugin.tmpPositionOptions = null;
         // }
-        Storage.sync.set(GeolocationPlugin.LocationKey, location);
+        localStorage.setItem(GeolocationPlugin.LocationKey, JSON.stringify(location));
         resolve(location);
       },
       (error: PositionError) => {
@@ -99,7 +102,7 @@ export class GeolocationPlugin {
             positionOptions.enableHighAccuracy = false;
           } else {
             // checking app activity
-            if (Storage.sync.get<boolean>("inBackground")) {
+            if (localStorage.getItem("inBackground")) {
               // super extend timeout if app in background
               // console.log("app in bg; extending timeout even more");
               positionOptions.timeout = Math.floor((3 * positionOptions.timeout) / 2);

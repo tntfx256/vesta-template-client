@@ -1,8 +1,8 @@
 import { DateTimeInput, FormWrapper, IComponentProps, IFormOption, Select, TextInput } from "@vesta/components";
 import { IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
+import { Status } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
-import { Status } from "../../../cmn/enum/Status";
 import { IRole } from "../../../cmn/models/Role";
 import { IUser, User, UserGender, UserType } from "../../../cmn/models/User";
 import { getCrudInstance } from "../../../service/Crud";
@@ -99,6 +99,7 @@ export const UserForm: ComponentType<IUserFormProps> = (props: IUserFormProps) =
     getCrudInstance<IRole>("acl/role")
       .fetchAll()
       .then(setRoles);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id]);
 
   const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};

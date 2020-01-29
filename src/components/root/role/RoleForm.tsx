@@ -1,8 +1,8 @@
 import { FormWrapper, IComponentProps, IFormOption, Multichoice, Select, TextInput } from "@vesta/components";
 import { IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
+import { Status } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
-import { Status } from "../../../cmn/enum/Status";
 import { IPermission } from "../../../cmn/models/Permission";
 import { IRole, Role } from "../../../cmn/models/Role";
 import { getCrudInstance } from "../../../service/Crud";
@@ -50,6 +50,7 @@ export const RoleForm: ComponentType<IRoleFormProps> = (props: IRoleFormProps) =
         return roleService.fetch(id);
       })
       .then(rawRole => parsePermissions(rawPermissions, rawRole));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.id]);
 
   const errors = validationErrors ? validationMessage(formErrorsMessages, validationErrors) : {};
@@ -95,7 +96,7 @@ export const RoleForm: ComponentType<IRoleFormProps> = (props: IRoleFormProps) =
       }
     }
     role.permissions = role.permissions.concat(values || []);
-    setRole(role);
+    setRole({ ...role });
   }
 
   function onSubmit() {
@@ -144,7 +145,3 @@ export const RoleForm: ComponentType<IRoleFormProps> = (props: IRoleFormProps) =
     return list;
   }
 };
-
-// RoleForm.defaultProps = {
-//     id: 0,
-// };
