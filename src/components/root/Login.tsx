@@ -11,7 +11,7 @@ import { Notif } from "../../service/Notif";
 import { Store } from "../../service/Store";
 import { useState } from "../../util";
 
-interface ILoginProps extends IComponentProps, RouteComponentProps<{}> {}
+interface ILoginProps extends IComponentProps, RouteComponentProps<{}> { }
 
 interface ILoginState {
   user: IUser;
@@ -92,10 +92,10 @@ export const Login: FunctionComponent<ILoginProps> = () => {
     setState({ validationErrors: null, loginError: "" });
     api
       .post<IUser, IResponse<IUser>>("account/login", userInstance.getValues("username", "password"))
-      .then(response => {
+      .then(({ items, token }) => {
         Preloader.hide();
-        acc.login(response.token);
-        dispatch({ user: acc.getUser() });
+        acc.login(items[0], token);
+        dispatch({ user: items[0] });
       })
       .catch((error: Error) => {
         Preloader.hide();

@@ -12,9 +12,9 @@ import { getFileUrl } from "../../util";
 import { Store } from "../../service/Store";
 
 // tslint:disable-next-line: no-empty-interface
-interface IProfileParams {}
+interface IProfileParams { }
 
-interface IProfileProps extends RouteComponentProps<IProfileParams> {}
+interface IProfileProps extends RouteComponentProps<IProfileParams> { }
 
 export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
   const tr = Culture.getDictionary().translate;
@@ -174,6 +174,7 @@ export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
     delete (user as any).confPassword;
     setUser(newUser);
     dispatch({ user: newUser });
+    getAccountInstance().login(newUser);
     notif.success("msg_profile_update");
   }
 };

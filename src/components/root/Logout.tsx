@@ -9,9 +9,9 @@ import { getLogInstance } from "../../service/Log";
 import { Store } from "../../service/Store";
 
 // tslint:disable-next-line: no-empty-interface
-interface ILogoutParams {}
+interface ILogoutParams { }
 
-interface ILogoutProps extends IComponentProps, RouteComponentProps<ILogoutParams> {}
+interface ILogoutProps extends IComponentProps, RouteComponentProps<ILogoutParams> { }
 
 export const Logout: FunctionComponent<ILogoutProps> = (props: ILogoutProps) => {
   const { dispatch } = useContext(Store);
@@ -40,6 +40,7 @@ export const Logout: FunctionComponent<ILogoutProps> = (props: ILogoutProps) => 
 
   function onAfterLogout(user: IUser) {
     acc.logout();
+    acc.login(user);
     dispatch({ user });
     props.history.replace("/");
   }

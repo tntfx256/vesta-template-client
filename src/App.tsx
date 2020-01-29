@@ -13,7 +13,7 @@ import { Notif } from "./service/Notif";
 import { Store } from "./service/Store";
 
 // tslint:disable-next-line: no-empty-interface
-interface IAppProps {}
+interface IAppProps { }
 
 export const App: FunctionComponent<IAppProps> = () => {
   const acc = getAccountInstance();
@@ -25,9 +25,9 @@ export const App: FunctionComponent<IAppProps> = () => {
     Dispatcher.getInstance().register("toast", dispatch);
     getApiInstance()
       .get<IUser, IResponse<IUser>>("me")
-      .then(response => {
-        acc.login(response.token);
-        dispatch({ user: acc.getUser() });
+      .then(({ items, token }) => {
+        acc.login(items[0], token);
+        dispatch({ user: items[0] });
       })
       .catch(err => {
         Notif.getInstance().error(err.message);
