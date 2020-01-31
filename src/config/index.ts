@@ -1,6 +1,6 @@
 import { cmnConfig, ICmnConfig } from "../cmn/config";
+import { SourceApp } from "../cmn/enum/SourceApp";
 import { IVariantConfig, variantConfig } from "./variantConfig";
-import { SourceApp } from "../cmn/models/User";
 
 export interface IPaginationConfig {
   itemsPerPage: number;
@@ -26,7 +26,6 @@ export const config: IAppConfig = {
   pagination: {
     itemsPerPage: 20,
   },
-  sw: variantConfig.sw,
   transition: {
     enter: 150,
     leave: 100,

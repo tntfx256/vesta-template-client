@@ -1,7 +1,6 @@
 export interface IVariantConfig {
     api: string;
     env: string;
-    sw: string;
     viewport: {
         Large: number;
         Medium: number;
@@ -12,7 +11,7 @@ export interface IVariantConfig {
 export const variantConfig: IVariantConfig = {
     api: "http://localhost:3000",
     env: "development",
-    sw: "service-worker",
+    // sw: "service-worker",
     viewport: {
         Large: 1024,
         Medium: 768,

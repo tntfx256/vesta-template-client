@@ -4,7 +4,6 @@ import { AclAction } from "@vesta/services";
 import React, { ComponentType, useContext, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { ILog } from "../../cmn/models/Log";
-import { IUser, SourceApp } from "../../cmn/models/User";
 import { getAccountInstance } from "../../service/Account";
 import { getCrudInstance } from "../../service/Crud";
 import { Notif } from "../../service/Notif";
@@ -13,18 +12,9 @@ import { DataTableOperations } from "../general/DataTableOperations";
 import { Go } from "../general/Go";
 import { LogDetail } from "./log/LogDetail";
 
-export interface ILogger {
-  duration: number;
-  level: number;
-  logs: ILog[];
-  sourceApp: SourceApp;
-  start: number;
-  user: number | IUser;
-}
+interface ILogParams { }
 
-interface ILogParams {}
-
-interface ILogProps extends IComponentProps, RouteComponentProps<ILogParams> {}
+interface ILogProps extends IComponentProps, RouteComponentProps<ILogParams> { }
 
 export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
   const access = getAccountInstance().getAccessList("log");

@@ -3,9 +3,9 @@ import { Culture } from "@vesta/culture";
 import { ILog } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
+import { ILogger } from "../../../cmn/interfaces/Logger";
 import { IUser } from "../../../cmn/models/User";
 import { getApiInstance } from "../../../service/Api";
-import { ILogger } from "../Log";
 
 interface ILogDetailParams {
   id: string;
@@ -55,7 +55,7 @@ export const LogDetail: ComponentType<ILogDetailProps> = (props: ILogDetailProps
     const dateTimeFormat = Culture.getLocale().defaultDateTimeFormat;
     dateTime.setTime(log.start);
     const logDate = dateTime.format(dateTimeFormat);
-    const sourceAppOptions = { 1: tr("enum_panel"), 2: tr("enum_enduser"), 3: tr("enum_service") };
+    // const sourceAppOptions = { 1: tr("enum_panel"), 2: tr("enum_enduser"), 3: tr("enum_service") };
     const logs = log.logs.map((thisLog, i) => {
       const messages = thisLog.message.split("-;-").map((msg, j) => (
         <li key={j} className={`alert alert-${thisLog.level}`}>
