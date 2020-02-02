@@ -14,12 +14,15 @@ print_status(){
   echo
 }
 
+# environmental variables
+NODE_ENV=production
+REACT_APP_API_ENDPOINT=https://api.vesta.bz
+
 cd ${CLONE_PATH}
 git checkout master
 print_status "Cloning SubModules"
 git submodule update --init src/cmn
 git submodule foreach git checkout master
-cp resources/gitignore/variantConfig.ts src/config/variantConfig.ts
 
 print_status "Executing pre-deploy Script"
 chmod +x resources/ci/scripts/pre-deploy.js
@@ -32,7 +35,7 @@ print_status "Installing Node Packages"
 npm install
 
 print_status "Running Deploy Tasks"
-npm run deploy:web
+npm run build
 
 cd ${WD}
 rm -rf ${DEPLOY_PATH}
