@@ -8,9 +8,9 @@ import { getApiInstance } from "../../service/Api";
 import { Notif } from "../../service/Notif";
 
 // tslint:disable-next-line: no-empty-interface
-interface IForgetParams {}
+interface IForgetParams { }
 
-interface IForgetProps extends IComponentProps, RouteComponentProps<IForgetParams> {}
+interface IForgetProps extends IComponentProps, RouteComponentProps<IForgetParams> { }
 
 export const Forget: FunctionComponent<IForgetProps> = (props: IForgetProps) => {
   const tr = Culture.getDictionary().translate;
@@ -36,7 +36,7 @@ export const Forget: FunctionComponent<IForgetProps> = (props: IForgetProps) => 
       <PageTitle title={tr("forget_pass")} />
       <div className="logo-wrapper">
         <div className="logo-container">
-          <img src="images/icons/144x144.png" alt="Vesta Logo" />
+          <img src="images/logo.png" alt="Vesta Logo" />
         </div>
       </div>
       <FormWrapper name="ForgetForm" onSubmit={onSubmit}>

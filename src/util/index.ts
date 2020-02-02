@@ -46,13 +46,13 @@ export function loadLocale(code?: string, reload?: boolean): ILocale {
   if (reload) {
     window.location.reload();
   } else {
-    setTimeout(() => {
-      document.querySelector("body").setAttribute("dir", locale.dir);
-      const style = document.createElement("link");
-      style.setAttribute("rel", "stylesheet");
-      style.setAttribute("href", `css/${locale.dir}.css?v=${Date.now()}`);
-      (document.querySelector("head") as HTMLHeadElement).appendChild(style);
-    }, 10);
+    // setTimeout(() => {
+    //   document.querySelector("body").setAttribute("dir", locale.dir);
+    //   const style = document.createElement("link");
+    //   style.setAttribute("rel", "stylesheet");
+    //   style.setAttribute("href", `css/${locale.dir}.css?v=${Date.now()}`);
+    //   (document.querySelector("head") as HTMLHeadElement).appendChild(style);
+    // }, 10);
   }
   return locale;
 }

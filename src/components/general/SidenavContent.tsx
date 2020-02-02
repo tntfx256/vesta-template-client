@@ -3,7 +3,7 @@ import { Culture } from "@vesta/culture";
 import React, { FunctionComponent, useContext } from "react";
 import { Link } from "react-router-dom";
 import { IUser } from "../../cmn/models/User";
-import defaultUserImage from "../../images/icons/192x192.png";
+import defaultUserImage from "../../images/logo.png";
 import { Store } from "../../service/Store";
 import { getFileUrl } from "../../util";
 
