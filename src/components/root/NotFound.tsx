@@ -1,15 +1,15 @@
 import { IComponentProps, Navbar, PageTitle } from "@vesta/components";
 import { Culture } from "@vesta/culture";
-import React, { ComponentType, useContext } from "react";
+import React, { ComponentType } from "react";
 import { RouteComponentProps } from "react-router";
-import { Store } from "../../service/Store";
+import { useStore } from "../../service/Store";
 
 interface INotFoundParams {}
 
 interface INotFoundProps extends IComponentProps, RouteComponentProps<INotFoundParams> {}
 
 export const NotFound: ComponentType<INotFoundProps> = (props: INotFoundProps) => {
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
   const tr = Culture.getDictionary().translate;
 
   return (

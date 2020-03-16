@@ -1,15 +1,15 @@
 import { IComponentProps, Navbar, PageTitle } from "@vesta/components";
 import { Culture } from "@vesta/culture";
-import React, { ComponentType, useContext } from "react";
+import React, { ComponentType } from "react";
 import { RouteComponentProps } from "react-router";
-import { Store } from "../../service/Store";
+import { useStore } from "../../service/Store";
 
 interface IForbiddenParams {}
 
 interface IForbiddenProps extends IComponentProps, RouteComponentProps<IForbiddenParams> {}
 
 export const Forbidden: ComponentType<IForbiddenProps> = (props: IForbiddenProps) => {
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
   const tr = Culture.getDictionary().translate;
 
   return (

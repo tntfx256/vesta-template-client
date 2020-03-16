@@ -1,8 +1,8 @@
 import { IComponentProps, Navbar } from "@vesta/components";
 import { Culture } from "@vesta/culture";
-import React, { ComponentType, useContext } from "react";
+import React, { ComponentType } from "react";
 import { RouteComponentProps } from "react-router";
-import { Store } from "../../service/Store";
+import { useStore } from "../../service/Store";
 
 interface IHomeParams {}
 
@@ -10,7 +10,7 @@ interface IHomeProps extends IComponentProps, RouteComponentProps<IHomeParams> {
 
 export const Home: ComponentType<IHomeProps> = (props: IHomeProps) => {
   const tr = Culture.getDictionary().translate;
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
 
   return (
     <div className="page home-page has-navbar">

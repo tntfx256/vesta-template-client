@@ -1,10 +1,10 @@
 import { CrudMenu, IComponentProps, Navbar, PageTitle } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { AclAction } from "@vesta/services";
-import React, { ComponentType, useContext } from "react";
+import React, { ComponentType } from "react";
 import { RouteComponentProps } from "react-router";
 import { getAccountInstance } from "../../service/Account";
-import { Store } from "../../service/Store";
+import { useStore } from "../../service/Store";
 import { Go } from "../general/Go";
 import { RoleAdd } from "./role/RoleAdd";
 import { RoleDetail } from "./role/RoleDetail";
@@ -17,7 +17,7 @@ interface IRoleParams {}
 interface IRoleProps extends IComponentProps, RouteComponentProps<IRoleParams> {}
 
 export const Role: ComponentType<IRoleProps> = (props: IRoleProps) => {
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
   const access = getAccountInstance().getAccessList("role");
   const tr = Culture.getDictionary().translate;
 

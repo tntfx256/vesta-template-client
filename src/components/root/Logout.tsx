@@ -1,20 +1,20 @@
 import { IComponentProps, Preloader } from "@vesta/components";
 import { IResponse } from "@vesta/core";
-import { FunctionComponent, useContext, useEffect } from "react";
+import { FunctionComponent, useEffect } from "react";
 import { RouteComponentProps } from "react-router";
 import { IUser } from "../../cmn/models/User";
 import { getAccountInstance } from "../../service/Account";
 import { getApiInstance } from "../../service/Api";
 import { getLogInstance } from "../../service/Log";
-import { Store } from "../../service/Store";
+import { useStore } from "../../service/Store";
 
 // tslint:disable-next-line: no-empty-interface
-interface ILogoutParams { }
+interface ILogoutParams {}
 
-interface ILogoutProps extends IComponentProps, RouteComponentProps<ILogoutParams> { }
+interface ILogoutProps extends IComponentProps, RouteComponentProps<ILogoutParams> {}
 
 export const Logout: FunctionComponent<ILogoutProps> = (props: ILogoutProps) => {
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
   const api = getApiInstance();
   const acc = getAccountInstance();
 

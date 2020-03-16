@@ -1,5 +1,5 @@
 import { Dispatcher, IResponse } from "@vesta/core";
-import React, { FunctionComponent, useContext, useEffect } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import { IUser } from "./cmn/models/User";
 import { Go } from "./components/general/Go";
@@ -10,14 +10,14 @@ import { SplashPlugin } from "./plugin/SplashPlugin";
 import { getAccountInstance } from "./service/Account";
 import { getApiInstance } from "./service/Api";
 import { Notif } from "./service/Notif";
-import { Store } from "./service/Store";
+import { useStore } from "./service/Store";
 
 // tslint:disable-next-line: no-empty-interface
-interface IAppProps { }
+interface IAppProps {}
 
 export const App: FunctionComponent<IAppProps> = () => {
   const acc = getAccountInstance();
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
 
   useEffect(() => {
     // prevent splash from hiding after timeout; it must be hidden manually

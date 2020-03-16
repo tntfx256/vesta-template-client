@@ -1,10 +1,10 @@
 import { Html, IComponentProps, IToastMessageProps, Preloader, Sidenav, ToastMessage } from "@vesta/components";
 import { Dispatcher } from "@vesta/core";
 import { Culture } from "@vesta/culture";
-import React, { FunctionComponent, useContext, useEffect } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { RouteComponentProps, withRouter } from "react-router";
 import { IRouteItem } from "../config/route";
-import { Store } from "../service/Store";
+import { useStore } from "../service/Store";
 import { SidenavContent } from "./general/SidenavContent";
 import { ErrorBoundary } from "./root/ErrorBoundary";
 
@@ -18,7 +18,7 @@ const Root: FunctionComponent = (props: IRootProps) => {
   const {
     state: { navbar, toast },
     dispatch,
-  } = useContext(Store);
+  } = useStore();
   const { code, dir } = Culture.getLocale();
 
   useEffect(() => {

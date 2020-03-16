@@ -1,10 +1,10 @@
 import { Avatar, IComponentProps, Icon, IMenuItem, Menu, Navbar, Select } from "@vesta/components";
 import { Culture } from "@vesta/culture";
-import React, { FunctionComponent, useContext } from "react";
+import React, { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
 import { IUser } from "../../cmn/models/User";
 import defaultUserImage from "../../images/icons/192x192.png";
-import { Store } from "../../service/Store";
+import { useStore } from "../../service/Store";
 import { getFileUrl } from "../../util";
 
 interface ISidenavContentProps extends IComponentProps {
@@ -21,7 +21,7 @@ export const SidenavContent: FunctionComponent<ISidenavContentProps> = (props: I
   const {
     state: { user },
     dispatch,
-  } = useContext(Store);
+  } = useStore();
   const tr = Culture.getDictionary().translate;
   const localeOptions = [
     { id: 1, locale: "fa-IR", title: tr("persian") },

@@ -1,17 +1,17 @@
 import { Alert, Button, FormWrapper, IComponentProps, MessageType, Preloader, TextInput } from "@vesta/components";
 import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
-import React, { FunctionComponent, useContext } from "react";
+import React, { FunctionComponent } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
 import vestaLogo from "../../images/icons/144x144.png";
 import { getAccountInstance } from "../../service/Account";
 import { getApiInstance } from "../../service/Api";
 import { Notif } from "../../service/Notif";
-import { Store } from "../../service/Store";
+import { useStore } from "../../service/Store";
 import { useState } from "../../util";
 
-interface ILoginProps extends IComponentProps, RouteComponentProps<{}> { }
+interface ILoginProps extends IComponentProps, RouteComponentProps<{}> {}
 
 interface ILoginState {
   user: IUser;
@@ -20,7 +20,7 @@ interface ILoginState {
 }
 
 export const Login: FunctionComponent<ILoginProps> = () => {
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
   const tr = Culture.getDictionary().translate;
   const api = getApiInstance();
   const acc = getAccountInstance();

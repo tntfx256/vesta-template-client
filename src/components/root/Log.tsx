@@ -1,14 +1,15 @@
 import { CrudMenu, DataTable, IColumn, IComponentProps, IQueryOption, Navbar, PageTitle, Preloader } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { AclAction } from "@vesta/services";
-import React, { ComponentType, useContext, useEffect, useState } from "react";
+import React, { ComponentType, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
+import { SourceApp } from "../../cmn/enum/SourceApp";
 import { ILog } from "../../cmn/models/Log";
-import { IUser, SourceApp } from "../../cmn/models/User";
+import { IUser } from "../../cmn/models/User";
 import { getAccountInstance } from "../../service/Account";
 import { getCrudInstance } from "../../service/Crud";
 import { Notif } from "../../service/Notif";
-import { Store } from "../../service/Store";
+import { useStore } from "../../service/Store";
 import { DataTableOperations } from "../general/DataTableOperations";
 import { Go } from "../general/Go";
 import { LogDetail } from "./log/LogDetail";
@@ -30,7 +31,7 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
   const access = getAccountInstance().getAccessList("log");
   const service = getCrudInstance<string>("log");
   const tr = Culture.getDictionary().translate;
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
   delete access[AclAction.Edit];
 
   const [logs, setLogs] = useState<ILog[]>([]);
@@ -38,7 +39,6 @@ export const Log: ComponentType<ILogProps> = (props: ILogProps) => {
 
   useEffect(() => {
     onFetchAll();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const dateTime = Culture.getDateTimeInstance();

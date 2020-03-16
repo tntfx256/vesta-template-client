@@ -1,27 +1,27 @@
 import { Avatar, Button, DateTimeInput, FormWrapper, IFormOption, Navbar, Preloader, Select, TextInput } from "@vesta/components";
 import { IModelValidationMessage, IResponse, IValidationError, validationMessage } from "@vesta/core";
 import { Culture } from "@vesta/culture";
-import React, { ComponentType, useState, useContext } from "react";
+import React, { ComponentType, useState } from "react";
 import { RouteComponentProps } from "react-router";
 import { IRole } from "../../cmn/models/Role";
 import { IUser, User, UserGender } from "../../cmn/models/User";
 import { getAccountInstance } from "../../service/Account";
 import { getApiInstance } from "../../service/Api";
 import { Notif } from "../../service/Notif";
+import { useStore } from "../../service/Store";
 import { getFileUrl } from "../../util";
-import { Store } from "../../service/Store";
 
 // tslint:disable-next-line: no-empty-interface
-interface IProfileParams { }
+interface IProfileParams {}
 
-interface IProfileProps extends RouteComponentProps<IProfileParams> { }
+interface IProfileProps extends RouteComponentProps<IProfileParams> {}
 
 export const Profile: ComponentType<IProfileProps> = (props: IProfileProps) => {
   const tr = Culture.getDictionary().translate;
   const auth = getAccountInstance();
   const api = getApiInstance();
   const notif = Notif.getInstance();
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
   const genderOptions: IFormOption[] = [
     { id: UserGender.Male, title: tr("enum_male") },
     { id: UserGender.Female, title: tr("enum_female") },

@@ -1,5 +1,5 @@
 import { IToastMessageProps } from "@vesta/components";
-import { createContext, Dispatch } from "react";
+import { createContext, Dispatch, useContext } from "react";
 import { IUser } from "../cmn/models/User";
 import { getAccountInstance } from "./Account";
 
@@ -26,4 +26,8 @@ export function appReducer(state: IAppState, action: Partial<IAppState>): IAppSt
   return { ...state, ...action };
 }
 
-export const Store = createContext<IStore>(null);
+const Store = createContext<IStore>(null);
+
+export const useStore = (): IStore => useContext<IStore>(Store);
+
+export const StoreProvider = Store.Provider;

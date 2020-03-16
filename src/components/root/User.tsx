@@ -1,10 +1,10 @@
 import { CrudMenu, IComponentProps, Navbar, PageTitle } from "@vesta/components";
 import { Culture } from "@vesta/culture";
 import { AclAction } from "@vesta/services";
-import React, { ComponentType, useContext } from "react";
+import React, { ComponentType } from "react";
 import { RouteComponentProps } from "react-router";
 import { getAccountInstance } from "../../service/Account";
-import { Store } from "../../service/Store";
+import { useStore } from "../../service/Store";
 import { Go } from "../general/Go";
 import { UserAdd } from "./user/UserAdd";
 import { UserDetail } from "./user/UserDetail";
@@ -18,7 +18,7 @@ interface IUserProps extends IComponentProps, RouteComponentProps<IUserParams> {
 
 export const User: ComponentType<IUserProps> = (props: IUserProps) => {
   const access = getAccountInstance().getAccessList("user");
-  const { dispatch } = useContext(Store);
+  const { dispatch } = useStore();
   // prevent deleting user
   delete access.delete;
   const tr = Culture.getDictionary().translate;

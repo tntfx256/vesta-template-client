@@ -4,6 +4,7 @@ import { Culture } from "@vesta/culture";
 import React, { FunctionComponent, useState } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
+import vestaLogo from "../../images/icons/144x144.png";
 import { getApiInstance } from "../../service/Api";
 import { Notif } from "../../service/Notif";
 
@@ -36,7 +37,7 @@ export const Forget: FunctionComponent<IForgetProps> = (props: IForgetProps) => 
       <PageTitle title={tr("forget_pass")} />
       <div className="logo-wrapper">
         <div className="logo-container">
-          <img src="images/icons/144x144.png" alt="Vesta Logo" />
+          <img src={vestaLogo} alt="Vesta Logo" />
         </div>
       </div>
       <FormWrapper name="ForgetForm" onSubmit={onSubmit}>
