@@ -3,9 +3,7 @@ import { Culture } from "@vesta/culture";
 import { AclAction } from "@vesta/services";
 import React, { ComponentType, useEffect, useState } from "react";
 import { RouteComponentProps } from "react-router";
-import { SourceApp } from "../../cmn/enum/SourceApp";
 import { ILog } from "../../cmn/models/Log";
-import { IUser } from "../../cmn/models/User";
 import { getAccountInstance } from "../../service/Account";
 import { getCrudInstance } from "../../service/Crud";
 import { Notif } from "../../service/Notif";
@@ -13,15 +11,6 @@ import { useStore } from "../../service/Store";
 import { DataTableOperations } from "../general/DataTableOperations";
 import { Go } from "../general/Go";
 import { LogDetail } from "./log/LogDetail";
-
-export interface ILogger {
-  duration: number;
-  level: number;
-  logs: ILog[];
-  sourceApp: SourceApp;
-  start: number;
-  user: number | IUser;
-}
 
 interface ILogParams {}
 

@@ -4,7 +4,7 @@ import { Culture } from "@vesta/culture";
 import React, { FunctionComponent } from "react";
 import { Link, RouteComponentProps } from "react-router-dom";
 import { IUser, User } from "../../cmn/models/User";
-import vestaLogo from "../../images/icons/144x144.png";
+import vestaLogo from "../../images/logo.png";
 import { getAccountInstance } from "../../service/Account";
 import { getApiInstance } from "../../service/Api";
 import { Notif } from "../../service/Notif";

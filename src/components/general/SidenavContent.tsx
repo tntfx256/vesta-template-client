@@ -2,19 +2,13 @@ import { Avatar, IComponentProps, Icon, IMenuItem, Menu, Navbar, Select } from "
 import { Culture } from "@vesta/culture";
 import React, { FunctionComponent } from "react";
 import { Link } from "react-router-dom";
-import { IUser } from "../../cmn/models/User";
-import defaultUserImage from "../../images/icons/192x192.png";
+import defaultUserImage from "../../images/logo.png";
 import { useStore } from "../../service/Store";
 import { getFileUrl } from "../../util";
 
 interface ISidenavContentProps extends IComponentProps {
   menuItems: IMenuItem[];
   name: string;
-}
-
-interface ISidenavContentState {
-  locale: number;
-  user: IUser;
 }
 
 export const SidenavContent: FunctionComponent<ISidenavContentProps> = (props: ISidenavContentProps) => {
@@ -40,9 +34,8 @@ export const SidenavContent: FunctionComponent<ISidenavContentProps> = (props: I
     (window as any).loadLocale(newLocale, true);
   };
 
-  // public render() {
   const { menuItems } = props;
-  // const { locale, user } = state;
+
   const editLink =
     user && user.id ? (
       <Link to="/profile" onClick={closeSidenav}>
